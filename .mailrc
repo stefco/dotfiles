@@ -1,0 +1,2 @@
+set sendmail="/usr/bin/msmtp"
+set message-sendmail-extra-arguments="-a gmail"
