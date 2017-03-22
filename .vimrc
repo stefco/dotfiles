@@ -19,6 +19,10 @@ set shiftwidth=4
 noremap <F3> :n<CR>
 noremap <F2> :N<CR>
 
+"next or previous vimgrep match
+noremap <S-Up> :cp<CR>
+noremap <S-Down> :cn<CR>
+
 " allow mouse past 220th column
 " http://stackoverflow.com/questions/7000960/in-vim-why-doesnt-my-mouse-work-past-the-220th-column
 set ttymouse=sgr
