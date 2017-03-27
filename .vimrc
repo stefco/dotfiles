@@ -29,10 +29,7 @@ noremap <S-Down> :cn<CR>
 " allow mouse past 220th column
 " http://stackoverflow.com/questions/7000960/in-vim-why-doesnt-my-mouse-work-past-the-220th-column
 set ttymouse=sgr
-
-" make sure the correct mouse codes are being interpreted, EVEN IN TMUX
-set ttymouse=xterm2
-
+                                                                                                                                                                                                                                                          
 if &term =~ '256color'
   " disable Background Color Erase (BCE) so that color schemes
   " render properly when inside 256-color tmux and GNU screen.
