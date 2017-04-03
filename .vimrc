@@ -6,6 +6,7 @@ set autoindent
 set softtabstop=4
 set tabstop=4
 set shiftwidth=4
+set backspace=indent,eol,start
 
 " turn on folding
 set foldmethod=indent
