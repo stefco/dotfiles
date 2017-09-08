@@ -15,10 +15,7 @@ set shiftwidth=4
 set backspace=indent,eol,start
 
 " set 2-space indent for HTML, CSS, and JSON
-autocmd FileType html,css,json
-    \ setlocal softtabstop=4
-    \ setlocal tabstop=4
-    \ setlocal shiftwidth=4
+autocmd FileType html,css,json set softtabstop=2|set tabstop=2|set shiftwidth=2
 
 " turn on folding
 set foldmethod=indent
