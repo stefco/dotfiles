@@ -1,5 +1,5 @@
 # load API tokens with ".active" suffix
-find ~/.tokens -name '*.active' | xargs -n1 source
+[ -e ~/.tokens ] && find ~/.tokens -name '*.active' | xargs -n1 source
 
 # user-specific executables:
 export PATH="~/dev/dotfiles/bin:~/bin:$PATH"
