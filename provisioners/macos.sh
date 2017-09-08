@@ -1,0 +1,73 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# Configure a MacOS machine just the way I like it
+
+log=provision-macos.out.log
+errlog=provision-macos.err.log
+
+logdate () {
+    date | tee -a $log $errlog
+}
+
+if ! type -f 1>/dev/null 2>&1 port; then
+    echo "Error: MacPorts must be installed to proceed. Get it from:"
+    echo "  https://www.macports.org/install.php"
+    echo "Exiting."
+    exit 1
+fi
+
+echo "Checking for xcode command line tools and installing if necessary." \
+    | tee -a $log
+xcode-select --install || echo "xcode command line tools already installed."
+
+logdate
+echo "Updating MacPorts. If you didn't run this script as root, it'll fail." \
+    | tee -a $log
+port selfupdate >$log 2>$errlog
+
+logdate
+echo "Installing tools." | tee -a $log
+port -f install >$log 2>$errlog \
+    bash mc ranger coreutils cowsay curl the_silver_searcher git git-lfs hdf5 \
+    julia libcaca msmtp offlineimap vim ncdu neomutt notmuch OpenBLAS pstree \
+    psutils tree readline dtrx fortune
+# add the MacPorts bash binary to the list of shells
+bash -c "echo /opt/local/bin/bash >>/etc/shells"
+
+logdate
+echo "Installing python stuff." | tee -a $log
+port -f install >$log 2>$errlog \
+    py27-ipython py27-numpy py27-matplotlib py27-scipy py27-healpy \
+    py27-astropy py27-readline py27-pykerberos py27-pygments py27-jupyter \
+    py27-h5py py27-dateutil py27-cython py27-cairo py27-pip
+
+logdate
+echo "Setting default python, ipython, and pip binaries." | tee -a $log
+port select --set python python27 >$log 2>$errlog
+port select --set ipython ipython27 >$log 2>$errlog
+port select --set pip pip27 >$log 2>$errlog
+
+logdate
+echo "Installing LIGO environment. Details here:" | tee -a $log
+echo "  https://wiki.ligo.org/DASWG/MacPorts" | tee -a $log
+port -f install >$log 2>$errlog \
+    lscsoft-deps ligo-gracedb nds2-client +swig_java +swig_python glue \
+    lalapps pylal ldas-tools-framecpp lalframe
+
+logdate
+echo "Installing GWpy dependencies. Details here:" | tee -a $log
+echo "  https://gist.github.com/stefco/5956a92cfb4394255c637471334a7984" \
+    | tee -a $log
+port -f install >$log 2>$errlog \
+    py27-ipython py27-numpy py27-scipy py27-matplotlib +latex +dvipng \
+    texlive-latex-extra py27-astropy glue kerberos5 py27-pykerberos \
+    nds2-client py27-lalframe
+
+logdate
+echo "Installing GWpy with all options. Details here:" | tee -a $log
+echo "  https://gwpy.github.io/docs/stable/install/index.html" | tee -a $log
+pip install gwpy[all] >$log 2>$errlog
+
+logdate
+echo "To set newest version of bash as default, run:" | tee -a $log
+echo "  chsh -s /opt/local/bin/bash" | tee -a $log
