@@ -196,5 +196,6 @@ if [[ $OSTYPE == darwin* ]]; then
     type -f 1>/dev/null 2>&1 fortune \
         && type -f 1>/dev/null 2>&1 cowsay \
         && [ -s ~/dev/dotfiles/static/shrek.cow ] \
-        && fortune | cowsay -f ~/dev/dotfiles/static/shrek.cow
+        && fortune | cowsay -f ~/dev/dotfiles/static/shrek.cow \
+        || echo "no fortune for you today..."
 fi
