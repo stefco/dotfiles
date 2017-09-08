@@ -1,29 +1,192 @@
-alias lsa="ls -a"
-## alias cdc="cd ~/Dropbox/Lexi-Stefan/Countryman\ Tutoring/"
-alias lst="ls -t | less"
-alias lsta="ls -at | less"
-## alias leximac="ssh alexisnelson@192.168.0.13"
-alias editKeys="emacs ~/Dropbox/.environment/karabiner/Private.xml"
-alias getimg="~/Pictures/.getimg/getimg"
-alias sshpaywst="ssh -R 52698:localhost:52698 stecou8@173.236.227.218"
-alias sftppaywst="sftp stecou8@173.236.227.218"
-alias shellcharlie55="ssh -i ~/.charlie55.pem ec2-user@54.88.35.152"
-alias destroyAdobeReader="sudo rm -dr /Library/Internet Plug-Ins/AdobePDF*; KILLALL Safari; Open /Applications/Safari.app"
-alias renameEverythingWithLowercaseAndHyphens="~/rename.sh"
+# load API tokens with ".active" suffix
+find ~/.tokens -name '*.active' | xargs -n1 source
 
-##
-# Your previous /Users/Stefan/.bash_profile file was backed up as /Users/Stefan/.bash_profile.macports-saved_2014-04-29_at_20:33:54
-##
+# user-specific executables:
+export PATH="~/dev/dotfiles/bin:~/bin:$PATH"
+export PATH="$PATH:/Library/TeX/Distributions/Programs/texbin"
 
-# MacPorts Installer addition on 2014-04-29_at_20:33:54: adding an appropriate PATH variable for use with MacPorts.
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-# Finished adapting your PATH environment variable for use with MacPorts.
+# get a better PATH (only if `pathsorter` executable exists for this purpose)
+type -f 1>/dev/null 2>&1 pathsorter \
+    && export PATH="$(pathsorter port sys conda)"
 
-export PATH=$PATH:~/bin
-export EDITOR=emacs
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/
+# add colors, set `vim` as default editor
+export EDITOR=vim
 export CLICOLOR=1
 export LSCOLORS=Exfxcxdxbxegedabagacad
 
-# added by travis gem
-[ -f /Users/Stefan/.travis/travis.sh ] && source /Users/Stefan/.travis/travis.sh
+## vi mode
+set -o vi
+
+# add color to some utilities
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+
+# two-sided print
+alias lpdub="lp -o sides=two-sided-long-edge"
+
+# vim aliases prevent XQuartz from opening
+alias view='DISPLAY="" view'
+alias vi='DISPLAY="" vi'
+alias vim='DISPLAY="" vim'
+alias vimdiff='DISPLAY="" vimdiff'
+alias vimtutor='DISPLAY="" vimtutor'
+
+# workaround; vim saves files in a way that pisses off crontab
+alias crontab="VIM_CRONTAB=true crontab"
+
+# pick the PATH to use with this function and/or configure a virtual env
+path () {
+    newpath="$(pathsorter "$@")" && export PATH="$newpath"
+    # kill existing virtualenv
+    if [[ "$CONDA_DEFAULT_ENV" != "" ]]; then
+        source deactivate
+    fi
+    # if the path choice requires a virtualenv, activate that
+    for pick in "$@"; do
+        case "$pick" in
+            intel) source activate idp ;;
+        esac
+    done
+    printf 'Path is now:\n  '
+    sed $'s/:/\\\n  /g' <<<"$PATH"
+}
+
+# command prompt, modified from http://ezprompt.net/
+function nonzero_return() {
+	RETVAL=$?
+	[ $RETVAL -ne 0 ] && echo " $RETVAL"
+}
+# get current branch in git repo
+function parse_git_branch() {
+	BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+	if [ ! "${BRANCH}" == "" ]
+	then
+		STAT=`parse_git_dirty`
+		echo " [${BRANCH}${STAT}] "
+	else
+		echo ""
+	fi
+}
+# get current status of git repo
+function parse_git_dirty {
+	status=`git status 2>&1 | tee`
+	dirty=`echo -n "${status}" 2> /dev/null | grep "modified:" &> /dev/null; echo "$?"`
+	untracked=`echo -n "${status}" 2> /dev/null | grep "Untracked files" &> /dev/null; echo "$?"`
+	ahead=`echo -n "${status}" 2> /dev/null | grep "Your branch is ahead of" &> /dev/null; echo "$?"`
+	newfile=`echo -n "${status}" 2> /dev/null | grep "new file:" &> /dev/null; echo "$?"`
+	renamed=`echo -n "${status}" 2> /dev/null | grep "renamed:" &> /dev/null; echo "$?"`
+	deleted=`echo -n "${status}" 2> /dev/null | grep "deleted:" &> /dev/null; echo "$?"`
+	bits=''
+	if [ "${renamed}" == "0" ]; then
+		bits=">${bits}"
+	fi
+	if [ "${ahead}" == "0" ]; then
+		bits="*${bits}"
+	fi
+	if [ "${newfile}" == "0" ]; then
+		bits="+${bits}"
+	fi
+	if [ "${untracked}" == "0" ]; then
+		bits="?${bits}"
+	fi
+	if [ "${deleted}" == "0" ]; then
+		bits="x${bits}"
+	fi
+	if [ "${dirty}" == "0" ]; then
+		bits="!${bits}"
+	fi
+	if [ ! "${bits}" == "" ]; then
+		echo " ${bits}"
+	else
+		echo ""
+	fi
+}
+# get the last exit status; if nonzero, print it out
+function print_bad_exit_status {
+    exitcode="$?"
+    if [[ $exitcode != 0 ]]; then
+        printf '%s' ' WhOopS! ¯\_(ツ)_/¯ '$exitcode' '
+    fi
+}
+
+# functions for navigating forward and backward
+NAVIGATION_FWD=()
+NAVIGATION_BWD=()
+
+navigate_forward () {
+    if [ ${#NAVIGATION_FWD[@]} -gt 0 ]; then
+        NAVIGATION_BWD+=("$(pwd)")
+        "cd" "${NAVIGATION_FWD[${#NAVIGATION_FWD[@]}-1]}"
+        unset NAVIGATION_FWD[${#NAVIGATION_FWD[@]}-1]
+    fi
+}
+
+navigate_backward () {
+    if [ ${#NAVIGATION_BWD[@]} -gt 0 ]; then
+        NAVIGATION_FWD+=("$(pwd)")
+        "cd" "${NAVIGATION_BWD[${#NAVIGATION_BWD[@]}-1]}"
+        unset NAVIGATION_BWD[${#NAVIGATION_BWD[@]}-1]
+    fi
+}
+
+# 'navigate' directory, i.e. change directory but keep nav history
+nd () {
+    NAVIGATION_BWD+=("$(pwd)")
+    NAVIGATION_FWD=()
+    "cd" "$@"
+}
+
+# use nd as default directory changer
+alias cd=nd
+
+# set the actual command prompt variable based on the host
+if [[ $OSTYPE == darwin* ]]; then
+    if [ $(hostname) == 'Alexis-Nelsons-MacBook-Pro.local' ]; then
+        export SHORT_HOST_NAME=mbp
+    elif [ $(hostname) == 'Stefans-iMac.local' ]; then
+        export SHORT_HOST_NAME=imac
+    fi
+    export PS1="\[\e[37;45m\]\`print_bad_exit_status\`\[\e[m\]\[\e[37;43m\] $SHORT_HOST_NAME \[\e[m\]\[\e[44m\] \${#NAVIGATION_BWD[@]} \[\e[m\]\[\e[37;41m\] \w \[\e[m\]\[\e[44m\] \${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37;42m\]\`parse_git_branch\`\[\e[m\]\[\e[30;47m\]\`nonzero_return\`\[\e[m\]\[\e[30;47m\] > \[\e[m\] "
+fi
+
+# ls, but with dem emoji
+l () {
+    ls --color=always -FC | sed '
+        s_\([^\t ]*\)/_\1🗂_g;
+        s_\([^\t ]*\)|_\1🏹_g;
+        s_\([^\t ]*\)@_\1🔗_g;
+        s_\([^\t ]*\)=_\1🔌_g;
+        s_\([^\t ]*\)\*_\1☠️_g;
+    '
+}
+
+# some MacOS-specific crap
+if [[ $OSTYPE == darwin* ]]; then
+    # donkey, get back in the heap!
+    alias donkey="cat ~/dev/dotfiles/ogre.txt; say donkey get back in the heap;"
+
+    # control whether hidden files show on MacOS
+	alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE; killall Finder"
+	alias showhidden="defaults write com.apple.finder AppleShowAllFiles TRUE; killall Finder"
+
+    # Get globus running
+    export GLOBUS_LOCATION=/opt/ldg
+    if [ -f ${GLOBUS_LOCATION}/etc/globus-user-env.sh ] ; then
+        . ${GLOBUS_LOCATION}/etc/globus-user-env.sh
+    fi
+
+    # Make "Save As..." the default for GUI apps, as it should be, rather than
+    # this "duplicate" or whatever bullshit that they introduced recently
+    defaults write -globalDomain NSUserKeyEquivalents -dict-add 'Save As...' '@$S'
+
+    # turn on bash-completion
+    if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
+        . /opt/local/etc/profile.d/bash_completion.sh
+    fi
+
+    # a cryptic greeting from an old friend, if he is around...
+    type -f 1>/dev/null 2>&1 fortune \
+        && type -f 1>/dev/null 2>&1 cowsay \
+        && [ -s ~/dev/dotfiles/shrek.cow ] \
+        && fortune | cowsay -f ~/dev/dotfiles/shrek.cow
+fi
