@@ -91,16 +91,16 @@ function! ToggleFolding()
     if exists('b:stefco_is_whole_file_folded')
         if b:stefco_is_whole_file_folded
             echom "unfolding."
-            execute "normal! ggVGzO"
+            execute "normal! ggVGzO\<C-O>\<C-O>"
             let b:stefco_is_whole_file_folded=0
         else
             echom "folding."
-            execute "normal! ggVGzC"
+            execute "normal! ggVGzC\<C-O>\<C-O>"
             let b:stefco_is_whole_file_folded=1
         endif
     else
         echom "fold state undefined, assuming folded; unfolding."
-        execute "normal! ggVGzO"
+        execute "normal! ggVGzO\<C-O>\<C-O>"
         let b:stefco_is_whole_file_folded=0
     endif
 endfunction
