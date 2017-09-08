@@ -1,5 +1,9 @@
 # load API tokens with ".active" suffix
-[ -e ~/.tokens ] && find ~/.tokens -name '*.active' | xargs -n1 source
+if [ -e ~/.tokens ]; then
+    for token in $(find ~/.tokens -name '*.active'); do
+        source "${token}"
+    done
+fi
 
 # load iterm shell integration if available
 test -e "${HOME}/.iterm2_shell_integration.bash" \
