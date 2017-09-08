@@ -42,6 +42,7 @@ alias vimtutor='DISPLAY="" vimtutor'
 # url encode and decode from stdin
 alias urlencode="python -c 'import urllib, sys; print urllib.quote(sys.stdin.read())'"
 alias urldecode="python -c 'import urllib, sys; print urllib.unquote(sys.stdin.read())'"
+alias queryencode="python -c 'import urllib, sys; print urllib.quote_plus(sys.stdin.read())'"
 
 # workaround; vim saves files in a way that pisses off crontab
 alias crontab="VIM_CRONTAB=true crontab"
