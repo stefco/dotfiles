@@ -1,7 +1,7 @@
 # from https://pbrisbin.com/posts/mutt_gmail_offlineimap/
 
 # set solarized colorscheme if file is available
-source `colorfile=~/dev/dotfiles/.mutt-colors-solarized-light-16.muttrc; if [ ! -s "${colorfile}" ]; then colorfile=/dev/null; fi; echo "${colorfile}"`
+source `colorfile=~/dev/dotfiles/static/.mutt-colors-solarized-light-16.muttrc; if [ ! -s "${colorfile}" ]; then colorfile=/dev/null; fi; echo "${colorfile}"`
 
 set mbox_type   = Maildir
 set sendmail    = /opt/local/bin/msmtp

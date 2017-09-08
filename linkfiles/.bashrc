@@ -163,7 +163,7 @@ l () {
 # some MacOS-specific crap
 if [[ $OSTYPE == darwin* ]]; then
     # donkey, get back in the heap!
-    alias donkey="cat ~/dev/dotfiles/ogre.txt; say donkey get back in the heap;"
+    alias donkey="cat ~/dev/dotfiles/static/ogre.txt; say donkey get back in the heap;"
 
     # control whether hidden files show on MacOS
 	alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE; killall Finder"
@@ -187,6 +187,6 @@ if [[ $OSTYPE == darwin* ]]; then
     # a cryptic greeting from an old friend, if he is around...
     type -f 1>/dev/null 2>&1 fortune \
         && type -f 1>/dev/null 2>&1 cowsay \
-        && [ -s ~/dev/dotfiles/shrek.cow ] \
-        && fortune | cowsay -f ~/dev/dotfiles/shrek.cow
+        && [ -s ~/dev/dotfiles/static/shrek.cow ] \
+        && fortune | cowsay -f ~/dev/dotfiles/static/shrek.cow
 fi
