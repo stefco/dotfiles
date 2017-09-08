@@ -1,6 +1,10 @@
 # load API tokens with ".active" suffix
 [ -e ~/.tokens ] && find ~/.tokens -name '*.active' | xargs -n1 source
 
+# load iterm shell integration if available
+test -e "${HOME}/.iterm2_shell_integration.bash" \
+    && source "${HOME}/.iterm2_shell_integration.bash"
+
 # user-specific executables:
 export PATH="~/dev/dotfiles/bin:~/bin:$PATH"
 export PATH="$PATH:/Library/TeX/Distributions/Programs/texbin"
