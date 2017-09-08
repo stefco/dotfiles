@@ -1,0 +1,76 @@
+#!/bin/bash
+#
+
+
+usage() {
+    echo "usage: `basename $0` target_URL login"
+    echo ""
+    echo "example:"
+    echo " `basename $0` https://wiki.ligo.org albert.einstein"
+}
+
+if [ $# -ne 2 ]
+then
+    usage
+    exit 1
+fi
+
+# curl is required for sending to and from the SP and IdP
+# tempfile or mktemp required for safe temporary files
+
+type -P curl >&/dev/null || { echo "This script requires curl. Aborting." >&2; exit 1; }
+
+temp_file_maker=`type -P tempfile`
+if [ ! $temp_file_maker ] ; then
+    temp_file_maker=`type -P mktemp`
+    if [ ! $temp_file_maker ] ; then
+        echo "This script requires tempfile or mktemp. Aborting."
+        exit 1
+    fi
+fi
+
+target=$1
+identity=$2
+
+
+# some utility functionality for deleting temporary files
+declare -a on_exit_items
+
+function on_exit()
+{
+    for i in "${on_exit_items[@]}"
+    do
+        eval $i
+    done
+}
+
+function add_on_exit()
+{
+    local n=${#on_exit_items[*]}
+    on_exit_items[$n]="$*"
+    if [[ $n -eq 0 ]]; then
+        trap on_exit EXIT
+    fi
+}
+
+cookie_file=`$temp_file_maker`
+add_on_exit rm -f $cookie_file
+chmod 600 $cookie_file
+
+# use curl to request the URL
+# 
+# --insecure included because most users will not have
+# necessary machine configurations to check SSL cert from server(s)
+#
+# --silent to hide progress bars and the like
+#
+# -c and -b specificy which file to use for session cookies
+#
+# --user specificies login for mod_auth_kerb on IdP
+#
+# --location-trusted allows curl to follow the redirects
+curl --insecure --silent -c $cookie_file -b $cookie_file --user $identity --location-trusted $target
+
+ret=$?
+
+exit $ret

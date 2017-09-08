@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+# (c) Stefan Countryman 2017
+# read in the current environment PATH and spit out a reordered one to STDOUT
+import os
+import sys
+
+pathchoices = {
+    "port": [
+        "/opt/local/bin",
+        "/opt/local/sbin",
+        "/opt/local/libexec/gnubin",
+        "/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin"
+    ],
+    "conda": "/Users/Stefan/anaconda2/bin",
+    "intel": "/Users/Stefan/anaconda2/bin",
+    "sys": [
+        "/usr/bin",
+        "/usr/local/bin",
+        "/bin",
+        "/usr/sbin",
+        "/sbin"
+    ]
+}
+
+def errexit():
+    sys.stderr.write("BAD INPUT: Must pick from following keys:\n")
+    sys.stderr.write("  " + "\n  ".join(pathchoices.keys()) + "\n")
+    exit(1)
+
+if len(sys.argv) == 1 or '-h' in sys.argv:
+    errexit()
+
+path = os.environ["PATH"].split(":")
+
+for pathchoice in sys.argv[-1:0:-1]:
+    try:
+        chosenpaths = pathchoices[pathchoice]
+        if isinstance(chosenpaths, str):
+            chosenpaths = [chosenpaths]
+    except KeyError:
+        errexit()
+
+    # remove duplicate paths
+    newpath = list()
+    for i in range(len(path)):
+        if not path[i] in path[:i]:
+            newpath.append(path[i])
+
+    # move chosen paths to front
+    for chosenpath in chosenpaths[::-1]:
+        if chosenpath in newpath:
+            newpath.remove(chosenpath)
+        newpath.insert(0, chosenpath)
+
+    # newpath is our new path
+    path = newpath
+
+# print the final path variable
+print ":".join(newpath)
