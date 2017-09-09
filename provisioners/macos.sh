@@ -30,7 +30,7 @@ echo "Installing tools." | tee -a $log
 port -f install >$log 2>$errlog \
     bash mc ranger coreutils cowsay curl the_silver_searcher git git-lfs hdf5 \
     julia libcaca msmtp offlineimap vim ncdu neomutt notmuch OpenBLAS pstree \
-    psutils tree readline dtrx fortune
+    psutils tree readline dtrx fortune bash-completion
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
 
