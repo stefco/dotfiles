@@ -22,3 +22,4 @@ Some features I would like to add.
             - [ ] push
             - [ ] save (add all changes, commit, and push)
       - [ ] Should also be possible to specify files using globs
+- [ ] Add a cronscripts directory
