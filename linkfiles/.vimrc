@@ -17,6 +17,11 @@ set backspace=indent,eol,start
 " set 2-space indent for HTML, CSS, and JSON
 autocmd FileType html,css,json set softtabstop=2|set tabstop=2|set shiftwidth=2
 
+" force .md to be interpreted as Markdown, include code syntax
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+let g:markdown_syntax_conceal = 0
+
 " turn on folding
 set foldmethod=indent
 
@@ -33,7 +38,9 @@ set colorcolumn=80
 
 " allow mouse past 220th column
 " http://stackoverflow.com/questions/7000960/in-vim-why-doesnt-my-mouse-work-past-the-220th-column
-set ttymouse=sgr
+if ! has('nvim')
+    set ttymouse=sgr
+endif
                                                                                                                                                                                                                                                           
 if &term =~ '256color'
     " disable Background Color Erase (BCE) so that color schemes
