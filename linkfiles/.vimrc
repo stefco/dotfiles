@@ -61,6 +61,10 @@ if $VIM_CRONTAB == "true"
     set nowritebackup
 endif
 
+" next or previous window
+noremap <Up> <C-w>W
+noremap <Down> <C-w>w
+
 " next or previous open file
 noremap <Right> :n<CR>
 noremap <Left> :N<CR>
