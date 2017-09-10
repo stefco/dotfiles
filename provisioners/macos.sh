@@ -30,7 +30,8 @@ echo "Installing tools." | tee -a $log
 port -f install >$log 2>$errlog \
     bash mc ranger coreutils cowsay curl the_silver_searcher git git-lfs hdf5 \
     julia libcaca msmtp offlineimap vim ncdu neomutt notmuch OpenBLAS pstree \
-    psutils tree readline dtrx fortune bash-completion
+    psutils tree readline dtrx fortune bash-completion poppler djvulibre \
+    unrar tiff
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
 
@@ -69,5 +70,14 @@ echo "  https://gwpy.github.io/docs/stable/install/index.html" | tee -a $log
 pip install gwpy[all] >$log 2>$errlog
 
 logdate
-echo "To set newest version of bash as default, run:" | tee -a $log
-echo "  chsh -s /opt/local/bin/bash" | tee -a $log
+tee -a <<"__EOF__"
+To set newest version of bash as default, run:
+
+  chsh -s /opt/local/bin/bash
+
+You probably also want to install:
+
+  - iTerm2 <https://www.iterm2.com/downloads.html>
+  - Google Chrome <https://www.google.com/chrome/browser/desktop/index.html>
+  - LibreOffice <https://www.libreoffice.org/download/download/>
+  - k2pdfopt <http://willus.com/k2pdfopt/help/mac.shtml>
