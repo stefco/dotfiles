@@ -38,6 +38,8 @@ set colorcolumn=80
 
 " allow mouse past 220th column
 " http://stackoverflow.com/questions/7000960/in-vim-why-doesnt-my-mouse-work-past-the-220th-column
+" note that this is not a supported feature of neovim, so don't run in that
+" case.
 if ! has('nvim')
     set ttymouse=sgr
 endif
