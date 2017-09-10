@@ -114,3 +114,6 @@ function! ToggleFolding()
         let b:stefco_is_whole_file_folded=0
     endif
 endfunction
+
+" sync syntax from start with <Leader>s (default leader is \)
+map <Leader>s :syntax sync fromstart<CR>
