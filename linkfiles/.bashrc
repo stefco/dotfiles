@@ -5,6 +5,9 @@ if [ -e ~/.tokens ]; then
     done
 fi
 
+# keep track of history for longer, please
+HISTFILESIZE=10000
+
 # load iterm shell integration if available
 test -e "${HOME}/.iterm2_shell_integration.bash" \
     && source "${HOME}/.iterm2_shell_integration.bash"
