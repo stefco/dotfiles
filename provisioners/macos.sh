@@ -2,6 +2,8 @@
 # (c) Stefan Countryman 2017
 # Configure a MacOS machine just the way I like it
 
+set -o errexit
+
 log=provision-macos.out.log
 errlog=provision-macos.err.log
 
