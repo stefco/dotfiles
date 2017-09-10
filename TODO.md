@@ -21,5 +21,12 @@ Some features I would like to add.
             - [ ] commit
             - [ ] push
             - [ ] save (add all changes, commit, and push)
+            - [ ] clone
+                  - [ ] try github by default
+                  - [ ] try stefco by default
+                  - [ ] try ssh by default, fall back to https on error
+                  - [ ] can specify a full url
       - [ ] Should also be possible to specify files using globs
+      - [ ] Add option to recursively act on git submodules
 - [ ] Add a cronscripts directory
+- [ ] Add software I use in a "dependencies" subdir as git submodules
