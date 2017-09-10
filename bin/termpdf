@@ -1,0 +1,1114 @@
+#!/usr/bin/env bash
+
+if [[ "${BASH_VERSINFO[0]}" -lt 4 ]]; then
+    message="upgrade to bash 4 to enable marks"
+else
+    declare -A marks
+    enable_marks="true"
+fi
+
+###########################################################################
+# termpdf is a barebones inline pdf and djvu viewer for iTerm versions 2.9
+# and later.
+#
+# It is a ridiculous hack, but it usually works for me.
+###########################################################################
+
+###########################################################################
+# Functions for displaying images in iTerm2, adapted from the imgcat 
+# script at 
+#   https://raw.githubusercontent.com/gnachman/iTerm2/master/tests/imgcat
+###########################################################################
+
+###########################################################################
+# tmux requires unrecognized OSC sequences to be wrapped with DCS tmux;
+# <sequence> ST, and for all ESCs in <sequence> to be replaced with ESC ESC.
+# It only accepts ESC backslash for ST.
+###########################################################################
+
+function print_osc() {
+    if [[ $TERM == screen* ]] ; then
+        printf "\033Ptmux;\033\033"
+    else
+        printf "\033"
+    fi
+}
+
+function print_st() {
+    if [[ $TERM == screen* ]] ; then
+        printf "\a\033\\"
+    else
+        printf "\a"
+    fi
+}
+
+###########################################################################
+# print_image filename inline base64contents width height
+#   filename: Filename to convey to client
+#   inline: 0 or 1
+#   base64contents: Base64-encoded contents
+#   width: width to render image (in characters)
+#   height: height to render image (in characters)
+###########################################################################
+
+function print_image() {
+    print_osc
+    printf ']1337;File='
+    if [[ -n "$1" ]]; then
+        printf 'name='`echo -n "$1" | base64`";"
+    fi
+    if $(base64 --version 2>&1 | grep GNU > /dev/null)
+    then
+        BASE64ARG=-d
+    else
+        BASE64ARG=-D
+    fi
+    echo -n "$3" | base64 $BASE64ARG | wc -c | awk '{printf "size=%d",$1}'
+    printf ";inline=$2"
+    printf ";width=$4"
+    printf ";height=$5"
+    printf ":"
+    echo "$3"
+    print_st
+    printf '\n'
+}
+
+
+###########################################################################
+# A function for getting the dimensions of the current terminal
+# window or pane.
+###########################################################################
+
+function get_pane_size() {
+    width=$(tput cols)
+    height=$(stty size | awk '{print $1}')
+    width=$(expr $width - 1)
+    height=$(expr $height - 1 )
+}
+
+
+###########################################################################
+# Function for adjusting background color of current pane 
+# 
+# The tmux commands are commented out because iTerm2 doesn't seem
+# to respect tmux background colors when drawing images, so this
+# doesn't help with https://github.com/dsanson/termpdf/issues/10
+###########################################################################
+
+function set_background() {
+    if [[ $TMUX ]]; then
+    :    tmux select-pane -P 'bg=white'
+    fi
+}
+
+function revert_background() {
+    if [[ $TMUX ]]; then
+    :    tmux select-pane -P 'default'
+    fi
+}
+
+###########################################################################
+# Functions for dealing with pages
+###########################################################################
+
+function get_total_number_of_pages() {
+    case $filetype in
+        pdf|PDF)
+            if command -v pdfinfo &>/dev/null; then
+                total_pages=$(pdfinfo "$1" 2>/dev/null \
+                    | grep "^Pages:" | awk '{print $2}') 
+            else
+                error_and_exit "Install poppler to view PDF files."
+            fi
+            ;;
+        djvu|DJVU)
+            if command -v djvused  &>/dev/null; then
+                total_pages=$(djvused -e 'n' "$1" 2>/dev/null) 
+            else
+                error_and_exit "Install djvulibre to view DJVU files."
+            fi
+            ;;
+        tif|TIF|tiff|TIFF)
+            if command -v tiffinfo &>/dev/null; then
+                total_pages=$(tiffinfo "$1" 2>/dev/null \
+                    | sed -n 's/ *PageName: Page //p' | tail -n 1)
+            else
+                error_and_exit "Install libtiff to view TIFF files."
+            fi
+            ;;
+        directory)
+            total_pages=$(find "$1" -type f -exec file {} \; | awk -F: '{if ($2 ~/image/) print $1}' | cat -n | awk 'END{print $1}')
+            ;;
+        *)
+            total_pages=1 
+    esac
+
+    if [[ ! $total_pages =~ [0-9]* ]]; then
+        total_pages=1
+    fi
+}
+
+function validate_page_number() {
+    if [[ ! $page_number =~ ^[0-9]+$ ]]; then
+        page_number=1
+    fi
+    if [[ "${page_number}" -le 0 ]]; then 
+        page_number=1
+    fi
+    if [[ "${page_number}" -ge "$total_pages" ]]; then 
+        page_number=$total_pages
+    fi
+}
+
+###########################################################################
+# Printing 
+###########################################################################
+
+function print_document() {
+    # print_document copies pagerange
+    message=""
+    display_bar
+    if [[ -z "$2" ]]; then
+        range="1-$total_pages"
+    else
+        range="$2"
+    fi
+    read -n 1 -p "Print $1 copies of pages $range? [Y/n] " reply
+    case $reply in
+        $'\e')
+            message="printing cancelled"
+            ;;
+        Y|y|'')
+            message="printing..."
+            display_bar
+            $print_command $print_options -n $1 -P $range "$document"
+            message="print job sent"
+            ;;
+        *)
+            message="printing cancelled"
+            ;;
+    esac
+}
+
+###########################################################################
+# Set keys for navigation etc. 
+###########################################################################
+
+function keys() {
+        back="k"
+        forward="j"
+        n_goto="G"
+        goto_m="g"
+        yank="y"
+        if [[ -n $enable_marks ]]; then
+            mark="m"
+            reference="'"
+        fi
+        search="/" # search not implemented
+        next="n" # search not implemented
+        previous="N" # search not implemented
+        refresh="r"
+        reload="R"
+        make="M"
+        print="p"
+        crop="c"
+        notes="a" 
+        help="h"
+        quit="q"
+}
+
+###########################################################################
+# Edit this is if you prefer different print settings 
+###########################################################################
+
+
+
+###########################################################################
+# Do all the little things we need to do when first started
+###########################################################################
+
+function first_setup() {
+    page_number=1
+    cropped=""
+    tmp_dir=$(mktemp -d)
+    keys
+}
+
+function second_setup() {
+
+    # override these settings by creating a config file
+    guiviewer="Preview.app" 
+    print_command="lp"
+    print_options="-o sides=two-sided-long-edge"
+    make_command=""
+   
+    document_fullpath=$(cd $(dirname "$document") && pwd -P)/$(basename "$document")
+    document_containing_folder="${document_fullpath%/*}"
+    document_name="${document_fullpath##*/}"
+    cd "$document_containing_folder"
+    document="$document_name"
+    if [[ -f "Makefile" ]]; then
+        make_command="make $document"
+    fi
+
+    # read optional config file, if it exists:
+    #
+    #    Global config:    $HOME/.config/termpdf/config 
+
+    if [[ -f "$HOME/.config/termpdf/config" ]]; then
+        source "$HOME/.config/termpdf/config"
+    fi
+
+    # Look to see if the document has been opened before, and if so
+    # find last open page and marks.
+    
+    touch "$HOME/.config/termpdf/cache" 
+    saved_data=$(grep "$document_fullpath" "$HOME/.config/termpdf/cache" | cut -d' ' -f 2-)
+    if [[ ! "$saved_data" == "" ]]; then
+        page_number=$(echo "$saved_data" | awk '{print $1}')
+        if [[ -n $enable_marks ]]; then
+            saved_marks="$(echo "$saved_data" | cut -d' ' -f 2-)"
+            for i in $saved_marks; do
+                reg="${i%%:*}"
+                pag="${i##*:}"
+                marks[$reg]="$pag"
+            done
+        fi 
+    else 
+        echo "$document_fullpath" "1" >> "$HOME/.config/termpdf/cache"
+    fi
+
+    # set a trap to allow other scripts to send commands
+    signal_file="$HOME/.config/termpdf/sigusr1"
+    trap external_command SIGUSR1
+}
+
+# function for processing external commands
+
+function external_command(){
+    if [[ -r "$signal_file" ]]; then
+       read -a command < "$signal_file"
+    fi
+    process_command_mode
+    display_document "$document"
+}
+
+
+###########################################################################
+# "Reload" the document by deleting all the cached pages
+###########################################################################
+
+function reload() {
+    rm -rf "${tmp_dir}"
+    tmp_dir=$(mktemp -d)
+    clear_message
+    get_total_number_of_pages "$document"
+}
+
+
+###########################################################################
+# Delete the cached pages before exiting
+###########################################################################
+
+function clean_and_exit() {
+    rm -rf "$tmp_dir"
+    revert_background
+    doc_state="$page_number"
+    if [[ -n $enable_marks ]]; then
+        for reg in ${!marks[@]}; do
+            doc_state="$doc_state $reg:${marks[$reg]}"
+        done
+    fi
+    sed -i '.bak' "s|^$document_fullpath.*|$document_fullpath $doc_state|" "$HOME/.config/termpdf/cache"
+    clear
+    exit
+}
+
+###########################################################################
+# Error and exit
+###########################################################################
+
+function error_and_exit() {
+    rm -rf "$tmp_dir"
+    revert_background
+    >&2 echo "$(basename $0) error:"
+    >&2 echo "    $1"
+    exit 1
+}
+
+###########################################################################
+# Many commands have a vim-style optional "count" (e.g, 5j moves forward 
+# 5 pages). Often, if no count is given, we default to 1 
+###########################################################################
+
+function check_count() {
+    [[ $count == "" ]] && count=1
+}
+
+
+###########################################################################
+# Clears the message that might have appeared in the status bar
+###########################################################################
+
+clear_message() {
+    message=""
+}
+
+###########################################################################
+# A simple function for listing all the saved marks in the status bar 
+###########################################################################
+
+function list_marks() {
+    if [[ -n $enable_marks ]]; then
+        message="marks:"
+        for reg in ${!marks[@]}; do
+            message="$message $reg:${marks[$reg]}"
+        done
+    else
+        message="marks not enabled"
+    fi
+}
+
+###########################################################################
+# Use k2pdfopt <https://github.com/JohannesBuchner/k2pdfopt> to crop 
+# excess whitespace from pdfs.
+#
+#     crop_margins root page
+#
+# TODO: add support for cropping TIFs using convert
+###########################################################################
+
+function crop_margins() {
+     if [[ ! -f "${tmp_dir}/${1}${2}_k2opt.pdf" ]]; then
+         k2pdfopt -ocr- -ui- -x -mode tm "${tmp_dir}/${1}${2}.pdf" > /dev/null
+     fi
+}
+
+function two_columns() {
+     if [[ ! -f "${tmp_dir}/${1}${2}_cols.pdf" ]]; then
+         k2pdfopt -ocr- -ui- -x -col 2 -o '%s_cols.pdf' "${tmp_dir}/${1}${2}.pdf" > /dev/null
+     fi
+}
+
+###########################################################################
+# Functions for extracting and caching a single page from a multipage
+# pdf or djvu file.
+#
+#     extract_pdf_page path root extension page 
+###########################################################################
+
+function extract_pdf_page() {
+    pdfseparate -f "$3" -l "$3" "${1}.${2}" "${tmp_dir}/${1}%d.pdf"
+    image="${tmp_dir}/${1}${3}${cropped}.pdf"
+}
+
+function extract_djvu_page() {
+    ddjvu -format=pdf -page=$3 "${1}.${2}" "${tmp_dir}/${1}${3}.pdf"
+    image="${tmp_dir}/${1}${3}${cropped}.pdf"
+}
+
+function extract_tiff_page() {
+    tiffutil -extract "$[$3 - 1]" "${1}.${2}" -o "${tmp_dir}/out.tiff" 2>/dev/null 
+    tiff2pdf -o "${tmp_dir}/${1}${3}.pdf" "${tmp_dir}/out.tiff" 2>/dev/null
+    image="${tmp_dir}/${1}${3}${cropped}.pdf"
+}
+
+function choose_from_directory() {
+    image="$(find "${1}" -type f -exec file {} \; | awk -F: '{if ($2 ~/image/) print $1}' | sed ${2}'q;d')"
+#    image="$(find "${1}" -type f | sed ${2}'q;d')"
+}
+
+###########################################################################
+# Wrapper function for extracting page depending on file type 
+#
+#    extract_page rootname extension page-number
+###########################################################################
+
+function extract_page() {
+    if [[ ! -f "${tmp_dir}/${2}${4}.pdf" ]]; then
+        case $filetype in
+            pdf|PDF)
+                extract_pdf_page "$1" "$2" "$3" 
+                ;;
+            djvu|DJVU)
+                extract_djvu_page "$1" "$2" "$3"
+                ;;
+            tif|tiff|TIF|TIFF)
+                extract_tiff_page "$1" "$2" "$3"
+                ;;
+            directory)
+                choose_from_directory "$1" "$3"
+                ;;
+            jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF|gifv|GIFV|bmp|BMP)
+                image="$document"
+                ;;
+            *)
+                #image="$document"
+                error_and_exit "$filetype not supported."
+                ;;
+        esac
+    fi
+    if [[ "$cropped" == "_k2opt" ]]; then
+        crop_margins "$2" "$4"
+    fi
+    if [[ "$cropped" == "_cols" ]]; then
+        two_columns "$2" "$4"
+    fi
+}
+
+
+###########################################################################
+# Functions for searching for text
+###########################################################################
+
+search_djvu() {
+    message="djvu search not implemented"
+}
+
+search_pdf() {
+    allresults=$(pdfgrep -n -C $message_length "$@" "$document")
+    readarray -t results <<< "$allresults"
+    for (( i=0; i<${#results[@]}; i++ ))
+    do
+        if [[ "${results[$i]%%:*}" -ge "$page_number" ]]
+        then
+            search_index=$i
+            break
+        fi
+        search_index=0
+    done
+    goto_result $search_index
+}
+
+goto_result() {
+    message="[$[$search_index + 1]/$[ ${#results[@]} + 1 ]] ${results[$1]#*:}"
+    goto ${results[$1]%%:*}
+}
+
+next_result() {
+    search_index=$[$search_index + $1]
+    if [[ $search_index -gt ${#results[@]} ]]
+    then
+        if [[ $wrap_search == "true" ]]
+        then
+            search_index=$[$search_index - ${#results[@]}]
+        else
+            search_index=${#results[@]}
+            tput bel
+            message="last result"
+        fi
+    elif [[ $search_index -lt 0 ]]
+    then
+        if [[ $wrap_search == "true" ]]
+        then
+            search_index=$[${#results[@]} + $search_index]
+        else
+            search_index=0
+            tput bel
+            message="first result"
+        fi
+    fi
+    goto_result $search_index
+}
+
+###########################################################################
+# Function for exporting some pages of the document to a new PDF file
+#
+#    export_pdf page page
+###########################################################################
+
+function export_pdf() {
+    n="1"
+    output="${fileroot}_selection.pdf"
+    until [[ ! -f "$output" ]]; do
+        output="${fileroot}_selection_$n.pdf"
+        n=$[$n + 1]
+    done
+    if [[ $1 -le $2 ]]; then
+        first_page="$1"
+        last_page="$2"
+    else
+        first_page="$2"
+        last_page="$1"
+    fi
+    if [[ "$filetype" == "pdf" ]]; then
+        pdftocairo -pdf -f "$first_page" -l "$last_page" "$document" "$output" 
+        message="pages $first_page to $last_page saved to $output"
+    elif [[ "$filetype" == "djvu" ]]; then
+        djvups -page=${first_page}-${last_page} "$document" - \
+            | ps2pdf - "$output"
+        message="pages $first_page to $last_page saved to $output"
+    else 
+        # TODO: add support for TIFF
+        message="export to pdf not yet supported for this filetype"
+    fi
+}
+
+
+###########################################################################
+# Open a filename_notes.md file for annotation
+# 
+# If you are running inside of tmux, then this will open your editor
+# in a split pane. Otherwise, it will simply open the file in your $EDITOR.
+#
+# The file is prepopulated with a pandoc-style yaml title block. Change
+# this if you would rather use org or whatever.
+###########################################################################
+
+
+function notes() {
+    notes="${document%%.*}_notes.md"
+    if [[ ! -f "$notes" ]]; then
+        printf -- "---\ntitle: Notes on %s\nauthor: %s\ndate: %s\n...\n\n" "${document##*/}" "$(id -F)" "$(date)" >> "$notes" 
+    fi
+    if [[ "$note_command" ]]; then
+        $note_command "$notes"
+    elif [[ ! $TMUX ]]; then
+        $EDITOR "$notes" +
+    else
+        tmux split-window -h -d $EDITOR "$notes" + 
+        refresh
+    fi
+}
+
+###########################################################################
+# Draw the status bar 
+###########################################################################
+
+function display_bar() {
+    if [[ -n $total_pages ]]; then
+       right_side="$page_number/$total_pages"
+    else
+       right_side=""
+    fi
+    offset=$[$width - ${#right_side}]
+    inset=15
+    message_length=$[$width - ${#right_side} - $inset - 2]
+    tput cup $height 0
+    tput el # erase any old stuff from previous commands
+    tput cup $height $inset
+    printf "${message:0:$message_length}"
+    tput cup $height $offset
+    printf "$right_side"
+    tput cup $height 0 # put the cursor in left corner
+}
+
+
+###########################################################################
+# Display help 
+###########################################################################
+
+function clihelp() {
+    echo "Usage: $(basename $0) <file>"
+    echo "       $(basename $0) <directory>"
+    exit
+}
+
+
+function help() {
+    clear
+    tput cup 0 0
+cat <<EOH
+Keyboard commands
+
+    enter/space: forward one page
+    [n]$back/$forward:      forward or back [n] pages
+    [n]$n_goto:        go to page [n]
+    $n_goto:           go to last page
+    $goto_m$goto_m:          go to first page
+    [n]$print:        print [n copies of] document
+    [n]$yank:        yank [n] pages forward and save as pdf
+    $yank$yank:          yank current page and save as pdf
+    $refresh:           refresh display
+    $reload:           reload document
+    $make:           remake document
+    $crop:           crop margins 
+    $notes:           annotate in split pane
+    $mark[r]:        store current page in register [r]
+    $reference[r]:        go to page stored in register [r]
+    ${goto_m}${reference}[r]:       go to to page in register [r]  
+    ${yank}${reference}[r]:       yank from current page to mark and save as pdf
+    $quit:           quit
+    $help:           view this help
+
+EOH
+
+    read -p "Press any key to return to document" -n 1 -s dummy
+    clear
+}
+
+###########################################################################
+# Each command is its own function 
+###########################################################################
+
+function goto() {
+    # goto n
+    page_number=$1
+    #clear_message
+}
+
+function back() {
+    # back n
+    goto $[$page_number - $1]
+    clear_message
+}
+
+function forward() {
+    # forward n
+    goto $[$page_number + $1]
+    clear_message
+}
+
+function yank() {
+   # yank page page
+   export_pdf $1 $2
+}
+
+function mark() {
+    # mark register <page>
+    if [[ -n $enable_marks ]]; then
+        if [[ "$2" == "" ]]; then
+            marks[$1]=$page_number
+        else
+            marks[$1]="$2"
+        fi
+        message="${marks[$1]} stored in mark \'$1\'"
+    else
+        message="marks not enabled"
+    fi
+}
+
+function goto_mark() {
+    # goto_mark register
+    if [[ -n $enable_marks ]]; then
+        if [[ ${marks[$register]} != "" ]]; then
+            goto ${marks[$register]}
+        else
+            message="no mark \'$register\'"
+        fi
+    else
+        message="marks not enabled"
+    fi
+}
+
+function quit() {
+    clean_and_exit
+}
+
+function refresh() {
+    # redraw the pane (important because tmux has a habit of clobbering
+    # the displayed image
+    clear
+}
+
+function remake() {
+    if [[ "$makecommand" == '' ]]; then
+        clear
+        $make_command
+        reload
+        clear
+    else
+        message="create a Makefile or .termpdf to enable remake"
+    fi
+}
+
+# open the document in your preferred gui pdf viewer
+function gui() {
+    open -a "$guiviewer" "$1"
+}
+
+function crop() {
+    if [[ "$cropped" == "" ]]; then
+        cropped="_k2opt"
+    else
+        cropped=""
+    fi
+}
+
+function search() {
+    case $filetype in
+        pdf|PDF)
+            search_pdf "$@" 
+            ;;
+        djvu|DJVU)
+            search_djvu "$@"
+            ;;
+        *)
+            message="Search not supported for this filetype"
+            ;;
+    esac
+}
+
+function print() {
+    # print <copies> <range>
+    if [[ $1 == "" ]]; then
+        print_document 1
+    else
+        print_document $1 $2
+    fi
+}
+
+###########################################################################
+# Command Mode
+###########################################################################
+
+function command_mode() {
+    tput cup $height 0
+    read -p ':' -ea command
+    process_command_mode  
+}
+
+function process_command_mode(){
+    echo ${command[0]}
+    case ${command[0]} in
+        q|qu|qui|quit)
+            quit
+            ;;
+        f|forward)
+            forward ${command[1]}
+            ;;
+        b|back)
+            back ${command[1]}
+            ;;
+        g|goto)
+            goto ${command[1]}
+            ;;
+        first)
+            goto 1
+            ;;
+        last)
+            goto $total_pages
+            ;;
+        [0-9]*)
+            goto ${command[0]}
+            ;;
+        mark)
+            # mark register <page>
+            mark ${command[1]} ${command[2]}
+            ;;
+        yank)
+            # yank page page
+            yank ${command[1]} ${command[2]}
+            ;;
+        search)
+            # search string
+            # search ${command[1]}
+            # search not implemented
+            search "${command[@]:1}"
+            ;;
+        next)
+            next_result "1" 
+            ;;
+        previous)
+            next_result "-1"
+            ;;
+        refresh)
+            refresh
+            ;;
+        reload)
+            reload
+            ;;
+        e|edit|o|open)
+            # open another document instead of this one
+            if [[ "${command[1]}" == "" ]]; then
+                clear
+                select_document
+            elif [[ -d "${command[1]}" ]]; then
+                cd "${command[1]}"
+                clear
+                select_document
+            elif [[ -f "${command[1]}" ]]; then
+                display_document ${command[1]}
+            else
+                message="${command[1]} does not exist"
+            fi
+            ;;
+        gui)
+            # open document in your default pdf viewer (e.g., Preview.app)
+            gui "$document"
+            ;;
+        print)
+            # print <copies> <pages>
+            print ${command[1]} ${command[2]}
+            ;;
+        marks)
+            list_marks
+            ;;
+        notes)
+            notes
+            ;;
+        crop)
+            crop
+            ;;
+        help)
+            help
+            ;;
+        col)
+            cropped="_cols" 
+            ;;
+    esac
+}
+
+
+###########################################################################
+# Wait for next command
+###########################################################################
+
+function read_command() {
+    read -n 1 command
+    case "$command" in
+        $'\e')
+            ;;
+        [0-9])
+            count="${count}${command}"
+            read_command
+            ;;
+        ":")
+            command_mode
+            ;;
+        $back)
+            check_count
+            back $count
+            ;;
+        $forward | '')
+            check_count
+            forward $count
+            ;;
+        "$n_goto")
+            if [[ $count == "" ]]; then
+                goto $total_pages
+            else
+                goto $count
+            fi
+            ;;
+        "$goto_m")
+            read -n 1 command
+            case $command in
+                $'\e')
+                    ;;
+                "$goto_m")
+                    goto 1
+                    ;;
+                "$reference")
+                    read -n 1 register
+                    case $register in
+                        $'\e')
+                            ;;
+                        *)
+                            goto_mark $register
+                            ;;
+                    esac
+            esac
+            ;;
+        "$reference")
+            read -n 1 register
+            case $register in
+                $'\e')
+                    ;;
+                *)
+                    goto_mark $register
+                    ;;
+            esac
+            ;;
+        "$yank")
+            if [[ $count == "" ]]; then
+                read -n 1 command
+                case $command in
+                    $'\e')
+                        ;;
+                    "$yank")
+                        yank $page_number $page_number
+                        ;;
+                    "$reference")
+                        read -n 1 register
+                        case $register in
+                            $'\e')
+                                ;;
+                            *)
+                                if [[ ${marks[$register]} != "" ]]; then
+                                    yank $page_number ${marks[$register]}
+                                else
+                                    message="no mark \'$register\'"
+                                fi
+                                ;;
+                        esac
+                        ;;
+                esac
+            else
+                yank $page_number $[$page_number + $count]
+            fi
+            ;;
+        "$mark")
+            read -n 1 register
+            case $register in
+                $'\e'|"")
+                    ;;
+                *)
+                    mark $register $page_number
+                    ;;
+            esac
+            ;;
+        "$crop")
+            crop
+            ;;
+        "$notes")
+            notes
+            ;;
+        "$search")
+            tput cup $height 0
+            read -p "$search" query
+            search "$query"
+            ;;
+        "$next")
+            check_count
+            next_result $count
+            ;;
+        "$previous")
+            check_count
+            next_result $[0 - $count]
+            ;;
+        "$quit")
+            quit
+            ;;
+        "$refresh")
+            refresh
+            ;;
+        "$reload")
+            reload
+            ;;
+        "$print")
+            check_count
+            print $count
+            ;;
+        "$help")
+            help
+            ;;
+        "$make")
+            remake
+            ;;
+    esac
+}
+
+
+###########################################################################
+# Display Document
+###########################################################################
+
+function display_document() {
+    document=$1
+
+    filetype="${document##*.}"
+    fileroot="${document%.*}"
+
+    case "$filetype" in
+        cbr|CBR|rar|RAR)
+            if command -v unrar &> /dev/null; then
+                unrar -idq x "$document" ${tmp_dir}
+                cd ${tmp_dir}
+                document="."
+                fileroot="."
+            else
+                error_and_exit "Install unrar to view RAR and CBR files."
+            fi
+            ;;
+        cbz|CBZ|zip|ZIP)
+            unzip -q "$document" -d "${tmp_dir}"
+            cd ${tmp_dir}
+            document="."
+            fileroot="."
+            ;;
+         cbt|CBT|tar|TAR)
+            tar -xf "$document" -C "${tmp_dir}"
+            cd ${tmp_dir}
+            document="."
+            fileroot="."
+            ;;
+    esac
+
+    if [[ -d "$document" ]]; then
+        filetype="directory"
+        directory_contents="$(ls -m)"
+    fi
+
+    get_total_number_of_pages "$document"
+    clear
+    while true
+    do
+        validate_page_number 
+        get_pane_size 
+        extract_page "$fileroot" "$filetype" "$page_number" 
+        tput cup 0 0 
+        print_image "$image" 1 "$(base64 < "$image")" $width $height
+        display_bar
+        count=""
+        read_command
+    done
+}
+
+
+###########################################################################
+# Select Document (feature removed)
+###########################################################################
+
+# function select_document() {
+#     tput cup 0 0
+#     ls -l
+#     display_bar
+#     read -e -p "Open: " new_file
+#     if [[ -d $new_file ]]; then
+#         cd "$new_file"
+#         clear
+#         select_document
+#     elif [[ -r $new_file ]]; then
+#         document=$new_file 
+#     elif [[ -z $new_file ]]; then
+#         clean_and_exit
+#     else
+#         message="No such file"
+#         clear
+#         select_document
+#     fi
+# }
+#
+# function display_banner() {
+#     message=""
+#     banner[1]=" _                                _  __ "
+#     banner[2]="| |_ ___ _ __ _ __ ___  _ __   __| |/ _|"
+#     banner[3]="| __/ _ \ '__| '_ \` _ \| '_ \ / _\` | |_ "
+#     banner[4]="| ||  __/ |  | | | | | | |_) | (_| |  _|"
+#     banner[5]=" \__\___|_|  |_| |_| |_| .__/ \__,_|_|  "
+#     banner[6]="                       |_|              "
+#     clear
+#     start_row=$[($height/2) - 3]
+#     start_col=$[($width/2) - (${#banner[1]}/2)]
+#     if [[ ${#banner[1]} -gt $width ]]; then
+#         start_col=0
+#     fi
+#     tput cup $start_row 0
+#     for line in "${banner[@]}"; do
+#         printf "%*s%s\n" $start_col " " "$line"
+#     done
+#     display_bar
+# }
+
+###########################################################################
+# Main Program
+###########################################################################
+
+trap 'error_and_exit "interrupted"' SIGINT 
+trap clean_and_exit SIGTERM
+
+first_setup
+
+if [[ -z "$1" || ! -r "$1" ]]; then
+    clihelp
+    exit
+else
+    document="$1"
+fi
+
+second_setup
+
+display_document "$document"
+
+
