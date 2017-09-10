@@ -4,11 +4,15 @@
 
 ### Install Neomutt
 
-    sudo port -f install neomutt +idn +lmdb +notmuch +ssl
+```bash
+sudo port -f install neomutt +idn +lmdb +notmuch +ssl
+```
 
 ### Install offlineimap
 
-    sudo port -f install offlineimap
+```bash
+sudo port -f install offlineimap
+```
 
 ### Configure Email
 
@@ -22,7 +26,9 @@ certificates into a single `.pem` file. Place this at the path indicated in
 
 On Linux, you should be able to use something like
 
-    sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+```
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+```
 
 in `.offlineimaprc`.
 
