@@ -2,3 +2,5 @@
 *swp
 .netrwhist
 linkfiles/.vim
+linkfiles/.ipython
+linkfiles/.config/ipython
