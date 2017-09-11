@@ -9,8 +9,10 @@ fi
 HISTFILESIZE=10000
 
 # load iterm shell integration if available
-test -e "${HOME}/.iterm2_shell_integration.bash" \
-    && source "${HOME}/.iterm2_shell_integration.bash"
+if [ -e "${HOME}/.iterm2_shell_integration.bash" ] \
+  && [ "$TERM" != 'eterm-color' ]; then
+    source "${HOME}/.iterm2_shell_integration.bash"
+fi
 
 # user-specific executables:
 export PATH="~/dev/dotfiles/bin:~/bin:$PATH"

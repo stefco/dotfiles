@@ -43,6 +43,9 @@ syntax on
 " don't word wrap
 set nowrap
 
+" italicize comments
+highlight Comment cterm=italic
+
 " run Neomake on write
 autocmd! BufWritePost * Neomake
 
