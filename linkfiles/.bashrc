@@ -16,6 +16,12 @@ test -e "${HOME}/.iterm2_shell_integration.bash" \
 export PATH="~/dev/dotfiles/bin:~/bin:$PATH"
 export PATH="$PATH:/Library/TeX/Distributions/Programs/texbin"
 
+# configuration file home
+export XDG_CONFIG_HOME="~/.config"
+
+# force ipython to look in ~/.config
+export IPYTHONDIR="~/.config/ipython"
+
 # get a better PATH (only if `pathsorter` executable exists for this purpose)
 type -f 1>/dev/null 2>&1 pathsorter \
     && export PATH="$(pathsorter port sys conda)"
