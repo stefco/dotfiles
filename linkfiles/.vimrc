@@ -187,10 +187,13 @@ nnoremap gp :Ggrep
 " git read; do a git checkout to the buffer
 nnoremap gr :Gread 
 
-" git read; writes to both the work tree and index versions of file, making
+" git write; writes to both the work tree and index versions of file, making
 " it like `git add` when called from a work tree file and like `git checkout`
 " when called from the index or a blob in the history
 nnoremap gw :Gwrite<CR>
+
+" git write (to index) and then commit
+nnoremap gW :Gwrite<CR>:Gcommit<CR>
 
 " some stuff for working with interactive sessions in python
 
