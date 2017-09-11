@@ -1,3 +1,33 @@
+"------------------------------------------------------------------------------
+" load vundle
+"------------------------------------------------------------------------------
+
+" these settings are required for Vundle
+set nocompatible
+filetype off
+
+" set the runtime path
+set rtp+=~/dev/dotfiles/submodules/Vundle.vim
+call vundle#begin('~/dev/dotfiles/linkfiles/.vim/bundle')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" Keep Plugin commands between vundle#begin/end.
+" simpylfold does not seem to be working :\
+"Plugin 'tmhedberg/SimpylFold'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'nvie/vim-flake8'
+Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-fugitive'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+
+"------------------------------------------------------------------------------
+" my prefs
+"------------------------------------------------------------------------------
+
 " automatically read file updates
 set autoread
 
@@ -22,8 +52,11 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:markdown_syntax_conceal = 0
 
+" ignore .pyc files in nerdtree
+let NERDTreeIgnore=['\.pyc$', '\~$']
+
 " turn on folding
-set foldmethod=indent
+"set foldmethod=indent
 
 " use line-numbers and mouse-interaction
 set number
@@ -117,3 +150,60 @@ endfunction
 
 " sync syntax from start with <Leader>s (default leader is \)
 map <Leader>s :syntax sync fromstart<CR>
+
+" open nerdtree
+map gn :NERDTreeToggle<CR>
+
+" run help for some string
+map gh :help 
+
+" check mappings
+map gm :map 
+
+" load .vimrc
+map gl :source ~/.vimrc<CR>
+
+" show git status
+nnoremap gs :Gstatus<CR>
+
+" git diff this file
+nnoremap gd :Gdiff<CR>
+
+" run git diff in CWD
+nnoremap gD :!git diff<CR>
+
+" git commit
+nnoremap gc :Gcommit<CR>
+
+" git grep
+nnoremap gp :Ggrep 
+
+" git read; do a git checkout to the buffer
+nnoremap gr :Gread 
+
+" git read; writes to both the work tree and index versions of file, making
+" it like `git add` when called from a work tree file and like `git checkout`
+" when called from the index or a blob in the history
+nnoremap gw :Gwrite<CR>
+
+" some stuff for working with interactive sessions in python
+
+" place contents of ipyscratch at cursor
+autocmd FileType python nnoremap giP   :.-1r ~/.ipyscratch<CR>
+"autocmd FileType python nnoremap <A-V> :.-1r ~/.ipyscratch<CR><C-c>
+
+" place contents of ipyscratch below cursor
+autocmd FileType python nnoremap gip   :r ~/.ipyscratch<CR>
+"autocmd FileType python nnoremap <A-v> :r ~/.ipyscratch<CR><C-c>
+
+" replace selection with contents of ipyscratch
+autocmd FileType python vnoremap gip   c<ESC>:r ~/.ipyscratch<CR>kdd
+"autocmd FileType python vnoremap <A-v> c<ESC>:r ~/.ipyscratch<CR>kdd<C-c>
+
+" write selection to ipyscratch
+autocmd FileType python vnoremap giw   :w! ~/.ipyscratch<CR>
+"autocmd FileType python vnoremap <A-c> :w! ~/.ipyscratch<CR><C-c>
+
+" yank selection and write it to ipyscratch
+autocmd FileType python vnoremap giy   :w! ~/.ipyscratch<CR>gvd
+"autocmd FileType python vnoremap <A-x> :w! ~/.ipyscratch<CR>gvd<C-c>
