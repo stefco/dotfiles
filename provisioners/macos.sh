@@ -42,13 +42,16 @@ echo "Installing python stuff." | tee -a $log
 port -f install >$log 2>$errlog \
     py27-ipython py27-numpy py27-matplotlib py27-scipy py27-healpy \
     py27-astropy py27-readline py27-pykerberos py27-pygments py27-jupyter \
-    py27-h5py py27-dateutil py27-cython py27-cairo py27-pip
+    py27-h5py py27-dateutil py27-cython py27-cairo py27-pip py27-pylint \
+    py27-pyflakes
 
 logdate
 echo "Setting default python, ipython, and pip binaries." | tee -a $log
 port select --set python python27 >$log 2>$errlog
 port select --set ipython ipython27 >$log 2>$errlog
 port select --set pip pip27 >$log 2>$errlog
+port select --set pylint pylint27 >$log 2>$errlog
+port select --set pyflakes py27-pyflakes >$log 2>$errlog
 
 logdate
 echo "Installing LIGO environment. Details here:" | tee -a $log
