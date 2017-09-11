@@ -151,6 +151,12 @@ endfunction
 " sync syntax from start with <Leader>s (default leader is \)
 map <Leader>s :syntax sync fromstart<CR>
 
+" git pull
+map <Leader>p :Gpull<CR>
+
+" git push
+map <Leader>P :Gpush<CR>
+
 " open nerdtree
 map gn :NERDTreeToggle<CR>
 
