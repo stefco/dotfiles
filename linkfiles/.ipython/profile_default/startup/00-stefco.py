@@ -18,6 +18,7 @@ get_ipython().run_line_magic('alias', 'git git')
 get_ipython().run_line_magic('alias', 'pstree pstree')
 get_ipython().run_line_magic('alias', 'mutt mutt')
 
+@IPython.core.magic.register_line_magic
 def shit(line):
     """shell it; make ipython act more like a system shell by making it add
     all executables to the path and by activating autocall."""
