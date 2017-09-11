@@ -19,15 +19,15 @@ get_ipython().run_line_magic('alias', 'pstree pstree')
 get_ipython().run_line_magic('alias', 'mutt mutt')
 
 @IPython.core.magic.register_line_magic
-def shit(line):
+def shel(line):
     """shell it; make ipython act more like a system shell by making it add
     all executables to the path and by activating autocall."""
     get_ipython().run_line_magic('autocall', '1')
     get_ipython().run_line_magic('rehashx', '')
-del shit
+del shel
 
 @IPython.core.magic.register_line_magic
-def cpin(line):
+def gicp(line):
     """Read from ``In[-n-2]`` and copy it to the system clipboard
     using ``pyperclip``. Indexing starts at 1. So to get the most recent
     input text, run ``cpin 1`` or ``cpin`` etc."""
@@ -39,10 +39,10 @@ def cpin(line):
     else:
         num_lines_prior = int(args[1])
     pyperclip.copy(In[-1-num_lines_prior])
-del cpin
+del gicp
 
 @IPython.core.magic.register_line_magic
-def win(line):
+def giw(line):
     """Write contents of ``In[-n-2]`` to ``~/.ipyscratch`` (or some other
     file) for easy use elsewhere. Use caution; will overwrite contents of
     this scratch file.
@@ -89,10 +89,10 @@ def win(line):
         fname = args[0]
     with open(os.path.expanduser(fname), 'w') as outfile:
         outfile.write(In[-1-num_lines_prior])
-del win
+del giw
 
 @IPython.core.magic.register_line_magic
-def rin(line):
+def gip(line):
     """Run input from file; default to ~/.ipyscratch."""
     import os
     import shlex
@@ -111,7 +111,7 @@ def rin(line):
     # update history
     In[-1] = cmd
     get_ipython().run_code(cmd)
-del rin
+del gip
 
 # functions for working with processes
 def _cmd_path_lex(line):
