@@ -210,6 +210,9 @@ nnoremap gG :Ggrep
 " git read; do a git checkout to the buffer
 nnoremap gr :Gread 
 
+" try to imgcat the selected filename
+vnoremap <Leader>i y:!imgcat <C-f>pA<CR>
+
 " git write; writes to both the work tree and index versions of file, making
 " it like `git add` when called from a work tree file and like `git checkout`
 " when called from the index or a blob in the history
