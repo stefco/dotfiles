@@ -152,10 +152,10 @@ endfunction
 map <Leader>s :syntax sync fromstart<CR>
 
 " git pull
-map <Leader>p :Gpull<CR>
+map gp :Gpull<CR>
 
 " git push
-map <Leader>P :Gpush<CR>
+map gP :Gpush<CR>
 
 " open nerdtree
 map gn :NERDTreeToggle<CR>
@@ -182,7 +182,7 @@ nnoremap gD :!git diff<CR>
 nnoremap gc :Gcommit<CR>
 
 " git grep
-nnoremap gp :Ggrep 
+nnoremap gG :Ggrep 
 
 " git read; do a git checkout to the buffer
 nnoremap gr :Gread 
