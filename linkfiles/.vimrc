@@ -65,6 +65,10 @@ let g:markdown_syntax_conceal = 0
 " ignore .pyc files in nerdtree
 let NERDTreeIgnore=['\.pyc$', '\~$']
 
+" show hidden files and bookmarks by default
+let NERDTreeShowBookmarks=1
+let NERDTreeShowHidden=1
+
 " turn on folding
 set foldmethod=indent
 
