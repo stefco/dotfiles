@@ -16,6 +16,9 @@ test -e "${HOME}/.iterm2_shell_integration.bash" \
 export PATH="~/dev/dotfiles/bin:~/bin:$PATH"
 export PATH="$PATH:/Library/TeX/Distributions/Programs/texbin"
 
+# GECo-specific executables:
+export PATH="~/dev/geco_data:$PATH"
+
 # configuration file home
 export XDG_CONFIG_HOME="~/.config"
 
