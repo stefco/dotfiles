@@ -1,0 +1,1 @@
+../../profile_astro/startup/20-astro.py
