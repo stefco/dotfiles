@@ -91,6 +91,28 @@ def win(line):
         outfile.write(In[-1-num_lines_prior])
 del win
 
+@IPython.core.magic.register_line_magic
+def rin(line):
+    """Run input from file; default to ~/.ipyscratch."""
+    import os
+    import shlex
+    import textwrap
+    args = shlex.split(line)
+    if len(args) == 0:
+        path = '~/.ipyscratch'
+    else:
+        try:
+            path = eval(line)
+        except:
+            path = args[0]
+    with open(os.path.expanduser(path)) as f:
+        cmd = textwrap.dedent(f.read())
+    get_ipython().run_line_magic('pycat', path)
+    # update history
+    In[-1] = cmd
+    get_ipython().run_code(cmd)
+del rin
+
 # functions for working with processes
 def _cmd_path_lex(line):
     """Split a ``magic`` input line so that ``%which`` and ``%ps`` can
