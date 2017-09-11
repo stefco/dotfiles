@@ -34,6 +34,15 @@ export LSCOLORS=Exfxcxdxbxegedabagacad
 ## vi mode
 set -o vi
 
+# some ipython profile aliases
+alias ipy='ipython'
+alias imath='ipython --profile=math'
+alias iastro='ipython --profile=astro'
+alias igrace='ipython --profile=grace'
+alias igwpy='ipython --profile=gwpy'
+alias igwhen='ipython --profile=gwhen'
+alias iheavy='ipython --profile=heavy'
+
 # add color to some utilities
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'

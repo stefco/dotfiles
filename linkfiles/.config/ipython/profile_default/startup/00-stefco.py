@@ -166,7 +166,7 @@ def _psa(cmd, allmatching=True, paths=None):
     pids = list()
     cmdlines = list()
     cmdline = ''
-    bins = whicha(cmd, paths)
+    bins = _whicha(cmd, paths)
     if not allmatching:
         bins = bins[:1]
     for pid in psutil.pids():
