@@ -16,7 +16,9 @@ Plugin 'VundleVim/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 " simpylfold does not seem to be working :\
 "Plugin 'tmhedberg/SimpylFold'
-Plugin 'vim-syntastic/syntastic'
+" syntastic is very slow and not asynchronous
+"Plugin 'vim-syntastic/syntastic'
+Plugin 'neomake/neomake'
 Plugin 'nvie/vim-flake8'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-fugitive'
@@ -34,6 +36,9 @@ set autoread
 " use filetype and syntax
 filetype on
 syntax on
+
+" run Neomake on write
+autocmd! BufWritePost * Neomake
 
 " indent settings
 set shiftround " when indenting, indent to a multiple of shiftwidth.
@@ -56,7 +61,7 @@ let g:markdown_syntax_conceal = 0
 let NERDTreeIgnore=['\.pyc$', '\~$']
 
 " turn on folding
-"set foldmethod=indent
+set foldmethod=indent
 
 " use line-numbers and mouse-interaction
 set number
