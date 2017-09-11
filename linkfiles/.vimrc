@@ -81,7 +81,7 @@ set colorcolumn=80
 if ! has('nvim')
     set ttymouse=sgr
 endif
-                                                                                                                                                                                                                                                          
+
 if &term =~ '256color'
     " disable Background Color Erase (BCE) so that color schemes
     " render properly when inside 256-color tmux and GNU screen.
