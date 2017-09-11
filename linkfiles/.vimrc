@@ -22,6 +22,7 @@ Plugin 'neomake/neomake'
 Plugin 'nvie/vim-flake8'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-fugitive'
+Plugin 'Vimjas/vim-python-pep8-indent'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -34,13 +35,17 @@ call vundle#end()            " required
 set autoread
 
 " use filetype and syntax
-filetype on
+filetype indent on
 syntax on
+
+" don't word wrap
+set nowrap
 
 " run Neomake on write
 autocmd! BufWritePost * Neomake
 
 " indent settings
+let g:pymode_indent = 0
 set shiftround " when indenting, indent to a multiple of shiftwidth.
 set expandtab
 set autoindent
