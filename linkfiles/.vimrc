@@ -105,9 +105,13 @@ endif
 noremap <Up> <C-w>W
 noremap <Down> <C-w>w
 
+" next or previous tab
+noremap <Left> gT
+noremap <Right> gt
+
 " next or previous open file
-noremap <Right> :n<CR>
-noremap <Left> :N<CR>
+noremap <S-Right> :n<CR>
+noremap <S-Left> :N<CR>
 
 " next or previous vimgrep match
 noremap <S-Up> :cp<CR>
