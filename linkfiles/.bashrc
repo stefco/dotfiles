@@ -14,6 +14,24 @@ if [ -e "${HOME}/.iterm2_shell_integration.bash" ] \
     source "${HOME}/.iterm2_shell_integration.bash"
 fi
 
+# add a function for pulling updates to directories in ~/dev
+pull () {
+    if [ "$#" -ne 1 ]; then
+        echo 'illegal number of arguments. pass only a dir name.'
+        return 1
+    fi
+    pushd "$1"
+    if [ "$(parse_git_dirty)"z = z ]; then
+        echo pulling "$1"...
+        git pull
+        popd
+    else
+        echo 'not clean. in dir now, `popd` to go back when done fixing.'
+    fi
+}
+alias pulldot="pull ~/dev/dotfiles"
+alias pulldata="pull ~/dev/geco_data"
+
 # user-specific executables:
 export PATH="~/dev/dotfiles/bin:~/bin:$PATH"
 export PATH="$PATH:/Library/TeX/Distributions/Programs/texbin"
