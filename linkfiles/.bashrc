@@ -34,10 +34,22 @@ alias pulldata="pull ~/dev/geco_data"
 
 # user-specific executables:
 export PATH="~/dev/dotfiles/bin:~/bin:$PATH"
-export PATH="$PATH:/Library/TeX/Distributions/Programs/texbin"
 
 # GECo-specific executables:
-export PATH="~/dev/geco_data:$PATH"
+for geco_repo in geco_data geco_channel geco_plots; do
+    export PATH="$PATH:~/dev/$geco_repo"
+done
+
+# GWHEN executables path, if availbable
+gbin="multimessenger-pipeline/bin"
+gpybin="multimessenger-pipeline/gwhen/bin"
+for gpre in ~ ~/dev; do
+    if [ -d ~/multimessenger-pipeline ]; then
+        export PATH="$PATH:~/$gbin:~/$gpybin"
+    elif [ -d ~/dev/multimessenger-pipeline ]; then
+        export PATH="$PATH:~/dev/$gbin:~/dev/$gpybin"
+    fi
+done
 
 # configuration file home
 export XDG_CONFIG_HOME="~/.config"
@@ -218,6 +230,9 @@ l () {
 if [[ $OSTYPE == darwin* ]]; then
     # donkey, get back in the heap!
     alias donkey="cat ~/dev/dotfiles/static/ogre.txt; say donkey get back in the heap;"
+
+    # add TeX path
+    export PATH="$PATH:/Library/TeX/Distributions/Programs/texbin"
 
     # control whether hidden files show on MacOS
 	alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE; killall Finder"
