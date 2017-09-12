@@ -2,6 +2,18 @@
 
 Some features I would like to add.
 
+## Vim
+
+- [ ] Add a nerdtree feature for previewing image files with imgcat
+
+## Vim + IPython
+
+- [ ] Add an async thread to ipython that listens for a file and runs it in
+      ipython when it is written to, then appends output to it (or somehow
+      alerts vim to the result)
+- [ ] Add a vim binding that writes to a file that IPython is watching (easy)
+- [ ] See if there is a way to print history on demand from vim for a given
+      profile
 - [ ] Use BFG to remove my email from dotfiles to make it marginally less easy
       for spammers to find my shit
 - [ ] Add ipython profiles with some nice env checks to make em portable
