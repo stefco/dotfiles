@@ -113,6 +113,32 @@ def gip(line):
     get_ipython().run_code(cmd)
 del gip
 
+@IPython.core.magic.register_line_magic
+def gih(line):
+    """Write all history to a file. Defaults to ``~/.ipyhist.py.`` Just a
+    shortcut for ``write_hist``."""
+    import shlex
+    args = shlex.split(line)
+    if len(args) == 0:
+        write_hist()
+    else:
+        write_hist(line)
+del gih
+
+def write_hist(fname='~/.ipyhist.py'):
+    """Write all history from this IPython session to a file. Defaults to
+    ``~/.ipyhist.py``."""
+    import os
+    vseparator = '#' + '#'*62 + '#\n'
+    nextcmdfmt = vseparator + '# In[{}]:\n{}\n'
+    outputfmt = '#' + '-'*62 + '#\n# Out[{}]:\n# {}\n'
+    with open(os.path.expanduser(fname), 'w') as outfile:
+        for i in range(len(In)):
+            outfile.write(nextcmdfmt.format(i, In[i]))
+            if Out.has_key(i):
+                out = repr(Out[i]).replace('\n', '\n# ')
+                outfile.write(outputfmt.format(i, out))
+
 # functions for working with processes
 def _cmd_path_lex(line):
     """Split a ``magic`` input line so that ``%which`` and ``%ps`` can
