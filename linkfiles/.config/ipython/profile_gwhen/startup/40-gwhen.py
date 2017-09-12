@@ -13,8 +13,15 @@ for gwhendir in [os.path.expanduser(d) for d in GWHEN_DIRS]:
         sys.path.append(os.path.join(gwhendir, 'gwhen', 'bin'))
         sys.path.append(os.path.join(gwhendir, 'gwhen', 'file_handlers'))
 import gwhen
-from gwhen.file_handlers.icecube_utils import realtime_tools
-from IceCubeNeutrinoList_txt import zen_az2ra_dec, ra_dec2zen_az
+try:
+    from gwhen.file_handlers.icecube_utils import realtime_tools
+except ImportError:
+    print("Failed to load IceCube realtime_tools.")
+
+try:
+    from IceCubeNeutrinoList_txt import zen_az2ra_dec, ra_dec2zen_az
+except ImportError:
+    print("Failed to load IceCubeNeutrinoList_txt coordinate conversions.")
 
 # initialize an event here with variable name "e" for quick work.
 print('Setting `e` to an event in the current working directory...')
