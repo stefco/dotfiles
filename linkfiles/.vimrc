@@ -171,6 +171,43 @@ function! ToggleFolding()
     endif
 endfunction
 
+" resolve symlink for this file, if it is a symlink
+noremap <Leader>l :Gresolvelink<CR>
+" Follow symlinks when opening a file
+" Sources:
+"  - https://github.com/tpope/vim-fugitive/issues/147#issuecomment-7572351
+"  - http://www.reddit.com/r/vim/comments/yhsn6/is_it_possible_to_work_around_the_symlink_bug/c5w91qw
+" Echoing a warning does not appear to work:
+"   echohl WarningMsg | echo "Resolving symlink." | echohl None |
+function! MyGitResolveSymlink(...)
+    let fname = a:0 ? a:1 : expand('%')
+    if getftype(fname) != 'link'
+        return
+    endif
+    let resolvedfile = fnameescape(resolve(fname))
+
+    " we want to avoid a warning for editing a file with existing swapfile
+    let oldshortmess=&shortmess
+    set shortmess+=A
+
+    " open the file
+    exec 'file ' . resolvedfile
+
+    " reset warnings
+    let &shortmess=oldshortmess
+
+    " tell fugitive to use the resolved file name
+    call fugitive#detect(resolvedfile)
+
+    " force write if the file is unmodified (to eliminate the warning)
+    if ! &modified
+        write!
+    endif
+endfunction
+command! Gresolvelink call MyGitResolveSymlink()
+" uncomment the line below to reolve symlinks at start
+"autocmd BufReadPost * call MyGitResolveSymlink(expand('<afile>'))
+
 " sync syntax from start with <Leader>s (default leader is \)
 map <Leader>s :syntax sync fromstart<CR>
 
@@ -239,3 +276,13 @@ autocmd FileType python vnoremap giw   :w! ~/.ipyscratch<CR>
 " yank selection and write it to ipyscratch
 autocmd FileType python vnoremap giy   :w! ~/.ipyscratch<CR>gvd
 "autocmd FileType python vnoremap <A-x> :w! ~/.ipyscratch<CR>gvd<C-c>
+
+" neovim-specific shortcuts go here
+if has('nvim')
+    " <Esc> enters normal mode in term mode instead of sending <Esc> to term
+    "tnoremap <Leader><Esc> <C-\><C-n>
+
+    " Launch term with leader keys
+    noremap <Leader>tv :vsp<CR>:term<CR>
+    noremap <Leader>ts :sp<CR>:term<CR>
+endif
