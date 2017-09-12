@@ -100,6 +100,14 @@ alias queryencode="python -c 'import urllib, sys; print urllib.quote_plus(sys.st
 # workaround; vim saves files in a way that pisses off crontab
 alias crontab="VIM_CRONTAB=true crontab"
 
+# run nohup after getting the absolute path to a command
+nohupw () {
+    local fullpath="$(which "$1")"
+    echo >&2 "using full path: $fullpath"
+    shift
+    nohup "$fullpath" "$@" &
+}
+
 # pick the PATH to use with this function and/or configure a virtual env
 path () {
     newpath="$(pathsorter "$@")" && export PATH="$newpath"
