@@ -43,7 +43,7 @@ port -f install >$log 2>$errlog \
     py27-ipython py27-numpy py27-matplotlib py27-scipy py27-healpy \
     py27-astropy py27-readline py27-pykerberos py27-pygments py27-jupyter \
     py27-h5py py27-dateutil py27-cython py27-cairo py27-pip py27-pylint \
-    py27-pyflakes
+    py27-pyflakes py27-greenlet py27-neovim
 
 logdate
 echo "Setting default python, ipython, and pip binaries." | tee -a $log
