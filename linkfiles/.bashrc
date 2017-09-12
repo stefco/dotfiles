@@ -52,7 +52,7 @@ for gpre in ~ ~/dev; do
 done
 
 # configuration file home
-export XDG_CONFIG_HOME="~/.config"
+export XDG_CONFIG_HOME=~/".config"
 
 # force ipython to look in ~/.config
 export IPYTHONDIR="~/.config/ipython"
