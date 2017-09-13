@@ -7,6 +7,7 @@ fi
 
 # keep track of history for longer, please
 HISTFILESIZE=10000
+HISTSIZE=10000
 
 # load iterm shell integration if available
 if [ -e "${HOME}/.iterm2_shell_integration.bash" ] \
