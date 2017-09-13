@@ -196,10 +196,38 @@ navigate_backward () {
 }
 
 # 'navigate' directory, i.e. change directory but keep nav history
+# can also specify a bookmark with the -b flag
 nd () {
     NAVIGATION_BWD+=("$(pwd)")
-    NAVIGATION_FWD=()
-    "cd" "$@"
+    NAVddinavigate_backwardIGATION_FWD=()
+    # specify a bookmark with -b
+    if [[ "$1" == "-b" ]]; then
+        shift
+        # read link using python
+        link="$(python -c 'import textwrap; exec(textwrap.dedent(r"""
+            import os, sys
+
+            # remove the first argument, since it will just be "-c"
+            sys.argv.pop(0)
+
+            BOOKMARK_FOLDER = os.path.expanduser("~/bookmarks")
+            link = os.path.join(BOOKMARK_FOLDER, sys.argv[0])
+            if os.path.islink(link):
+                resolvedlink = os.path.join(
+                    os.path.dirname(
+                        os.path.normpath(link)
+                    ),
+                    os.readlink(link)
+                )
+                print(resolvedlink)
+            else:
+                print("Error: not a symlink: {}".format(link))
+                exit(1)
+        """+" "*4))' "$@")" || return 1
+        cd "$link"
+    else
+        "cd" "$@"
+    fi
 }
 
 # use nd as default directory changer
