@@ -131,6 +131,10 @@ noremap <S-Left> :N<CR>
 noremap <S-Up> :cp<CR>
 noremap <S-Down> :cn<CR>
 
+" format onto the next line but without combining with the contents of the
+" next line
+noremap g<Down> o<Esc>gqkddk
+
 " toggle search highlighting
 noremap - :set hlsearch!<CR>
 
