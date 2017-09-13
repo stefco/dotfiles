@@ -3,13 +3,11 @@
 import sys
 import os
 import psutil
-import pyperclip
 import IPython.core.magic
 import IPython.utils.path
 sys.path.append(os.path.expanduser('~/dev/geco_data'))
 # some custom python tools I store in submodules of ``stefco``
 sys.path.append(os.path.expanduser('~/dev/dotfiles/python_tools'))
-from stefco.get_terminal_size import get_terminal_size
 
 # get the location of the ipython directory
 # ipydir = IPython.utils.path.get_ipython_dir()
@@ -203,6 +201,7 @@ def psa(line):
     """Get all matching processees for a command, searching for executable
     names along either the OS $PATH or along a custom specified path (see
     ``%which`` documentation for syntax)"""
+    from stefco.get_terminal_size import get_terminal_size
     import textwrap
     cmd, paths = _cmd_path_lex(line)
     pids, cmds, procs = _psa(cmd, allmatching=True, paths=paths)
