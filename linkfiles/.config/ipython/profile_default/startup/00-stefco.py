@@ -2,9 +2,14 @@
 # get some basic config just the way i like it, no heavy stuff
 import sys
 import os
+import psutil
+import pyperclip
 import IPython.core.magic
 import IPython.utils.path
 sys.path.append(os.path.expanduser('~/dev/geco_data'))
+# some custom python tools I store in submodules of ``stefco``
+sys.path.append(os.path.expanduser('~/dev/dotfiles/python_tools'))
+from stefco.get_terminal_size import get_terminal_size
 
 # get the location of the ipython directory
 # ipydir = IPython.utils.path.get_ipython_dir()
@@ -198,8 +203,23 @@ def psa(line):
     """Get all matching processees for a command, searching for executable
     names along either the OS $PATH or along a custom specified path (see
     ``%which`` documentation for syntax)"""
+    import textwrap
     cmd, paths = _cmd_path_lex(line)
-    return _psa(cmd, allmatching=True, paths=paths)
+    pids, cmds, procs = _psa(cmd, allmatching=True, paths=paths)
+    print("Matching processes:\nPID\tCOMMAND\n" + 80*"~" + "\n\n")
+    procdict = dict()
+    termwidth = get_terminal_size().columns
+    for i, pid in enumerate(pids):
+        procdict[pid] = procs[i]
+        wrappedcmd = textwrap.wrap(str(cmds[i]), width=(termwidth - 8))
+        # print pid on first line of command
+        print("{}\t{}".format(pid, wrappedcmd.pop(0)))
+        # print any remaining lines of the command
+        if not len(wrappedcmd) == 0:
+            print("\t" + "\n\t".join(wrappedcmd))
+        # print an extra blank line after each process
+        print("")
+    return procdict
 del psa
 
 def _psa(cmd, allmatching=True, paths=None):
@@ -207,24 +227,28 @@ def _psa(cmd, allmatching=True, paths=None):
     variable) for the given command. Optionally, only look for the top result,
     or only look for results in given path directories.
     
-    Returns a tuple of the form ``(pids, cmdlines)``, where ``pids`` is a list
-    of matching pids and ``cmdlines`` is the corresponding list of their
-    command lines."""
+    Returns a tuple of the form ``(pids, cmdlines, procs)``, where ``pids`` is
+    a list of matching pids and ``cmdlines`` is the corresponding list of their
+    command lines. The structure is redundant but is optimized for easy
+    reading."""
     import psutil
     pids = list()
     cmdlines = list()
+    procs = list()
     cmdline = ''
     bins = _whicha(cmd, paths)
     if not allmatching:
         bins = bins[:1]
     for pid in psutil.pids():
         try:
-            cmdline = psutil.Process(pid).cmdline()
+            proc = psutil.Process(pid)
+            cmdline = proc.cmdline()
             if any([bin in cmdline for bin in bins]):
                 cmdlines.append(cmdline)
                 pids.append(pid)
+                procs.append(proc)
         except psutil.ZombieProcess:
             pass
         except psutil.AccessDenied:
             pass
-    return (pids, cmdlines)
+    return (pids, cmdlines, procs)
