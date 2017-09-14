@@ -25,6 +25,8 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'Vimjas/vim-python-pep8-indent'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -48,6 +50,15 @@ highlight Comment cterm=italic
 
 " run Neomake on write
 autocmd! BufWritePost * Neomake
+
+" display all buffs in tab bar when only one tab is open
+let g:airline#extensions#tabline#enabled = 1
+
+" use the base16 airline theme
+let g:airline_theme = 'base16'
+
+" use airline powerline fonts
+let g:airline_powerline_fonts = 1
 
 " indent settings
 let g:pymode_indent = 0
