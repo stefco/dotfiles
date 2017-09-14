@@ -219,9 +219,15 @@ nd () {
             # remove the first argument, since it will just be "-c"
             sys.argv.pop(0)
 
-            BOOKMARK_FOLDER = os.path.expanduser("~/bookmarks")
+            # look in the cross-platform and local bookmark folders
+            BOOKMARK_FOLDER = os.path.expanduser("~/dev/dotfiles/bookmarks")
+            LOCAL_BOOKMARK_FOLDER = os.path.expanduser("~/bookmarks")
+
+            # get possible paths to the bookmark links
             link = os.path.join(BOOKMARK_FOLDER, sys.argv[0])
-            if os.path.islink(link):
+            local_link = os.path.join(LOCAL_BOOKMARK_FOLDER, sys.argv[0])
+
+            if os.path.islink(link) or os.path.islink(local_link):
                 resolvedlink = os.path.join(
                     os.path.dirname(
                         os.path.normpath(link)
