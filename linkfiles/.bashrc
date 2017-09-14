@@ -180,7 +180,7 @@ function parse_git_dirty {
 function print_bad_exit_status {
     exitcode="$?"
     if [[ $exitcode != 0 ]]; then
-        printf '%s' ' WhOopS! ¯\_(ツ)_/¯ '$exitcode' '
+        printf '%s' " 🖕  $exitcode "
     fi
 }
 
