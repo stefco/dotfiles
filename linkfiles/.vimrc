@@ -53,8 +53,16 @@ autocmd! BufWritePost * Neomake
 " display all buffs in tab bar when only one tab is open
 let g:airline#extensions#tabline#enabled = 1
 
-" use the base16 airline theme
-let g:airline_theme = 'base16'
+" use the base16 airline theme. some favs below.
+"let g:airline_theme = 'laederon'
+"let g:airline_theme = 'raven'
+"let g:airline_theme = 'papercolor'
+"let g:airline_theme = 'monochrome'
+"let g:airline_theme = 'jellybeans'
+"let g:airline_theme = 'distinguished'
+"let g:airline_theme = 'cool'
+let g:airline_theme = 'behelit'
+"let g:airline_theme = 'aurora'
 
 " use airline powerline fonts
 let g:airline_powerline_fonts = 1
