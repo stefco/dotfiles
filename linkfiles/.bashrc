@@ -198,6 +198,7 @@ navigate_forward () {
         unset NAVIGATION_FWD[${#NAVIGATION_FWD[@]}-1]
     fi
 }
+alias fwd=navigate_forward
 
 navigate_backward () {
     if [ ${#NAVIGATION_BWD[@]} -gt 0 ]; then
@@ -206,6 +207,7 @@ navigate_backward () {
         unset NAVIGATION_BWD[${#NAVIGATION_BWD[@]}-1]
     fi
 }
+alias back=navigate_backward
 
 # 'navigate' directory, i.e. change directory but keep nav history
 # can also specify a bookmark with the -b flag
