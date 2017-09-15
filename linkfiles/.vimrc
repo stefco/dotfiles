@@ -72,8 +72,8 @@ let g:airline_theme = 'behelit'
 let g:airline_powerline_fonts = 1
 
 " change airline separators
-let g:airline_left_sep = "\uE0C6"
-let g:airline_right_sep = "\uE0C7"
+let g:airline_left_sep = "\uE0B8"
+let g:airline_right_sep = "\uE0BE"
 
 " indent settings
 let g:pymode_indent = 0
