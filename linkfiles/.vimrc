@@ -24,7 +24,6 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Vimjas/vim-python-pep8-indent'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
