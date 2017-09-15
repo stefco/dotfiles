@@ -34,7 +34,8 @@ alias pulldot="pull ~/dev/dotfiles"
 alias pulldata="pull ~/dev/geco_data"
 
 # user-specific executables:
-export PATH=~/"dev/dotfiles/bin:"~/"bin:$PATH"
+export PATH=~/"dev/dotfiles/bin:$PATH"
+export PATH=~/"bin:$PATH"
 
 # GECo-specific executables:
 for geco_repo in geco_data geco_channel geco_plots; do
