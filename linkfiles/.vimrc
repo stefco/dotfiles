@@ -103,8 +103,17 @@ let NERDTreeShowHidden=1
 " turn on folding
 set foldmethod=indent
 
-" use line-numbers and mouse-interaction
-set number
+" use smart contextual hybrid linenumbers
+" https://jeffkreeftmeijer.com/vim-number/#relative-line-numbers
+:set number relativenumber
+
+:augroup numbertoggle
+:  autocmd!
+:  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+:  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+:augroup END
+
+" use mouse input
 set mouse=a
 
 " do an incremental search and highlight results
