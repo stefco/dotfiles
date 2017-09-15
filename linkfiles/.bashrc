@@ -208,38 +208,29 @@ navigate_backward () {
 # can also specify a bookmark with the -b flag
 nd () {
     NAVIGATION_BWD+=("$(pwd)")
-    NAVddinavigate_backwardIGATION_FWD=()
+    NAVIGATION_FWD=()
+    local BOOKMARKS=~/"dev/dotfiles/bookmarks/"
+    local LOCAL_BOOKMARKS=~/"bookmarks/"
     # specify a bookmark with -b
     if [[ "$1" == "-b" ]]; then
-        shift
-        # read link using python
-        link="$(python -c 'import textwrap; exec(textwrap.dedent(r"""
-            import os, sys
-
-            # remove the first argument, since it will just be "-c"
-            sys.argv.pop(0)
-
-            # look in the cross-platform and local bookmark folders
-            BOOKMARK_FOLDER = os.path.expanduser("~/dev/dotfiles/bookmarks")
-            LOCAL_BOOKMARK_FOLDER = os.path.expanduser("~/bookmarks")
-
-            # get possible paths to the bookmark links
-            link = os.path.join(BOOKMARK_FOLDER, sys.argv[0])
-            local_link = os.path.join(LOCAL_BOOKMARK_FOLDER, sys.argv[0])
-
-            if os.path.islink(link) or os.path.islink(local_link):
-                resolvedlink = os.path.join(
-                    os.path.dirname(
-                        os.path.normpath(link)
-                    ),
-                    os.readlink(link)
-                )
-                print(resolvedlink)
-            else:
-                print("Error: not a symlink: {}".format(link))
-                exit(1)
-        """+" "*4))' "$@")" || return 1
-        cd "$link"
+        local bookmarkdir
+        for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
+            if [ -L "${bookmarkdir}/$2" ]; then
+                local destination="$(readlink "${bookmarkdir}/$2")"
+                # replace tilde with the actual home directory
+                if [ ! -d "${destination/\~/~}" ]; then
+                    echo >&2 "Target directory doesn't exist: ${destination}"
+                    return 1
+                fi
+                cd "${destination/\~/~}"
+                return
+            fi
+        done
+        echo >&2 "Bookmark not found: $2"
+        return 2
+    # list all bookmarks
+    elif [[ "$1" == "-l" ]]; then
+        ls
     else
         "cd" "$@"
     fi
@@ -255,7 +246,7 @@ if [[ $OSTYPE == darwin* ]]; then
     elif [ $(hostname) == 'Stefans-iMac.local' ]; then
         export SHORT_HOST_NAME=imac
     fi
-    export PS1="\[\e[37;45m\]\`print_bad_exit_status\`\[\e[m\]\[\e[37;43m\] $SHORT_HOST_NAME \[\e[m\]\[\e[44m\] \${#NAVIGATION_BWD[@]} \[\e[m\]\[\e[37;41m\] \w \[\e[m\]\[\e[44m\] \${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37;42m\]\`parse_git_branch\`\[\e[m\]\[\e[30;47m\]\`nonzero_return\`\[\e[m\]\[\e[30;47m\] > \[\e[m\] "
+    export PS1="\[\e[37;45m\]\`print_bad_exit_status\`\[\e[m\]\[\e[37;43m\] $SHORT_HOST_NAME \[\e[m\]\[\e[44m\] \${#NAVIGATION_BWD[@]} \[\e[m\]\[\e[37;41m\] \w \[\e[m\]\[\e[44m\] \${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37;42m\]\`parse_git_branch\`\[\e[m\]\[\e[30;47m\]\[\e[m\]\[\e[30;47m\] > \[\e[m\] "
 fi
 
 # ls, but with dem emoji
