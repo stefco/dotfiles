@@ -39,7 +39,7 @@ export PATH=~/"bin:$PATH"
 
 # GECo-specific executables:
 for geco_repo in geco_data geco_channel geco_plots; do
-    export PATH="$PATH:~/dev/$geco_repo"
+    export PATH=~/dev/"$geco_repo:$PATH"
 done
 
 # GWHEN executables path, if availbable
@@ -47,9 +47,11 @@ gbin="multimessenger-pipeline/bin"
 gpybin="multimessenger-pipeline/gwhen/bin"
 for gpre in ~ ~/dev; do
     if [ -d ~/multimessenger-pipeline ]; then
-        export PATH="$PATH:~/$gbin:~/$gpybin"
+        export PATH=~/"$gbin:$PATH"
+        export PATH=~/"$gpybin:$PATH"
     elif [ -d ~/dev/multimessenger-pipeline ]; then
-        export PATH="$PATH:~/dev/$gbin:~/dev/$gpybin"
+        export PATH=~/dev"$gbin:$PATH"
+        export PATH=~/dev"$gpybin:$PATH"
     fi
 done
 
