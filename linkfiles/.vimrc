@@ -102,6 +102,12 @@ let g:markdown_syntax_conceal = 0
 " ignore .pyc files in nerdtree
 let NERDTreeIgnore=['\.pyc$', '\~$']
 
+" always delete buffers of deleted nerdtree files
+let NERDTreeAutoDeleteBuffer = 1
+
+"hide the '? for help' message in NERDTree
+let NERDTreeMinimalUI = 1
+
 " turn on folding
 set foldmethod=indent
 
