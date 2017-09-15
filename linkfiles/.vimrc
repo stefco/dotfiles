@@ -51,6 +51,12 @@ set nowrap
 " italicize comments
 highlight Comment cterm=italic
 
+" make current line number a different color
+hi CursorLineNR ctermfg=Yellow
+augroup CLNRSet
+    autocmd! ColorScheme * hi CursorLineNR ctermfg=Yellow
+augroup END
+
 " run Neomake on write
 autocmd! BufWritePost * Neomake
 
