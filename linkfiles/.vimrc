@@ -6,6 +6,9 @@
 set nocompatible
 filetype off
 
+" use unicode
+set encoding=utf8
+
 " set the runtime path
 set rtp+=~/dev/dotfiles/submodules/Vundle.vim
 call vundle#begin('~/dev/dotfiles/linkfiles/.vim/bundle')
@@ -26,6 +29,7 @@ Plugin 'Vimjas/vim-python-pep8-indent'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'ryanoasis/vim-devicons'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -66,6 +70,10 @@ let g:airline_theme = 'behelit'
 
 " use airline powerline fonts
 let g:airline_powerline_fonts = 1
+
+" change airline separators
+let g:airline_left_sep = "\uE0C6"
+let g:airline_right_sep = "\uE0C7"
 
 " indent settings
 let g:pymode_indent = 0
