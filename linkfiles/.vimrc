@@ -48,6 +48,9 @@ syntax on
 " don't word wrap
 set nowrap
 
+" automatically enter after 79 characters; requires 't' to be in formatoptions.
+set textwidth=79
+
 " italicize comments
 highlight Comment cterm=italic
 
