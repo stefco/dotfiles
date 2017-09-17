@@ -192,13 +192,20 @@ noremap <Space> zA
 " with delete, aka backspace
 noremap <Bs> :call ToggleInteractive()<CR>
 function! ToggleInteractive()
-    setlocal number!
-    setlocal autoindent!
-    setlocal smartindent!
     if &mouse == "a"
         setlocal mouse=
+        setlocal nonumber
+        setlocal norelativenumber
+        setlocal noautoindent
+        setlocal nosmartindent
+        echom "Interactive off."
     else
         setlocal mouse=a
+        setlocal number
+        setlocal relativenumber
+        setlocal autoindent
+        setlocal smartindent
+        echom "Interactive on."
     endif
 endfunction
 
