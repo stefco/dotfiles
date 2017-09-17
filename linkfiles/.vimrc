@@ -30,6 +30,7 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ryanoasis/vim-devicons'
+Plugin 'janko-m/vim-test'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -52,7 +53,7 @@ set nowrap
 highlight Comment cterm=italic
 
 " make current line number a different color
-hi CursorLineNR ctermfg=Yellow
+hi CursorLineNR ctermfg=Magenta cterm=bold
 augroup CLNRSet
     autocmd! ColorScheme * hi CursorLineNR ctermfg=Yellow
 augroup END
@@ -99,8 +100,8 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:markdown_syntax_conceal = 0
 
-" ignore .pyc files in nerdtree
-let NERDTreeIgnore=['\.pyc$', '\~$']
+" ignore .pyc files in nerdtree as well as HDF5 data files
+let NERDTreeIgnore=['\.pyc$', '\~$', '\.hdf5$']
 
 " always delete buffers of deleted nerdtree files
 let NERDTreeAutoDeleteBuffer = 1
