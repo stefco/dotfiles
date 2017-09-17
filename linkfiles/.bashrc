@@ -1,3 +1,14 @@
+# some colors for pretty printing
+# Colors
+_ESC_SEQ="\x1b["
+_RESET=$_ESC_SEQ"39;49;00m"
+_RED=$_ESC_SEQ"31;01m"
+_GREEN=$_ESC_SEQ"32;01m"
+_YELLOW=$_ESC_SEQ"33;01m"
+_BLUE=$_ESC_SEQ"34;01m"
+_MAGENTA=$_ESC_SEQ"35;01m"
+_CYAN=$_ESC_SEQ"36;01m"
+
 # load API tokens with ".active" suffix
 if [ -e ~/.tokens ]; then
     for token in $(find ~/.tokens -name '*.active'); do
@@ -235,7 +246,18 @@ nd () {
         return 2
     # list all bookmarks
     elif [[ "$1" == "-l" ]]; then
-        ls
+        for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
+            printf "${_GREEN}Bookmarks in ${bookmarkdir}:${_RESET}\n"
+            local fmt="${_BLUE}%s${_RESET}%*s-> ${_MAGENTA}%s${_RESET}\n"
+            local arrowindent=16
+            find "${bookmarkdir}" -type link 2>/dev/null \
+                |   while read line; do
+                        local basename="${line##*/}"
+                        local indent=$((arrowindent - ${#basename}))
+                        local src="$(readlink "${line}")"
+                        printf "$fmt" "$basename" "$indent" " " "$src"
+                    done
+        done
     else
         "cd" "$@"
     fi
