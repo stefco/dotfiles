@@ -31,6 +31,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'janko-m/vim-test'
+Plugin 'sjl/gundo.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -304,6 +305,9 @@ nnoremap gG :Ggrep
 
 " git read; do a git checkout to the buffer
 nnoremap gr :Gread 
+
+" open up the undo gtree, Gundo
+nnoremap <Leader>u :GundoToggle<CR>
 
 " try to imgcat the selected filename
 vnoremap <Leader>i y:!imgcat <C-f>pA<CR>
