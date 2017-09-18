@@ -30,8 +30,29 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ryanoasis/vim-devicons'
-Plugin 'janko-m/vim-test'
+" let me not use this for now and instead see how vim-dispatch treats me
+" Plugin 'janko-m/vim-test'
 Plugin 'sjl/gundo.vim'
+Plugin 'tpope/vim-commentary.git'
+" smart date incrementing
+Plugin 'tpope/vim-speeddating'
+Plugin 'tpope/vim-surround'
+" case changes/complex substitutions/programmable autocorrect
+Plugin 'tpope/tpope-vim-abolish'
+" add repeatability to supporting custom plugins
+Plugin 'tpope/vim-repeat'
+" add async via iterm and tmux to vim
+Plugin 'tpope/vim-dispatch'
+" nice wrapper for existing persistence/session saving vim functionality!
+" Plugin 'tpope/vim-obsession'
+" add extra '[' and ']' mappings
+" Plugin 'tpope/vim-unimpaired'
+" add some unix sugar
+" Plugin 'tpope/vim-eunuch'
+" tmux bindings for vim with nice tab completion
+" Plugin 'tpope/vim-tbone'
+" JSON tools
+" Plugin 'tpope/vim-jdaddy'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -52,6 +73,9 @@ set nowrap
 
 " automatically enter after 79 characters; requires 't' to be in formatoptions.
 set textwidth=79
+
+" define comment strings for various langs
+autocmd FileType vim setlocal commentstring=\"\ %s
 
 " set the <Leader> key to space
 let mapleader = ' '
@@ -190,7 +214,13 @@ noremap g<Down> o<Esc>gqkddk
 noremap - :set hlsearch!<CR>
 
 " toggle fold with spacebar
-noremap <Space> zA
+noremap <Leader><CR> zA
+
+" start command with double tap of the spacebar
+noremap <Leader><Space> :
+
+" start a shell command without hitting shift
+noremap <Leader>1 :!
 
 " toggle smartypants crap, i.e. linenumbers, autoindent, smartindent, and mouse
 " with delete, aka backspace
@@ -298,7 +328,7 @@ nnoremap <Leader>d :Gdiff<CR>
 nnoremap <Leader>D :!git diff<CR>
 
 " git commit
-nnoremap <Leader>c :Gcommit<CR>
+nnoremap <Leader>C :Gcommit<CR>
 
 " git grep
 nnoremap <Leader>G :Ggrep 
@@ -336,6 +366,9 @@ autocmd FileType python vnoremap <Leader>iw :w! ~/.ipyscratch<CR>
 
 " yank selection and write it to ipyscratch
 autocmd FileType python vnoremap <Leader>iy :w! ~/.ipyscratch<CR>gvd
+
+" toggle comments on various things using vim-commentary with leader
+map <Space>c gc
 
 " bindings copied from spacemacs
 
