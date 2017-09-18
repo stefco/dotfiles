@@ -1,5 +1,4 @@
 # some colors for pretty printing
-# Colors
 _ESC_SEQ="\x1b["
 _RESET=$_ESC_SEQ"39;49;00m"
 _RED=$_ESC_SEQ"31;01m"
@@ -8,6 +7,16 @@ _YELLOW=$_ESC_SEQ"33;01m"
 _BLUE=$_ESC_SEQ"34;01m"
 _MAGENTA=$_ESC_SEQ"35;01m"
 _CYAN=$_ESC_SEQ"36;01m"
+
+# check if this is an ssh session
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+  SESSION_TYPE=remote/ssh
+# many other tests omitted
+else
+  case $(ps -o comm= -p $PPID) in
+    sshd|*/sshd) SESSION_TYPE=remote/ssh;;
+  esac
+fi
 
 # load API tokens with ".active" suffix
 if [ -e ~/.tokens ]; then
@@ -274,7 +283,13 @@ if [[ $OSTYPE == darwin* ]]; then
         export SHORT_HOST_NAME=imac
     fi
     export PS1="\[\e[37;45m\]\`print_bad_exit_status\`\[\e[m\]\[\e[37;43m\] $SHORT_HOST_NAME \[\e[m\]\[\e[44m\] \${#NAVIGATION_BWD[@]} \[\e[m\]\[\e[37;41m\] \w \[\e[m\]\[\e[44m\] \${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37;42m\]\`parse_git_branch\`\[\e[m\]\[\e[30;47m\]\[\e[m\]\[\e[30;47m\] > \[\e[m\] "
+else
+    # add an alias for pbcopy and pbpaste so that you can use them the same
+    # as you would with your local MacOS client
+    alias pbcopy=it2copy
 fi
+
+# create a quicklook alias for quicklooking at files
 
 # ls, but with dem emoji
 l () {
