@@ -30,6 +30,7 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ryanoasis/vim-devicons'
+Plugin 'mileszs/ack.vim'
 " let me not use this for now and instead see how vim-dispatch treats me
 " Plugin 'janko-m/vim-test'
 Plugin 'sjl/gundo.vim'
@@ -82,6 +83,11 @@ let mapleader = ' '
 
 " italicize comments
 highlight Comment cterm=italic
+
+" use Ag if available even when using Ack package
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 " make current line number a different color
 hi CursorLineNR ctermfg=Magenta cterm=bold
@@ -332,6 +338,11 @@ nnoremap <Leader>C :Gcommit<CR>
 
 " git grep
 nnoremap <Leader>G :Ggrep 
+
+" start git ack/ag search (probably more useful). search for selection if
+" there is one.
+nnoremap <Leader>g :Ack 
+vnoremap <Leader>g y:Ack <C-r>"<CR>
 
 " git read; do a git checkout to the buffer
 nnoremap <Leader>r :Gread 
