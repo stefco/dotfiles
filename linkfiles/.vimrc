@@ -47,7 +47,7 @@ Plugin 'tpope/vim-dispatch'
 " nice wrapper for existing persistence/session saving vim functionality!
 " Plugin 'tpope/vim-obsession'
 " add extra '[' and ']' mappings
-" Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-unimpaired'
 " add some unix sugar
 " Plugin 'tpope/vim-eunuch'
 " tmux bindings for vim with nice tab completion
