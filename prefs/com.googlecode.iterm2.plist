@@ -1966,6 +1966,20 @@
 			<key>Text</key>
 			<string>&gt;</string>
 		</dict>
+		<key>0x41-0x120000</key>
+		<dict>
+			<key>Action</key>
+			<integer>12</integer>
+			<key>Text</key>
+			<string>tmux -CC attach || tmux -CC\n</string>
+		</dict>
+		<key>0x54-0x120000</key>
+		<dict>
+			<key>Action</key>
+			<integer>25</integer>
+			<key>Text</key>
+			<string>Detach</string>
+		</dict>
 		<key>0x5c-0x80000</key>
 		<dict>
 			<key>Action</key>
@@ -2270,15 +2284,15 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 107 599 501 0 0 1280 800 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>221 226 916 507 0 0 1280 800 </string>
+	<string>221 291 796 473 0 0 1280 778 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>80 194 592 584 0 0 1280 778 </string>
 	<key>NSWindow Frame com.apple.typography_panel_UbuntuMonoDerivativePowerline-Regular</key>
 	<string>344 294 260 319 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 4 1269 796 0 0 1280 800 </string>
+	<string>6 4 1274 774 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>0 13 1279 765 0 0 1280 778 </string>
+	<string>0 378 570 400 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>0 4 1279 774 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -2867,7 +2881,7 @@
 				<real>0.0</real>
 			</dict>
 			<key>Log Directory</key>
-			<string>/Users/Stefan/.iterm-logs</string>
+			<string>/Users/Stefan/logs/iterm</string>
 			<key>Minimum Contrast</key>
 			<real>0.0</real>
 			<key>Mouse Reporting</key>
@@ -2875,11 +2889,11 @@
 			<key>Name</key>
 			<string>tmux</string>
 			<key>Non Ascii Font</key>
-			<string>DroidSansMonoDottedForPowerline 11</string>
+			<string>HasklugNerdFontCM-Regular 11</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Consolas 11</string>
+			<string>HasklugNerdFontCM-Regular 11</string>
 			<key>Option Key Sends</key>
 			<integer>1</integer>
 			<key>Prompt Before Closing 2</key>
@@ -3342,7 +3356,7 @@
 			<key>HotKey Key Code</key>
 			<integer>49</integer>
 			<key>HotKey Modifier Activation</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>HotKey Modifier Flags</key>
 			<integer>524288</integer>
 			<key>HotKey Window Animates</key>
@@ -3663,7 +3677,7 @@
 				<real>0.0</real>
 			</dict>
 			<key>Log Directory</key>
-			<string>/Users/Stefan/.iterm-logs</string>
+			<string>/Users/Stefan/logs/iterm</string>
 			<key>Minimum Contrast</key>
 			<real>0.0</real>
 			<key>Mouse Reporting</key>
@@ -4438,11 +4452,11 @@
 			<string>ishikawa
 </string>
 			<key>Non Ascii Font</key>
-			<string>HasklugNerdFontCM-Regular 13</string>
+			<string>HasklugNerdFontCM-Regular 11</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>HasklugNerdFontCM-Regular 13</string>
+			<string>HasklugNerdFontCM-Regular 11</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<true/>
 			<key>Option Key Sends</key>
@@ -4759,7 +4773,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-09-13T20:51:55Z</date>
+	<date>2017-09-15T14:54:00Z</date>
 	<key>SavePasteHistory</key>
 	<true/>
 	<key>Secure Input</key>
