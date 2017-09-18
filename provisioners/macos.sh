@@ -33,7 +33,7 @@ port -f install >$log 2>$errlog \
     bash mc ranger coreutils cowsay curl the_silver_searcher git git-lfs hdf5 \
     julia libcaca msmtp offlineimap vim ncdu neomutt notmuch OpenBLAS pstree \
     psutils tree readline dtrx fortune bash-completion poppler djvulibre \
-    unrar tiff
+    unrar tiff sshfs sshfs-gui
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
 
