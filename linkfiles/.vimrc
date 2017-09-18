@@ -53,6 +53,9 @@ set nowrap
 " automatically enter after 79 characters; requires 't' to be in formatoptions.
 set textwidth=79
 
+" set the <Leader> key to space
+let mapleader = ' '
+
 " italicize comments
 highlight Comment cterm=italic
 
@@ -271,76 +274,76 @@ command! Gresolvelink call MyGitResolveSymlink()
 map <Leader>s :syntax sync fromstart<CR>
 
 " git pull
-map gp :Gpull<CR>
+map <Leader>p :Gpull<CR>
 
 " git push
-map gP :Gpush<CR>
+map <Leader>P :Gpush<CR>
 
 " open nerdtree
-map gn :NERDTreeToggle<CR>
+map <Leader>n :NERDTreeToggle<CR>
 
 " run help for some string
-map gh :help 
+map <Leader>h :help 
 
 " check mappings
-map gm :map 
-
-" load .vimrc
-map gl :source ~/.vimrc<CR>
+map <Leader>m :map 
 
 " show git status
-nnoremap gs :Gstatus<CR>
+nnoremap <Leader>s :Gstatus<CR>
 
 " git diff this file
-nnoremap gd :Gdiff<CR>
+nnoremap <Leader>d :Gdiff<CR>
 
 " run git diff in CWD
-nnoremap gD :!git diff<CR>
+nnoremap <Leader>D :!git diff<CR>
 
 " git commit
-nnoremap gc :Gcommit<CR>
+nnoremap <Leader>c :Gcommit<CR>
 
 " git grep
-nnoremap gG :Ggrep 
+nnoremap <Leader>G :Ggrep 
 
 " git read; do a git checkout to the buffer
-nnoremap gr :Gread 
+nnoremap <Leader>r :Gread 
 
 " open up the undo gtree, Gundo
 nnoremap <Leader>u :GundoToggle<CR>
 
 " try to imgcat the selected filename
-vnoremap <Leader>i y:!imgcat <C-f>pA<CR>
+vnoremap <Leader>I y:!imgcat <C-f>pA<CR>
 
 " git write; writes to both the work tree and index versions of file, making
 " it like `git add` when called from a work tree file and like `git checkout`
 " when called from the index or a blob in the history
-nnoremap gw :Gwrite<CR>
+nnoremap <Leader>w :Gwrite<CR>
 
 " git write (to index) and then commit
-nnoremap gW :Gwrite<CR>:Gcommit<CR>
+nnoremap <Leader>W :Gwrite<CR>:Gcommit<CR>
 
 " some stuff for working with interactive sessions in python
 
 " place contents of ipyscratch at cursor
-autocmd FileType python nnoremap giP   :.-1r ~/.ipyscratch<CR>
-"autocmd FileType python nnoremap <A-V> :.-1r ~/.ipyscratch<CR><C-c>
+autocmd FileType python nnoremap <Leader>iP   :.-1r ~/.ipyscratch<CR>
 
 " place contents of ipyscratch below cursor
-autocmd FileType python nnoremap gip   :r ~/.ipyscratch<CR>
-"autocmd FileType python nnoremap <A-v> :r ~/.ipyscratch<CR><C-c>
+autocmd FileType python nnoremap <Leader>ip :r ~/.ipyscratch<CR>
 
 " replace selection with contents of ipyscratch
-autocmd FileType python vnoremap gip   c<ESC>:r ~/.ipyscratch<CR>kdd
-"autocmd FileType python vnoremap <A-v> c<ESC>:r ~/.ipyscratch<CR>kdd<C-c>
+autocmd FileType python vnoremap <Leader>ip c<ESC>:r ~/.ipyscratch<CR>kdd
 
 " write selection to ipyscratch
-autocmd FileType python vnoremap giw   :w! ~/.ipyscratch<CR>
-"autocmd FileType python vnoremap <A-c> :w! ~/.ipyscratch<CR><C-c>
+autocmd FileType python vnoremap <Leader>iw :w! ~/.ipyscratch<CR>
 
 " yank selection and write it to ipyscratch
-autocmd FileType python vnoremap giy   :w! ~/.ipyscratch<CR>gvd
-"autocmd FileType python vnoremap <A-x> :w! ~/.ipyscratch<CR>gvd<C-c>
+autocmd FileType python vnoremap <Leader>iy :w! ~/.ipyscratch<CR>gvd
+
+" bindings copied from spacemacs
+
+" load .vimrc
+map <Leader>feR :source ~/.vimrc<CR>
+
+" edit .vimrc
+map <Leader>fed :e ~/.vimrc<CR>
 
 " neovim-specific shortcuts go here
 if has('nvim')
