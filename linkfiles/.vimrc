@@ -77,6 +77,8 @@ set textwidth=79
 
 " define comment strings for various langs
 autocmd FileType vim setlocal commentstring=\"\ %s
+autocmd FileType sh,python setlocal commentstring=#\ %s
+autocmd FileType matlab setlocal commentstring=%\ %s
 
 " set the <Leader> key to space
 let mapleader = ' '
@@ -100,6 +102,19 @@ autocmd! BufWritePost * Neomake
 
 " display all buffs in tab bar when only one tab is open
 let g:airline#extensions#tabline#enabled = 1
+
+" show an abbreviated mode string
+let g:airline_mode_map = {
+    \ '__' : '-',
+    \ 'n'  : 'N',
+    \ 'i'  : 'I',
+    \ 'R'  : 'R',
+    \ 'c'  : 'C',
+    \ 'v'  : 'V',
+    \ 'V'  : 'V',
+    \ '' : 'V',
+    \ 's'  : 'S',
+    \ }
 
 " use the base16 airline theme. some favs below.
 "let g:airline_theme = 'laederon'
@@ -307,7 +322,7 @@ command! Gresolvelink call MyGitResolveSymlink()
 "autocmd BufReadPost * call MyGitResolveSymlink(expand('<afile>'))
 
 " sync syntax from start with <Leader>s (default leader is \)
-map <Leader>s :syntax sync fromstart<CR>
+map <Leader>S :syntax sync fromstart<CR>
 
 " git pull
 map <Leader>p :Gpull<CR>
