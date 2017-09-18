@@ -31,6 +31,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'mileszs/ack.vim'
+Plugin 'airblade/vim-gitgutter'
 " let me not use this for now and instead see how vim-dispatch treats me
 " Plugin 'janko-m/vim-test'
 Plugin 'sjl/gundo.vim'
@@ -78,7 +79,10 @@ set textwidth=79
 " define comment strings for various langs
 autocmd FileType vim setlocal commentstring=\"\ %s
 autocmd FileType sh,python setlocal commentstring=#\ %s
-autocmd FileType matlab setlocal commentstring=%\ %s
+autocmd FileType tex,matlab setlocal commentstring=%\ %s
+
+"update gitgutter 250ms after changes
+set updatetime=250
 
 " set the <Leader> key to space
 let mapleader = ' '
@@ -102,6 +106,9 @@ autocmd! BufWritePost * Neomake
 
 " display all buffs in tab bar when only one tab is open
 let g:airline#extensions#tabline#enabled = 1
+
+" show abbreviated word count string in airline
+let g:airline#extensions#wordcount#format = '%d w'
 
 " show an abbreviated mode string
 let g:airline_mode_map = {
