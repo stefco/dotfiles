@@ -290,6 +290,11 @@ else
 fi
 
 # create a quicklook alias for quicklooking at files
+if [[ $SESSION_TYPE == remote/ssh ]]; then
+    echo "quick look not yet enabled."
+else
+    alias ql="qlmanage -p 1>/dev/null 2>&1"
+fi
 
 # ls, but with dem emoji
 l () {
