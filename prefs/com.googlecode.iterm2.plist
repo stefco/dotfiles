@@ -18,6 +18,12 @@
 	<false/>
 	<key>AutoHideTmuxClientSession</key>
 	<true/>
+	<key>BadgeFont</key>
+	<string>Helvetica</string>
+	<key>BadgeMaxHeightFraction</key>
+	<real>0.5</real>
+	<key>BadgeMaxWidthFraction</key>
+	<real>0.60000002384185791</real>
 	<key>CheckTestRelease</key>
 	<true/>
 	<key>ClosingHotkeySwitchesSpaces</key>
@@ -2291,13 +2297,13 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 107 599 501 0 0 1280 800 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>261 253 796 473 0 0 1280 778 </string>
+	<string>257 62 796 473 0 0 1280 778 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>80 194 592 584 0 0 1280 778 </string>
 	<key>NSWindow Frame com.apple.typography_panel_UbuntuMonoDerivativePowerline-Regular</key>
 	<string>344 294 260 319 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 378 570 400 0 0 1280 778 </string>
+	<string>0 4 1274 774 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>10 8 1270 792 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -3285,7 +3291,7 @@
 				<real>1</real>
 			</dict>
 			<key>Badge Text</key>
-			<string>ldas-pcdev1 👩‍🚀</string>
+			<string>ཫ1</string>
 			<key>Blend</key>
 			<real>0.30000001192092896</real>
 			<key>Blink Allowed</key>
@@ -4068,7 +4074,7 @@
 				<real>1</real>
 			</dict>
 			<key>Badge Text</key>
-			<string>ldas-pcdev2</string>
+			<string>ཫ2</string>
 			<key>Blend</key>
 			<real>0.30000001192092896</real>
 			<key>Blink Allowed</key>
