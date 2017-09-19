@@ -346,7 +346,7 @@ nnoremap <Leader>gs :Gresolvelink<CR>:Gstatus<CR>
 nnoremap <Leader>gd :Gresolvelink<CR>:Gdiff<CR>
 
 " show a really nicely pretty-printed git log
-nnoremap <Leader>gl :!git lg2<CR>
+nnoremap <Leader>gl :!git lg2<Space>
 
 " run git diff in CWD
 nnoremap <Leader>gD :Gresolvelink<CR>:!git diff<CR>
@@ -366,6 +366,9 @@ vnoremap <Leader>ga :Gresolvelink<CR>y:Ggrep <C-r>"<CR>
 
 " git read; do a git checkout to the buffer
 nnoremap <Leader>gr :Gresolvelink<CR>:Gread<Space>
+
+" git rm a file and delete the buffer
+nnoremap <Leader>gR :Gresolvelink<CR>:Gdelete<CR>
 
 " git write; writes to both the work tree and index versions of file, making
 " it like `git add` when called from a work tree file and like `git checkout`
