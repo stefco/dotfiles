@@ -109,6 +109,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#wordcount#format = '%d w'
 
 " show an abbreviated mode string
+" removed the empty line since empty key was generating and error:
+"    \ '' : 'V',
 let g:airline_mode_map = {
     \ '__' : '-',
     \ 'n'  : 'N',
@@ -117,7 +119,6 @@ let g:airline_mode_map = {
     \ 'c'  : 'C',
     \ 'v'  : 'V',
     \ 'V'  : 'V',
-    \ '' : 'V',
     \ 's'  : 'S',
     \ }
 
