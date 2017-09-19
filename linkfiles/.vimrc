@@ -251,12 +251,6 @@ noremap <Leader><Space> :
 " start a shell command without hitting shift
 noremap <Leader>1 :!
 
-" start a shell command to run asynchronously
-noremap <Leader>2 :AsyncRun<Space>
-
-" kill the current async command
-noremap <Leader><Esc> :AsyncStop<CR>
-
 " toggle smartypants crap, i.e. linenumbers, autoindent, smartindent, and mouse
 " with delete, aka backspace
 noremap <Bs> :call ToggleInteractive()<CR>
@@ -298,43 +292,6 @@ function! ToggleFolding()
     endif
 endfunction
 
-" resolve symlink for this file, if it is a symlink
-noremap <Leader>l :Gresolvelink<CR>
-" Follow symlinks when opening a file
-" Sources:
-"  - https://github.com/tpope/vim-fugitive/issues/147#issuecomment-7572351
-"  - http://www.reddit.com/r/vim/comments/yhsn6/is_it_possible_to_work_around_the_symlink_bug/c5w91qw
-" Echoing a warning does not appear to work:
-"   echohl WarningMsg | echo "Resolving symlink." | echohl None |
-function! MyGitResolveSymlink(...)
-    let fname = a:0 ? a:1 : expand('%')
-    if getftype(fname) != 'link'
-        return
-    endif
-    let resolvedfile = fnameescape(resolve(fname))
-
-    " we want to avoid a warning for editing a file with existing swapfile
-    let oldshortmess=&shortmess
-    set shortmess+=A
-
-    " open the file
-    exec 'file ' . resolvedfile
-
-    " reset warnings
-    let &shortmess=oldshortmess
-
-    " tell fugitive to use the resolved file name
-    call fugitive#detect(resolvedfile)
-
-    " force write if the file is unmodified (to eliminate the warning)
-    if ! &modified
-        write!
-    endif
-endfunction
-command! Gresolvelink call MyGitResolveSymlink()
-" uncomment the line below to reolve symlinks at start
-"autocmd BufReadPost * call MyGitResolveSymlink(expand('<afile>'))
-
 " sync syntax from start with <Leader>s (default leader is \)
 map <Leader>S :syntax sync fromstart<CR>
 
@@ -351,6 +308,22 @@ map <Leader>m :map<Space>
 " there is one.
 nnoremap <Leader>fa :Ack<Space>
 vnoremap <Leader>fa y:Ack <C-r>"<CR>
+
+"-----------------------------------------------------------------------
+" ASYNCRUN COMMANDS
+"-----------------------------------------------------------------------
+
+" start a shell command to run asynchronously
+noremap <Leader>2 :AsyncRun<Space>
+
+" kill the current async command
+noremap <Leader><Esc> :AsyncStop<CR>
+
+" display asyncrun status in airline
+let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
+
+" make fugitive fetch and push async
+command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 
 "-----------------------------------------------------------------------
 " FUGITIVE (GIT) MAPPINGS
@@ -391,6 +364,46 @@ nnoremap <Leader>gw :Gwrite<CR>
 
 " git write (to index) and then commit
 nnoremap <Leader>gW :Gwrite<CR>:Gcommit<CR>
+
+" resolve symlink for this file, if it is a symlink (necessary for links);
+" function defined below
+noremap <Leader>l :Gresolvelink<CR>
+
+" Follow symlinks when opening a file
+" sources:
+"  - https://github.com/tpope/vim-fugitive/issues/147#issuecomment-7572351
+"  - http://www.reddit.com/r/vim/comments/yhsn6/is_it_possible_to_work_around_the_symlink_bug/c5w91qw
+" Echoing a warning does not appear to work:
+"   echohl WarningMsg | echo "Resolving symlink." | echohl None |
+function! MyGitResolveSymlink(...)
+    let fname = a:0 ? a:1 : expand('%')
+    if getftype(fname) != 'link'
+        return
+    endif
+    let resolvedfile = fnameescape(resolve(fname))
+
+    " we want to avoid a warning for editing a file with existing swapfile
+    let oldshortmess=&shortmess
+    set shortmess+=A
+
+    " open the file
+    exec 'file ' . resolvedfile
+
+    " reset warnings
+    let &shortmess=oldshortmess
+
+    " tell fugitive to use the resolved file name
+    call fugitive#detect(resolvedfile)
+
+    " force write if the file is unmodified (to eliminate the warning)
+    if ! &modified
+        write!
+    endif
+endfunction
+command! Gresolvelink call MyGitResolveSymlink()
+" uncomment the line below to reolve symlinks at start
+" make another function for 'unreading' symlinks (maybe)?
+autocmd BufReadPost * call MyGitResolveSymlink(expand('<afile>'))
 
 "-----------------------------------------------------------------------
 " GUNDO
