@@ -10,3 +10,6 @@
 [submodule "submodules/source-code-pro"]
 	path = submodules/source-code-pro
 	url = https://github.com/adobe-fonts/source-code-pro
+[submodule "submodules/ranger"]
+	path = submodules/ranger
+	url = https://github.com/ranger/ranger.git
