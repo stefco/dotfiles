@@ -17,10 +17,7 @@ call vundle#begin('~/dev/dotfiles/linkfiles/.vim/bundle')
 Plugin 'VundleVim/Vundle.vim'
 
 " Keep Plugin commands between vundle#begin/end.
-" simpylfold does not seem to be working :\
-"Plugin 'tmhedberg/SimpylFold'
-" syntastic is very slow and not asynchronous
-"Plugin 'vim-syntastic/syntastic'
+Plugin 'godlygeek/tabular'
 Plugin 'neomake/neomake'
 Plugin 'nvie/vim-flake8'
 Plugin 'scrooloose/nerdtree'
@@ -78,8 +75,8 @@ set nowrap
 set textwidth=79
 
 " define comment strings for various langs
-autocmd FileType vim setlocal commentstring=\"\ %s
-autocmd FileType sh,python setlocal commentstring=#\ %s
+autocmd FileType vim        setlocal commentstring=\"\ %s
+autocmd FileType sh,python  setlocal commentstring=#\ %s
 autocmd FileType tex,matlab setlocal commentstring=%\ %s
 
 "update gitgutter 250ms after changes
@@ -159,6 +156,7 @@ autocmd FileType html,css,json set softtabstop=2|set tabstop=2|set shiftwidth=2
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:markdown_syntax_conceal = 0
+let g:markdown_minlines = 100
 
 " ignore .pyc files in nerdtree as well as HDF5 data files
 let NERDTreeIgnore=['\.pyc$', '\~$', '\.hdf5$']
@@ -323,7 +321,12 @@ noremap <Leader><Esc> :AsyncStop<CR>
 let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
 
 " make fugitive fetch and push async
-command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
+"command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
+
+"-----------------------------------------------------------------------
+" TABULARIZE
+"-----------------------------------------------------------------------
+noremap <Leader>t :Tabularize /
 
 "-----------------------------------------------------------------------
 " FUGITIVE (GIT) MAPPINGS
