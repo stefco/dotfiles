@@ -344,6 +344,9 @@ nnoremap <Leader>gs :Gresolvelink<CR>:Gstatus<CR>
 " git diff this file
 nnoremap <Leader>gd :Gresolvelink<CR>:Gdiff<CR>
 
+" show a really nicely pretty-printed git log
+nnoremap <Leader>gl :!git lg2<CR>
+
 " run git diff in CWD
 nnoremap <Leader>gD :Gresolvelink<CR>:!git diff<CR>
 
