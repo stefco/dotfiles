@@ -350,6 +350,9 @@ nnoremap <Leader>gc :Gresolvelink<CR>:Gcommit<CR>
 " git commit and immediately push
 nnoremap <Leader>gC :Gresolvelink<CR>:Gcommit<CR>:Gpush<CR>
 
+" git fetch
+nnoremap <Leader>gf :Gresolvelink<CR>:Gfetch<CR>
+
 " git grep; you can also use Ack/Ag, which is not tied to vim
 nnoremap <Leader>ga :Gresolvelink<CR>:Ggrep<Space>
 vnoremap <Leader>ga :Gresolvelink<CR>y:Ggrep <C-r>"<CR>
