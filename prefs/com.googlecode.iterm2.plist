@@ -2297,13 +2297,13 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 107 599 501 0 0 1280 800 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>257 62 796 473 0 0 1280 778 </string>
+	<string>257 154 796 473 0 0 1280 778 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>80 194 592 584 0 0 1280 778 </string>
 	<key>NSWindow Frame com.apple.typography_panel_UbuntuMonoDerivativePowerline-Regular</key>
 	<string>344 294 260 319 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 4 1274 774 0 0 1280 778 </string>
+	<string>0 400 1280 378 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>10 8 1270 792 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -6090,12 +6090,16 @@
 			</dict>
 			<key>Selection Color</key>
 			<dict>
+				<key>Alpha Component</key>
+				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.14236269891262054</real>
+				<real>0.33816850690789291</real>
+				<key>Color Space</key>
+				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.16536127030849457</real>
+				<real>0.35685446261383674</real>
 				<key>Red Component</key>
-				<real>0.16686910390853882</real>
+				<real>0.3936004638671875</real>
 			</dict>
 			<key>Semantic History</key>
 			<dict>
@@ -7146,7 +7150,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-09-15T14:54:00Z</date>
+	<date>2017-09-19T12:52:39Z</date>
 	<key>SavePasteHistory</key>
 	<true/>
 	<key>Secure Input</key>
@@ -7187,7 +7191,7 @@
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<true/>
 	<key>UKCrashReporterLastCrashReportDate</key>
-	<real>1505340672</real>
+	<real>1505825536</real>
 	<key>URLHandlersByGuid</key>
 	<dict/>
 	<key>UseBorder</key>
