@@ -1,0 +1,17 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# add a function for pulling updates to directories in ~/dev
+
+while [ "$#" -gt 0 ]; do
+
+    pushd "$1"
+    if [ "$(parse_git_dirty)"z = z ]; then
+        echo pulling "$1"...
+        git pull
+    else
+        echo "$1 not clean, could not pull."
+    fi
+    popd
+    shift
+
+done
