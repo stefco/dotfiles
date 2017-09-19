@@ -330,40 +330,40 @@ command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 "-----------------------------------------------------------------------
 
 " git pull
-map <Leader>gp :Gpull<CR>
+map <Leader>gp :Gresolvelink<CR>:Gpull<CR>
 
 " git push
-map <Leader>gu :Gpush<CR>
+map <Leader>gu :Gresolvelink<CR>:Gpush<CR>
 
 " show git status
-nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gs :Gresolvelink<CR>:Gstatus<CR>
 
 " git diff this file
-nnoremap <Leader>gd :Gdiff<CR>
+nnoremap <Leader>gd :Gresolvelink<CR>:Gdiff<CR>
 
 " run git diff in CWD
-nnoremap <Leader>gD :!git diff<CR>
+nnoremap <Leader>gD :Gresolvelink<CR>:!git diff<CR>
 
 " git commit
-nnoremap <Leader>gc :Gcommit<CR>
+nnoremap <Leader>gc :Gresolvelink<CR>:Gcommit<CR>
 
 " git commit and immediately push
-nnoremap <Leader>gC :Gcommit<CR>:Gpush<CR>
+nnoremap <Leader>gC :Gresolvelink<CR>:Gcommit<CR>:Gpush<CR>
 
 " git grep; you can also use Ack/Ag, which is not tied to vim
-nnoremap <Leader>ga :Ggrep<Space>
-vnoremap <Leader>ga y:Ggrep <C-r>"<CR>
+nnoremap <Leader>ga :Gresolvelink<CR>:Ggrep<Space>
+vnoremap <Leader>ga :Gresolvelink<CR>y:Ggrep <C-r>"<CR>
 
 " git read; do a git checkout to the buffer
-nnoremap <Leader>gr :Gread<Space>
+nnoremap <Leader>gr :Gresolvelink<CR>:Gread<Space>
 
 " git write; writes to both the work tree and index versions of file, making
 " it like `git add` when called from a work tree file and like `git checkout`
 " when called from the index or a blob in the history
-nnoremap <Leader>gw :Gwrite<CR>
+nnoremap <Leader>gw :Gresolvelink<CR>:Gwrite<CR>
 
 " git write (to index) and then commit
-nnoremap <Leader>gW :Gwrite<CR>:Gcommit<CR>
+nnoremap <Leader>gW :Gresolvelink<CR>:Gwrite<CR>:Gcommit<CR>
 
 " resolve symlink for this file, if it is a symlink (necessary for links);
 " function defined below
@@ -402,8 +402,7 @@ function! MyGitResolveSymlink(...)
 endfunction
 command! Gresolvelink call MyGitResolveSymlink()
 " uncomment the line below to reolve symlinks at start
-" make another function for 'unreading' symlinks (maybe)?
-autocmd BufReadPost * call MyGitResolveSymlink(expand('<afile>'))
+"autocmd BufReadPost * call MyGitResolveSymlink(expand('<afile>'))
 
 "-----------------------------------------------------------------------
 " GUNDO
