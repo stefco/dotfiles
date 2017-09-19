@@ -70,8 +70,8 @@ for gpre in ~ ~/dev; do
         export PATH=~/"$gbin:$PATH"
         export PATH=~/"$gpybin:$PATH"
     elif [ -d ~/dev/multimessenger-pipeline ]; then
-        export PATH=~/dev"$gbin:$PATH"
-        export PATH=~/dev"$gpybin:$PATH"
+        export PATH=~/dev/"$gbin:$PATH"
+        export PATH=~/dev/"$gpybin:$PATH"
     fi
 done
 
