@@ -32,6 +32,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'mileszs/ack.vim'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'skywind3000/asyncrun.vim'
 " let me not use this for now and instead see how vim-dispatch treats me
 " Plugin 'janko-m/vim-test'
 Plugin 'sjl/gundo.vim'
@@ -250,6 +251,12 @@ noremap <Leader><Space> :
 " start a shell command without hitting shift
 noremap <Leader>1 :!
 
+" start a shell command to run asynchronously
+noremap <Leader>2 :AsyncRun<Space>
+
+" kill the current async command
+noremap <Leader><Esc> :AsyncStop<CR>
+
 " toggle smartypants crap, i.e. linenumbers, autoindent, smartindent, and mouse
 " with delete, aka backspace
 noremap <Bs> :call ToggleInteractive()<CR>
@@ -331,59 +338,100 @@ command! Gresolvelink call MyGitResolveSymlink()
 " sync syntax from start with <Leader>s (default leader is \)
 map <Leader>S :syntax sync fromstart<CR>
 
-" git pull
-map <Leader>p :Gpull<CR>
-
-" git push
-map <Leader>P :Gpush<CR>
-
 " open nerdtree
 map <Leader>n :NERDTreeToggle<CR>
 
 " run help for some string
-map <Leader>h :help 
+map <Leader>h :help<Space>
 
 " check mappings
-map <Leader>m :map 
-
-" show git status
-nnoremap <Leader>s :Gstatus<CR>
-
-" git diff this file
-nnoremap <Leader>d :Gdiff<CR>
-
-" run git diff in CWD
-nnoremap <Leader>D :!git diff<CR>
-
-" git commit
-nnoremap <Leader>C :Gcommit<CR>
-
-" git grep
-nnoremap <Leader>G :Ggrep 
+map <Leader>m :map<Space>
 
 " start git ack/ag search (probably more useful). search for selection if
 " there is one.
-nnoremap <Leader>g :Ack 
-vnoremap <Leader>g y:Ack <C-r>"<CR>
+nnoremap <Leader>fa :Ack<Space>
+vnoremap <Leader>fa y:Ack <C-r>"<CR>
+
+"-----------------------------------------------------------------------
+" FUGITIVE (GIT) MAPPINGS
+"-----------------------------------------------------------------------
+
+" git pull
+map <Leader>gp :Gpull<CR>
+
+" git push
+map <Leader>gu :Gpush<CR>
+
+" show git status
+nnoremap <Leader>gs :Gstatus<CR>
+
+" git diff this file
+nnoremap <Leader>gd :Gdiff<CR>
+
+" run git diff in CWD
+nnoremap <Leader>gD :!git diff<CR>
+
+" git commit
+nnoremap <Leader>gc :Gcommit<CR>
+
+" git commit and immediately push
+nnoremap <Leader>gC :Gcommit<CR>:Gpush<CR>
+
+" git grep; you can also use Ack/Ag, which is not tied to vim
+nnoremap <Leader>ga :Ggrep<Space>
+vnoremap <Leader>ga y:Ggrep <C-r>"<CR>
 
 " git read; do a git checkout to the buffer
-nnoremap <Leader>r :Gread 
-
-" open up the undo gtree, Gundo
-nnoremap <Leader>u :GundoToggle<CR>
-
-" try to imgcat the selected filename
-vnoremap <Leader>I y:!imgcat <C-f>pA<CR>
+nnoremap <Leader>gr :Gread<Space>
 
 " git write; writes to both the work tree and index versions of file, making
 " it like `git add` when called from a work tree file and like `git checkout`
 " when called from the index or a blob in the history
-nnoremap <Leader>w :Gwrite<CR>
+nnoremap <Leader>gw :Gwrite<CR>
 
 " git write (to index) and then commit
-nnoremap <Leader>W :Gwrite<CR>:Gcommit<CR>
+nnoremap <Leader>gW :Gwrite<CR>:Gcommit<CR>
 
-" some stuff for working with interactive sessions in python
+"-----------------------------------------------------------------------
+" GUNDO
+"-----------------------------------------------------------------------
+nnoremap <Leader>u :GundoToggle<CR>
+
+"-----------------------------------------------------------------------
+" PREVIEWING THINGS
+"-----------------------------------------------------------------------
+
+" run whatever command on the filename under the cursor; for nerdtree
+" windows, make sure to get the filename from the line rather than the
+" exact term under the cursor.
+function! RunCommandOnFileUnderCursor(command)
+  if bufname("") == "NERD_tree_1"
+    " move to end of line to make sure we are over the filename in NERDTree
+    normal $
+  endif
+  let fname=expand("<cfile>")
+  execute("!" . a:command . ' "' . fname . '"')
+  "execute("!tput clear")
+  silent !tput clear
+  redraw!
+  if bufname("") == "NERD_tree_1"
+    " move back to the start of the line in NERDTree after we finish
+    normal 0
+  endif
+endfunction
+
+" image preview in terminal with imgcat
+nnoremap <Leader>pi :call RunCommandOnFileUnderCursor("imgcat")<CR>
+vnoremap <Leader>pi y:!imgcat <C-r>"<CR>
+
+" use mac's quicklook (or whatever command has been deemed to fulfill this
+" role in the present environment)
+nnoremap <Leader>pp :call RunCommandOnFileUnderCursor("ql")<CR>
+vnoremap <Leader>pp y:!ql <C-r>"<CR>
+
+"-----------------------------------------------------------------------
+" IPYTHON
+"-----------------------------------------------------------------------
 
 " place contents of ipyscratch at cursor
 autocmd FileType python nnoremap <Leader>iP   :.-1r ~/.ipyscratch<CR>
@@ -403,7 +451,9 @@ autocmd FileType python vnoremap <Leader>iy :w! ~/.ipyscratch<CR>gvd
 " toggle comments on various things using vim-commentary with leader
 map <Space>c gc
 
-" bindings copied from spacemacs
+"-----------------------------------------------------------------------
+" SPACEMACS BINDINGS
+"-----------------------------------------------------------------------
 
 " load .vimrc
 map <Leader>feR :source ~/.vimrc<CR>
@@ -411,7 +461,10 @@ map <Leader>feR :source ~/.vimrc<CR>
 " edit .vimrc
 map <Leader>fed :e ~/.vimrc<CR>
 
-" neovim-specific shortcuts go here
+"-----------------------------------------------------------------------
+" NEOVIM SHORTCUTS
+"-----------------------------------------------------------------------
+
 if has('nvim')
     " <Esc> enters normal mode in term mode instead of sending <Esc> to term
     "tnoremap <Leader><Esc> <C-\><C-n>
