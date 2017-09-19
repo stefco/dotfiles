@@ -1,0 +1,68 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# functions for navigating forward and backward
+
+NAVIGATION_FWD=()
+NAVIGATION_BWD=()
+
+navigate_forward () {
+    if [ ${#NAVIGATION_FWD[@]} -gt 0 ]; then
+        NAVIGATION_BWD+=("$(pwd)")
+        "cd" "${NAVIGATION_FWD[${#NAVIGATION_FWD[@]}-1]}"
+        unset NAVIGATION_FWD[${#NAVIGATION_FWD[@]}-1]
+    fi
+}
+alias fwd=navigate_forward
+
+navigate_backward () {
+    if [ ${#NAVIGATION_BWD[@]} -gt 0 ]; then
+        NAVIGATION_FWD+=("$(pwd)")
+        "cd" "${NAVIGATION_BWD[${#NAVIGATION_BWD[@]}-1]}"
+        unset NAVIGATION_BWD[${#NAVIGATION_BWD[@]}-1]
+    fi
+}
+alias back=navigate_backward
+
+# 'navigate' directory, i.e. change directory but keep nav history
+# can also specify a bookmark with the -b flag
+nd () {
+    NAVIGATION_BWD+=("$(pwd)")
+    NAVIGATION_FWD=()
+    local BOOKMARKS="${DOTFILEDIR}/bookmarks/"
+    local LOCAL_BOOKMARKS=~/"bookmarks/"
+    # specify a bookmark with -b
+    if [[ "$1" == "-b" ]]; then
+        local bookmarkdir
+        for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
+            if [ -L "${bookmarkdir}/$2" ]; then
+                local destination="$(readlink "${bookmarkdir}/$2")"
+                # replace tilde with the actual home directory
+                if [ ! -d "${destination/\~/~}" ]; then
+                    echo >&2 "Target directory doesn't exist: ${destination}"
+                    return 1
+                fi
+                cd "${destination/\~/~}"
+                return
+            fi
+        done
+        echo >&2 "Bookmark not found: $2"
+        return 2
+    # list all bookmarks
+    elif [[ "$1" == "-l" ]]; then
+        for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
+            printf "${_GREEN}Bookmarks in ${bookmarkdir}:${_RESET}\n"
+            local fmt="${_BLUE}%s${_RESET}%*s-> ${_MAGENTA}%s${_RESET}\n"
+            local arrowindent=16
+            find "${bookmarkdir}" -type l 2>/dev/null \
+                |   while read line; do
+                        local basename="${line##*/}"
+                        local indent=$((arrowindent - ${#basename}))
+                        local src="$(readlink "${line}")"
+                        printf "$fmt" "$basename" "$indent" " " "$src"
+                    done
+        done
+    else
+        "cd" "$@"
+    fi
+}
+

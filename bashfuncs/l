@@ -1,0 +1,13 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# ls, but with dem emoji
+l () {
+    ls --color=always -FC | sed '
+        s_\([^\t ]*\)/_\1🗂_g;
+        s_\([^\t ]*\)|_\1🏹_g;
+        s_\([^\t ]*\)@_\1🔗_g;
+        s_\([^\t ]*\)=_\1🔌_g;
+        s_\([^\t ]*\)\*_\1☠️_g;
+    '
+}
+

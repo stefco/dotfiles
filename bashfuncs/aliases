@@ -1,0 +1,35 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# the aliases i use
+
+# some ipython profile aliases
+alias ipy='ipython'
+alias imath='ipython --profile=math'
+alias iastro='ipython --profile=astro'
+alias igrace='ipython --profile=grace'
+alias igwpy='ipython --profile=gwpy'
+alias igwhen='ipython --profile=gwhen'
+alias iheavy='ipython --profile=heavy'
+
+# add color to some utilities
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+
+# two-sided print
+alias lpdub="lp -o sides=two-sided-long-edge"
+
+# vim aliases prevent XQuartz from opening
+alias view='DISPLAY="" view'
+alias vi='DISPLAY="" vi'
+alias vim='DISPLAY="" vim'
+alias vimdiff='DISPLAY="" vimdiff'
+alias vimtutor='DISPLAY="" vimtutor'
+
+# url encode and decode from stdin
+alias urlencode="python -c 'import urllib, sys; print urllib.quote(sys.stdin.read())'"
+alias urldecode="python -c 'import urllib, sys; print urllib.unquote(sys.stdin.read())'"
+alias queryencode="python -c 'import urllib, sys; print urllib.quote_plus(sys.stdin.read())'"
+
+# workaround; vim saves files in a way that pisses off crontab
+alias crontab="VIM_CRONTAB=true crontab"
+

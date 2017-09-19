@@ -1,0 +1,10 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# load API tokens with ".active" suffix from ~/.tokens, if they exist
+
+if [ -e ~/.tokens ]; then
+    for token in $(find ~/.tokens -name '*.active'); do
+        source "${token}"
+    done
+fi
+

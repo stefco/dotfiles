@@ -1,0 +1,15 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# load iterm2 integrations
+
+# load iterm shell integration if available
+if [ -e "${HOME}/.iterm2_shell_integration.bash" ] \
+  && [ "$TERM" != 'eterm-color' ]; then
+    source "${HOME}/.iterm2_shell_integration.bash"
+    # add an alias for pbcopy and pbpaste so that you can use them the same
+    # as you would with your local MacOS client
+    if [[ $OSTYPE != darwin* ]]; then
+        alias pbcopy=it2copy
+    fi
+fi
+

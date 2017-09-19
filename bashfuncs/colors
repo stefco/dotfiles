@@ -1,0 +1,11 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# some colors for pretty printing
+_ESC_SEQ="\x1b["
+_RESET=$_ESC_SEQ"39;49;00m"
+_RED=$_ESC_SEQ"31;01m"
+_GREEN=$_ESC_SEQ"32;01m"
+_YELLOW=$_ESC_SEQ"33;01m"
+_BLUE=$_ESC_SEQ"34;01m"
+_MAGENTA=$_ESC_SEQ"35;01m"
+_CYAN=$_ESC_SEQ"36;01m"

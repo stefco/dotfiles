@@ -1,0 +1,35 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# some MacOS-specific crap. most of this breaks if you load in non-Mac.
+
+# donkey, get back in the heap!
+alias donkey="cat \"${DOTFILEDIR}\"/static/ogre.txt; say donkey get back in the heap;"
+
+# add TeX path
+export PATH="$PATH:/Library/TeX/Distributions/Programs/texbin"
+
+# control whether hidden files show on MacOS
+alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE; killall Finder"
+alias showhidden="defaults write com.apple.finder AppleShowAllFiles TRUE; killall Finder"
+
+# Get globus running
+export GLOBUS_LOCATION=/opt/ldg
+if [ -f ${GLOBUS_LOCATION}/etc/globus-user-env.sh ] ; then
+    . ${GLOBUS_LOCATION}/etc/globus-user-env.sh
+fi
+
+# Make "Save As..." the default for GUI apps, as it should be, rather than
+# this "duplicate" or whatever bullshit that they introduced recently
+defaults write -globalDomain NSUserKeyEquivalents -dict-add 'Save As...' '@$S'
+
+# turn on bash-completion
+if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
+    . /opt/local/etc/profile.d/bash_completion.sh
+fi
+
+# a cryptic greeting from an old friend, if he is around...
+type -f 1>/dev/null 2>&1 fortune \
+    && type -f 1>/dev/null 2>&1 cowsay \
+    && [ -s "${DOTFILEDIR}/static/shrek.cow" ] \
+    && fortune | cowsay -f "${DOTFILEDIR}/static/shrek.cow} \
+    || echo "no fortune for you today..."

@@ -1,0 +1,20 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# pick the PATH to use with this function and/or configure a virtual env
+path () {
+    # actually set the new path; requires pathsorter executable
+    newpath="$(pathsorter "$@")" && export PATH="$newpath"
+    # kill existing virtualenv
+    if [[ "$CONDA_DEFAULT_ENV" != "" ]]; then
+        source deactivate
+    fi
+    # if the path choice requires a virtualenv, activate that
+    for pick in "$@"; do
+        case "$pick" in
+            intel) source activate idp ;;
+        esac
+    done
+    printf 'Path is now:\n  '
+    sed $'s/:/\\\n  /g' <<<"$PATH"
+}
+

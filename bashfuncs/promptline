@@ -1,0 +1,72 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# commands for generating a nice command prompt along with conditional
+# command prompt setting based on environment.
+
+# command prompt, modified from http://ezprompt.net/
+function nonzero_return() {
+    RETVAL=$?
+    [ $RETVAL -ne 0 ] && echo " $RETVAL"
+}
+# get current branch in git repo
+function parse_git_branch() {
+    BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+    if [ ! "${BRANCH}" == "" ]
+    then
+        STAT=`parse_git_dirty`
+        echo " [${BRANCH}${STAT}] "
+    else
+        echo ""
+    fi
+}
+# get current status of git repo
+function parse_git_dirty {
+    status=`git status 2>&1 | tee`
+    dirty=`echo -n "${status}" 2> /dev/null | grep "modified:" &> /dev/null; echo "$?"`
+    untracked=`echo -n "${status}" 2> /dev/null | grep "Untracked files" &> /dev/null; echo "$?"`
+    ahead=`echo -n "${status}" 2> /dev/null | grep "Your branch is ahead of" &> /dev/null; echo "$?"`
+    newfile=`echo -n "${status}" 2> /dev/null | grep "new file:" &> /dev/null; echo "$?"`
+    renamed=`echo -n "${status}" 2> /dev/null | grep "renamed:" &> /dev/null; echo "$?"`
+    deleted=`echo -n "${status}" 2> /dev/null | grep "deleted:" &> /dev/null; echo "$?"`
+    bits=''
+    if [ "${renamed}" == "0" ]; then
+        bits=">${bits}"
+    fi
+    if [ "${ahead}" == "0" ]; then
+        bits="*${bits}"
+    fi
+    if [ "${newfile}" == "0" ]; then
+        bits="+${bits}"
+    fi
+    if [ "${untracked}" == "0" ]; then
+        bits="?${bits}"
+    fi
+    if [ "${deleted}" == "0" ]; then
+        bits="x${bits}"
+    fi
+    if [ "${dirty}" == "0" ]; then
+        bits="!${bits}"
+    fi
+    if [ ! "${bits}" == "" ]; then
+        echo " ${bits}"
+    else
+        echo ""
+    fi
+}
+# get the last exit status; if nonzero, print it out
+function print_bad_exit_status {
+    exitcode="$?"
+    if [[ $exitcode != 0 ]]; then
+        printf '%s' " 🖕  $exitcode "
+    fi
+}
+
+# set the actual command prompt variable based on the host
+if [[ $OSTYPE == darwin* ]]; then
+    if [ $(hostname) == 'Alexis-Nelsons-MacBook-Pro.local' ]; then
+        export SHORT_HOST_NAME=mbp
+    elif [ $(hostname) == 'Stefans-iMac.local' ]; then
+        export SHORT_HOST_NAME=imac
+    fi
+    export PS1="\[\e[37;45m\]\`print_bad_exit_status\`\[\e[m\]\[\e[37;43m\] $SHORT_HOST_NAME \[\e[m\]\[\e[44m\] \${#NAVIGATION_BWD[@]} \[\e[m\]\[\e[37;41m\] \w \[\e[m\]\[\e[44m\] \${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37;42m\]\`parse_git_branch\`\[\e[m\]\[\e[30;47m\]\[\e[m\]\[\e[30;47m\] > \[\e[m\] "
+fi

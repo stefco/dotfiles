@@ -1,0 +1,9 @@
+#!/bin/bash
+# (c) Stefan Countryman
+# run nohup after getting the absolute path to a command
+nohupw () {
+    local fullpath="$(which "$1")"
+    echo >&2 "using full path: $fullpath"
+    shift
+    nohup "$fullpath" "$@" &
+}
