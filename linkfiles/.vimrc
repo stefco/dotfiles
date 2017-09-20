@@ -300,10 +300,14 @@ map <Leader>S :syntax sync fromstart<CR>
 map <Leader>n :NERDTreeToggle<CR>
 
 " run help for some string
-map <Leader>h :help<Space>
+map <Leader>hh :help<Space>
 
 " check mappings
-map <Leader>m :map<Space>
+map <Leader>hm :map<Space>
+
+" get help for selection or word under cursor
+nnoremap <Leader>hw yiw:help <C-r>"<CR>
+vnoremap <Leader>hw y:help <C-r>"<CR>
 
 " start git ack/ag search (probably more useful). search for selection if
 " there is one.
