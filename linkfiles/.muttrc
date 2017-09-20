@@ -19,6 +19,7 @@ mailboxes +GECo.P-value
 mailboxes "+[Gmail].Sent Mail"
 mailboxes "+[Gmail].All Mail"
 mailboxes +Notices.LVC_Circular
+mailboxes "+[Gmail].Important"
 
 macro index D \
     "<save-message>+[Gmail]/Trash<enter>" \
