@@ -73,6 +73,8 @@ set nowrap
 
 " automatically enter after 79 characters; requires 't' to be in formatoptions.
 set textwidth=79
+" except in the following filetypes
+autocmd FileType crontab    setlocal textwidth=0
 
 " define comment strings for various langs
 autocmd FileType vim        setlocal commentstring=\"\ %s
