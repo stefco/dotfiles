@@ -31,5 +31,5 @@ fi
 type -f 1>/dev/null 2>&1 fortune \
     && type -f 1>/dev/null 2>&1 cowsay \
     && [ -s "${DOTFILEDIR}/static/shrek.cow" ] \
-    && fortune | cowsay -f "${DOTFILEDIR}/static/shrek.cow} \
+    && fortune | cowsay -f "${DOTFILEDIR}/static/shrek.cow" \
     || echo "no fortune for you today..."
