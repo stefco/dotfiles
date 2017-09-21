@@ -53,6 +53,24 @@ Plugin 'tpope/vim-unimpaired'
 " Plugin 'tpope/vim-tbone'
 " JSON tools
 " Plugin 'tpope/vim-jdaddy'
+" only load denite if we are using recent vim and have python3, else use unite
+if (has('nvim') || v:version >= 800) && has('python3')
+
+    Plugin 'Shougo/denite.nvim'
+
+    " add a spacemacs binding to find a file using denite; capital F recursive
+    noremap <Leader>ff :Denite file buffer<CR>
+    noremap <Leader>fF :Denite file_rec buffer<CR>
+
+else
+
+    Plugin 'Shougo/unite.vim'
+
+    " add a spacemacs binding to find a file using unite; capital F recursive
+    noremap <Leader>ff :Unite file buffer<CR>
+    noremap <Leader>fF :Unite file_rec buffer<CR>
+
+endif
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
