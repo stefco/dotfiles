@@ -1,0 +1,8 @@
+1       *  *  *  * /Users/Stefan/bin/ligo-login 2>/dev/null 1>/dev/null
+# email loading
+0       *  *  *  * /opt/local/libexec/gnubin/timeout 210 /opt/local/bin/offlineimap -l /var/log/cronscripts/offlineimap.log -u ttyui 1>/dev/null 2>/dev/null
+4-59/4  *  *  *  * /opt/local/libexec/gnubin/timeout 60  /opt/local/bin/offlineimap -l /var/log/cronscripts/offlineimap.log -f 'INBOX,GECo,[Gmail]/Sent Mail' -u ttyui 1>/dev/null 2>/dev/null
+# refresh dotfiles and geco_data
+*/4     *  *  *  * ( date; DOTFILEDIR="/Users/Stefan/dev/dotfiles" DOTFILEBASHSRC="/Users/Stefan/dev/dotfiles/bashfuncs" /usr/bin/time /Users/Stefan/dev/dotfiles/bin/pull dot dat; ) >>/var/log/cronscripts/pull.log 2>&1
+# refresh gwhen
+1-59/12 *  *  *  * ( date; DOTFILEDIR="/Users/Stefan/dev/dotfiles" DOTFILEBASHSRC="/Users/Stefan/dev/dotfiles/bashfuncs" /usr/bin/time /Users/Stefan/dev/dotfiles/bin/pull gwhen; ) >>/var/log/cronscripts/pull.log 2>&1
