@@ -535,6 +535,9 @@ map <Leader>fx :wqa<CR>
 " move the current file relative to PWD (eunuch)
 map <Leader>fR :Rename<Space>
 
+" change working directory to the directory containing this file
+map <Leader>fd :cd %:p:h<CR>:pwd<CR>
+
 " remove the buffer and delete the file (eunuch)
 map <Leader>fD :Delete<CR>
 
