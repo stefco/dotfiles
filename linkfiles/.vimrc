@@ -55,21 +55,13 @@ Plugin 'tpope/vim-unimpaired'
 " Plugin 'tpope/vim-jdaddy'
 " only load denite if we are using recent vim and have python3, else use unite
 if (has('nvim') || v:version >= 800) && has('python3')
-
     Plugin 'Shougo/denite.nvim'
-
-    " add a spacemacs binding to find a file using denite; capital F recursive
-    noremap <Leader>ff :Denite file buffer<CR>
-    noremap <Leader>fF :Denite file_rec buffer<CR>
-
+    " bind F1 to start writing a Denite command
+    noremap <F1> :Denite<Space>
 else
-
     Plugin 'Shougo/unite.vim'
-
-    " add a spacemacs binding to find a file using unite; capital F recursive
-    noremap <Leader>ff :Unite file buffer<CR>
-    noremap <Leader>fF :Unite file_rec buffer<CR>
-
+    " bind F1 to start writing a Unite command
+    noremap <F1> :Unite<Space>
 endif
 
 " All of your Plugins must be added before the following line
@@ -518,7 +510,7 @@ map <Space>c gc
 " SPACEMACS BINDINGS
 "-----------------------------------------------------------------------
 
-" config file bindings
+" CONFIG FILE BINDINGS
 
 " load .vimrc
 map <Leader>feR :source ~/.vimrc<CR>
@@ -526,7 +518,7 @@ map <Leader>feR :source ~/.vimrc<CR>
 " edit .vimrc
 map <Leader>fed :e ~/.vimrc<CR>
 
-" file-related bindings
+" FILE-RELATED BINDINGS
 
 " open nerdtree
 map <Leader>ft :NERDTreeToggle<CR>
@@ -540,7 +532,15 @@ map <Leader>fS :wa<CR>
 " e(x)it after saving all files
 map <Leader>fx :wqa<CR>
 
-" window-related bindings
+" add a spacemacs binding to find a file using helm, i.e. Unite/Ddenite
+map <Leader>ff <F1>file buffer<CR>
+
+" capital F searches files recursively
+map <Leader>fF <F1>file_rec buffer<CR>
+
+" WINDOW-RELATED BINDINGS
+
+" access all window-prefix stuff
 map <Leader>w <C-w>
 
 " quit window
@@ -548,6 +548,14 @@ map <Leader>wq :q<CR>
 
 " quit all
 map <Leader>wQ :qa<CR>
+
+" BUFFER-RELATED BINDINGS
+
+" unload current buffer and delete from buffer list
+map <Leader>bd :bd<CR>
+
+" switch to a buffer using helm, i.e. Unite/Denite
+map <Leader>bb <F1>buffer<CR>
 
 "-----------------------------------------------------------------------
 " NEOVIM SHORTCUTS
