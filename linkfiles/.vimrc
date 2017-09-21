@@ -87,6 +87,9 @@ set updatetime=250
 " set the <Leader> key to space
 let mapleader = ' '
 
+" show commands as they are being entered, like in emacs
+set showcmd
+
 " italicize comments
 highlight Comment cterm=italic
 
@@ -220,22 +223,6 @@ if $VIM_CRONTAB == "true"
     set nowritebackup
 endif
 
-" next or previous window
-noremap <Up> <C-w>W
-noremap <Down> <C-w>w
-
-" next or previous tab
-noremap <Left> gT
-noremap <Right> gt
-
-" next or previous open file
-noremap <S-Right> :n<CR>
-noremap <S-Left> :N<CR>
-
-" next or previous vimgrep match
-noremap <S-Up> :cp<CR>
-noremap <S-Down> :cn<CR>
-
 " format onto the next line but without combining with the contents of the
 " next line
 noremap g<Down> o<Esc>gqkddk
@@ -296,8 +283,40 @@ endfunction
 " sync syntax from start with <Leader>s (default leader is \)
 map <Leader>S :syntax sync fromstart<CR>
 
-" open nerdtree
-map <Leader>n :NERDTreeToggle<CR>
+" start git ack/ag search (probably more useful). search for selection if
+" there is one.
+nnoremap <Leader>fa :Ack<Space>
+vnoremap <Leader>fa y:Ack <C-r>"<CR>
+
+"-----------------------------------------------------------------------
+" NAVIGATION COMMANDS
+"-----------------------------------------------------------------------
+
+" next or previous window
+noremap <Up> <C-w>W
+noremap <Down> <C-w>w
+
+" navigate around windows with control + hjkl
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+
+" next or previous tab
+noremap <Left> gT
+noremap <Right> gt
+
+" next or previous open file
+noremap <S-Right> :n<CR>
+noremap <S-Left> :N<CR>
+
+" next or previous vimgrep match
+noremap <S-Up> :cp<CR>
+noremap <S-Down> :cn<CR>
+
+"-----------------------------------------------------------------------
+" HELP COMMANDS
+"-----------------------------------------------------------------------
 
 " run help for some string
 map <Leader>hh :help<Space>
@@ -308,11 +327,6 @@ map <Leader>hm :map<Space>
 " get help for selection or word under cursor
 nnoremap <Leader>hw yiw:help <C-r>"<CR>
 vnoremap <Leader>hw y:help <C-r>"<CR>
-
-" start git ack/ag search (probably more useful). search for selection if
-" there is one.
-nnoremap <Leader>fa :Ack<Space>
-vnoremap <Leader>fa y:Ack <C-r>"<CR>
 
 "-----------------------------------------------------------------------
 " ASYNCRUN COMMANDS
@@ -486,11 +500,36 @@ map <Space>c gc
 " SPACEMACS BINDINGS
 "-----------------------------------------------------------------------
 
+" config file bindings
+
 " load .vimrc
 map <Leader>feR :source ~/.vimrc<CR>
 
 " edit .vimrc
 map <Leader>fed :e ~/.vimrc<CR>
+
+" file-related bindings
+
+" open nerdtree
+map <Leader>ft :NERDTreeToggle<CR>
+
+" save a file
+map <Leader>fs :w<CR>
+
+" save all files
+map <Leader>fS :wa<CR>
+
+" e(x)it after saving all files
+map <Leader>fx :wqa<CR>
+
+" window-related bindings
+map <Leader>w <C-w>
+
+" quit window
+map <Leader>wq :q<CR>
+
+" quit all
+map <Leader>wQ :qa<CR>
 
 "-----------------------------------------------------------------------
 " NEOVIM SHORTCUTS
