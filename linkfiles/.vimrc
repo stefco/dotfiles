@@ -48,7 +48,7 @@ Plugin 'tpope/vim-dispatch'
 " add extra '[' and ']' mappings
 Plugin 'tpope/vim-unimpaired'
 " add some unix sugar
-" Plugin 'tpope/vim-eunuch'
+Plugin 'tpope/vim-eunuch'
 " tmux bindings for vim with nice tab completion
 " Plugin 'tpope/vim-tbone'
 " JSON tools
@@ -295,8 +295,8 @@ map <Leader>S :syntax sync fromstart<CR>
 
 " start git ack/ag search (probably more useful). search for selection if
 " there is one.
-nnoremap <Leader>fa :Ack<Space>
-vnoremap <Leader>fa y:Ack <C-r>"<CR>
+nnoremap <Leader>fg :Ack<Space>
+vnoremap <Leader>fg y:Ack <C-r>"<CR>
 
 "-----------------------------------------------------------------------
 " NAVIGATION COMMANDS
@@ -391,8 +391,8 @@ nnoremap <Leader>gC :Gresolvelink<CR>:Gcommit<CR>:Gpush<CR>
 nnoremap <Leader>gf :Gresolvelink<CR>:Gfetch<CR>
 
 " git grep; you can also use Ack/Ag, which is not tied to vim
-nnoremap <Leader>ga :Gresolvelink<CR>:Ggrep<Space>
-vnoremap <Leader>ga :Gresolvelink<CR>y:Ggrep <C-r>"<CR>
+nnoremap <Leader>gg :Gresolvelink<CR>:Ggrep<Space>
+vnoremap <Leader>gg :Gresolvelink<CR>y:Ggrep <C-r>"<CR>
 
 " git read; do a git checkout to the buffer
 nnoremap <Leader>gr :Gresolvelink<CR>:Gread<Space>
@@ -531,6 +531,21 @@ map <Leader>fS :wa<CR>
 
 " e(x)it after saving all files
 map <Leader>fx :wqa<CR>
+
+" move the current file relative to PWD (eunuch)
+map <Leader>fR :Rename<Space>
+
+" remove the buffer and delete the file (eunuch)
+map <Leader>fD :Delete<CR>
+
+" copy file somewhere
+map <Leader>fc :w<Space>
+
+" save file as
+map <Leader>fa :saveas<Space>
+
+" open file as sudo
+map <Leader>fE :SudoEdit<CR>
 
 " add a spacemacs binding to find a file using helm, i.e. Unite/Ddenite
 map <Leader>ff <F1>file buffer<CR>
