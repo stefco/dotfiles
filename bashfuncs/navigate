@@ -23,6 +23,17 @@ navigate_backward () {
 }
 alias back=navigate_backward
 
+show_link () {
+    local fmt="${_BLUE}%s${_RESET}%*s-> ${_MAGENTA}%s${_RESET}\n"
+    local arrowindent=16
+    while read line; do
+        local basename="${line##*/}"
+        local indent=$((arrowindent - ${#basename}))
+        local src="$(readlink "${line}")"
+        printf "$fmt" "$basename" "$indent" " " "$src"
+    done
+}
+
 # 'navigate' directory, i.e. change directory but keep nav history
 # can also specify a bookmark with the -b flag
 nd () {
@@ -50,17 +61,32 @@ nd () {
         return 2
     # list all bookmarks
     elif [[ "$1" == "-l" ]]; then
-        for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
-            printf "${_GREEN}Bookmarks in ${bookmarkdir}:${_RESET}\n"
-            local fmt="${_BLUE}%s${_RESET}%*s-> ${_MAGENTA}%s${_RESET}\n"
-            local arrowindent=16
-            find "${bookmarkdir}" -type l 2>/dev/null \
-                |   while read line; do
-                        local basename="${line##*/}"
-                        local indent=$((arrowindent - ${#basename}))
-                        local src="$(readlink "${line}")"
-                        printf "$fmt" "$basename" "$indent" " " "$src"
-                    done
+        local bookmarkdir
+        # if no string is provided, list all bookmarks.
+        if [ $# -eq 1 ]; then
+            for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
+                printf "${_GREEN}Bookmarks in ${bookmarkdir}:${_RESET}\n"
+                find "${bookmarkdir}" -type l 2>/dev/null | show_link
+            done
+            return 0
+        fi
+        # otherwise, just see if arguments are bookmark and list them
+        # get rid of the `-l` argument
+        shift
+        while [ $# -gt 0 ]; do
+            local link_resolved=1
+            for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
+                local candidate="${bookmarkdir}/$1"
+                if [ -L "${candidate}" ]; then
+                    printf "%s\n" "${candidate}" | show_link
+                    link_resolved=0
+                    break
+                fi
+            done
+            if [ ${link_resolved} -eq 1 ]; then
+                printf >&2 "${_RED}Not found: ${_BLUE}%s${_RESET}\n" "$1"
+            fi
+            shift
         done
     else
         "cd" "$@"
