@@ -46,6 +46,8 @@ while [ $# -gt 0 ]; do
         nd -b "$1"
     fi
     pwd
+    echo fetching "$1"...
+    git fetch
     if [ "$(parse_git_dirty)"z = z ]; then
         echo pulling "$1"...
         git pull
