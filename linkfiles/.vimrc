@@ -87,9 +87,9 @@ set textwidth=79
 autocmd FileType crontab    setlocal textwidth=0
 
 " define comment strings for various langs
-autocmd FileType vim        setlocal commentstring=\"\ %s
-autocmd FileType sh,python  setlocal commentstring=#\ %s
-autocmd FileType tex,matlab setlocal commentstring=%\ %s
+autocmd FileType vim                setlocal commentstring=\"\ %s
+autocmd FileType crontab,sh,python  setlocal commentstring=#\ %s
+autocmd FileType tex,matlab         setlocal commentstring=%\ %s
 
 "update gitgutter 250ms after changes
 set updatetime=250
