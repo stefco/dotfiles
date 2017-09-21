@@ -1,5 +1,5 @@
 "------------------------------------------------------------------------------
-" load vundle
+" LOAD VUNDLE
 "------------------------------------------------------------------------------
 
 " these settings are required for Vundle
@@ -53,22 +53,14 @@ Plugin 'tpope/vim-eunuch'
 " Plugin 'tpope/vim-tbone'
 " JSON tools
 " Plugin 'tpope/vim-jdaddy'
-" only load denite if we are using recent vim and have python3, else use unite
-if (has('nvim') || v:version >= 800) && has('python3')
-    Plugin 'Shougo/denite.nvim'
-    " bind F1 to start writing a Denite command
-    noremap <F1> :Denite<Space>
-else
-    Plugin 'Shougo/unite.vim'
-    " bind F1 to start writing a Unite command
-    noremap <F1> :Unite<Space>
-endif
+Plugin 'Shougo/unite.vim'
+noremap <F1> :Unite<Space>
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
 "------------------------------------------------------------------------------
-" my prefs
+" BASIC VIM PREFS
 "------------------------------------------------------------------------------
 
 " automatically read file updates
@@ -103,11 +95,6 @@ set showcmd
 " italicize comments
 highlight Comment cterm=italic
 
-" use Ag if available even when using Ack package
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-
 " make current line number a different color
 hi CursorLineNR ctermfg=Magenta cterm=bold
 augroup CLNRSet
@@ -116,44 +103,6 @@ augroup END
 
 " run Neomake on write
 autocmd! BufWritePost * Neomake
-
-" display all buffs in tab bar when only one tab is open
-let g:airline#extensions#tabline#enabled = 1
-
-" show abbreviated word count string in airline
-let g:airline#extensions#wordcount#format = '%d w'
-
-" show an abbreviated mode string
-" removed the empty line since empty key was generating and error:
-"    \ '' : 'V',
-let g:airline_mode_map = {
-    \ '__' : '-',
-    \ 'n'  : 'N',
-    \ 'i'  : 'I',
-    \ 'R'  : 'R',
-    \ 'c'  : 'C',
-    \ 'v'  : 'V',
-    \ 'V'  : 'V',
-    \ 's'  : 'S',
-    \ }
-
-" use the base16 airline theme. some favs below.
-"let g:airline_theme = 'laederon'
-"let g:airline_theme = 'raven'
-"let g:airline_theme = 'papercolor'
-"let g:airline_theme = 'monochrome'
-"let g:airline_theme = 'jellybeans'
-"let g:airline_theme = 'distinguished'
-"let g:airline_theme = 'cool'
-let g:airline_theme = 'behelit'
-"let g:airline_theme = 'aurora'
-
-" use airline powerline fonts
-let g:airline_powerline_fonts = 1
-
-" change airline separators
-let g:airline_left_sep = "\uE0B8"
-let g:airline_right_sep = "\uE0BE"
 
 " indent settings
 let g:pymode_indent = 0
@@ -173,15 +122,6 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:markdown_syntax_conceal = 0
 let g:markdown_minlines = 100
-
-" ignore .pyc files in nerdtree as well as HDF5 data files
-let NERDTreeIgnore=['\.pyc$', '\~$', '\.hdf5$']
-
-" always delete buffers of deleted nerdtree files
-let NERDTreeAutoDeleteBuffer = 1
-
-"hide the '? for help' message in NERDTree
-let NERDTreeMinimalUI = 1
 
 " turn on folding
 set foldmethod=indent
@@ -237,23 +177,36 @@ endif
 " next line
 noremap g<Down> o<Esc>gqkddk
 
-" toggle search highlighting
-noremap - :set hlsearch!<CR>
-
-" toggle fold with spacebar
-noremap <Leader><CR> zA
-
 " start command with double tap of the spacebar
 noremap <Leader><Space> :
 
 " start a shell command without hitting shift
 noremap <Leader>1 :!
 
+"-----------------------------------------------------------------------
+" GIT GUTTER SETTINGS
+"-----------------------------------------------------------------------
+
+" update gitgutter 250ms after changes
+set updatetime=250
+
+"-----------------------------------------------------------------------
+" DISPLAY/FOLDING/INTERACTION SETTINGS
+"-----------------------------------------------------------------------
+
+" toggle search highlighting
+noremap - :set hlsearch!<CR>
+
+" toggle fold with spacebar enter
+noremap <Leader><CR> zA
+
 " toggle smartypants crap, i.e. linenumbers, autoindent, smartindent, and mouse
 " with delete, aka backspace
 noremap <Bs> :call ToggleInteractive()<CR>
+
 function! ToggleInteractive()
     if &mouse == "a"
+        GitGutterDisable
         setlocal mouse=
         setlocal nonumber
         setlocal norelativenumber
@@ -261,6 +214,7 @@ function! ToggleInteractive()
         setlocal nosmartindent
         echom "Interactive off."
     else
+        GitGutterEnable
         setlocal mouse=a
         setlocal number
         setlocal relativenumber
@@ -270,8 +224,12 @@ function! ToggleInteractive()
     endif
 endfunction
 
+" center the screen
+noremap <CR> zz
+
 " toggle folding for whole document
-noremap <CR> :call ToggleFolding()<CR>
+noremap <Leader><Delete> :call ToggleFolding()<CR>
+
 function! ToggleFolding()
     if exists('b:stefco_is_whole_file_folded')
         if b:stefco_is_whole_file_folded
@@ -293,10 +251,56 @@ endfunction
 " sync syntax from start with <Leader>s (default leader is \)
 map <Leader>S :syntax sync fromstart<CR>
 
-" start git ack/ag search (probably more useful). search for selection if
-" there is one.
-nnoremap <Leader>fg :Ack<Space>
-vnoremap <Leader>fg y:Ack <C-r>"<CR>
+"-----------------------------------------------------------------------
+" COMMENT SYNTAX
+"-----------------------------------------------------------------------
+
+" define comment strings for various langs
+autocmd FileType vim                setlocal commentstring=\"\ %s
+autocmd FileType crontab,sh,python  setlocal commentstring=#\ %s
+autocmd FileType tex,matlab         setlocal commentstring=%\ %s
+
+"-----------------------------------------------------------------------
+" AIRLINE CONFIG
+"-----------------------------------------------------------------------
+
+" display all buffs in tab bar when only one tab is open
+let g:airline#extensions#tabline#enabled = 1
+
+" show abbreviated word count string in airline
+let g:airline#extensions#wordcount#format = '%d w'
+
+" show an abbreviated mode string
+" removed the empty line since empty key was generating and error:
+"    \ '' : 'V',
+let g:airline_mode_map = {
+    \ '__' : '-',
+    \ 'n'  : 'N',
+    \ 'i'  : 'I',
+    \ 'R'  : 'R',
+    \ 'c'  : 'C',
+    \ 'v'  : 'V',
+    \ 'V'  : 'V',
+    \ 's'  : 'S',
+    \ }
+
+" use the base16 airline theme. some favs below.
+let g:airline_theme = 'laederon'
+"let g:airline_theme = 'raven'
+"let g:airline_theme = 'papercolor'
+"let g:airline_theme = 'monochrome'
+"let g:airline_theme = 'jellybeans'
+"let g:airline_theme = 'distinguished'
+"let g:airline_theme = 'cool'
+" let g:airline_theme = 'behelit'
+"let g:airline_theme = 'aurora'
+
+" use airline powerline fonts
+let g:airline_powerline_fonts = 1
+
+" change airline separators
+" let g:airline_left_sep = "\uE0B8"
+" let g:airline_right_sep = "\uE0BE"
 
 "-----------------------------------------------------------------------
 " NAVIGATION COMMANDS
@@ -337,6 +341,28 @@ map <Leader>hm :map<Space>
 " get help for selection or word under cursor
 nnoremap <Leader>hw yiw:help <C-r>"<CR>
 vnoremap <Leader>hw y:help <C-r>"<CR>
+
+"-----------------------------------------------------------------------
+" SEARCH TOOLS
+"-----------------------------------------------------------------------
+
+" use Ag if available even when using Ack package
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+"-----------------------------------------------------------------------
+" NERDTREE SETTINGS
+"-----------------------------------------------------------------------
+
+" ignore .pyc files in nerdtree as well as HDF5 data files
+let NERDTreeIgnore=['\.pyc$', '\~$', '\.hdf5$']
+
+" always delete buffers of deleted nerdtree files
+let NERDTreeAutoDeleteBuffer = 1
+
+"hide the '? for help' message in NERDTree
+let NERDTreeMinimalUI = 1
 
 "-----------------------------------------------------------------------
 " ASYNCRUN COMMANDS
@@ -509,6 +535,13 @@ map <Space>c gc
 "-----------------------------------------------------------------------
 " SPACEMACS BINDINGS
 "-----------------------------------------------------------------------
+
+" SEARCH RELATED BINDINGS
+
+" start git ack/ag search (probably more useful). search for selection if
+" there is one.
+nnoremap <Leader>fg :Ack<Space>
+vnoremap <Leader>fg y:Ack <C-r>"<CR>
 
 " CONFIG FILE BINDINGS
 
