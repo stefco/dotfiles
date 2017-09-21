@@ -35,13 +35,14 @@ nd () {
         local bookmarkdir
         for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
             if [ -L "${bookmarkdir}/$2" ]; then
-                local destination="$(readlink "${bookmarkdir}/$2")"
+                destination="$(readlink "${bookmarkdir}/$2")"
+                resolved_destination="${destination/\~/${HOME}}"
                 # replace tilde with the actual home directory
-                if [ ! -d "${destination/\~/~}" ]; then
+                if [ ! -d "${resolved_destination}" ]; then
                     echo >&2 "Target directory doesn't exist: ${destination}"
                     return 1
                 fi
-                cd "${destination/\~/~}"
+                cd "${resolved_destination}"
                 return
             fi
         done
