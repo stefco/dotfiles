@@ -1,5 +1,8 @@
 # from https://pbrisbin.com/posts/mutt_gmail_offlineimap/
 
+# aliases stored in Dropbox, if it exists
+source `alias_file=~/Dropbox/crypt/.mutt/aliases; if [ ! -s "${alias_file}" ]; then alias_file=/dev/null; fi; echo "${alias_file}"`
+
 # set solarized colorscheme if file is available
 source `colorfile=~/dev/dotfiles/static/.mutt-colors-solarized-light-16.muttrc; if [ ! -s "${colorfile}" ]; then colorfile=/dev/null; fi; echo "${colorfile}"`
 
