@@ -3,7 +3,7 @@
 	url = https://github.com/VundleVim/Vundle.vim.git
 [submodule "submodules/backports.shutil_get_terminal_size"]
 	path = submodules/backports.shutil_get_terminal_size
-	url = git@github.com:stefco/backports.shutil_get_terminal_size.git
+	url = https://github.com/stefco/backports.shutil_get_terminal_size.git
 [submodule "submodules/spacemacs"]
 	path = submodules/spacemacs
 	url = https://github.com/syl20bnr/spacemacs
