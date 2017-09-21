@@ -2,16 +2,57 @@
 # (c) Stefan Countryman 2017
 # add a function for pulling updates to directories in ~/dev
 
-while [ "$#" -gt 0 ]; do
+set -o errexit
+set -o nounset
 
-    pushd "$1"
+# help string
+help () {
+    cat <<"__EOF__"
+Usage: pull repo1 [ repo2 ... repoN ]
+
+Go to each directory and try to pull changes using `git pull`. If data cannot
+be pulled, just move on to the next directory.
+
+Bookmarks can be used (as defined by the `nd`, navigate directory, command),
+though if the repo name can also be interpreted as a valid relative path to
+a directory, an attempt will be made to `git pull` from that directory first.
+
+This script is not very smart and will just exit on any error.
+__EOF__
+}
+
+if [ $# = 0 ]; then
+    help
+    exit 1
+elif [ "$1"z = -hz ]; then
+    help
+    exit
+fi
+
+# source the navigation bash functions to get the nd function
+source "${DOTFILEBASHSRC}/navigate"
+
+# get the promptline crappy git parser
+source "${DOTFILEBASHSRC}/promptline"
+
+ORIGINAL_DIR="$(pwd -P)"
+
+while [ $# -gt 0 ]; do
+
+    # prioritize actual directory names, then fall back to bookmark names
+    if [ -d "$1" ]; then
+        cd "$1"
+    else
+        nd -b "$1"
+    fi
+    pwd
     if [ "$(parse_git_dirty)"z = z ]; then
         echo pulling "$1"...
         git pull
     else
         echo "$1 not clean, could not pull."
     fi
-    popd
+    cd "${ORIGINAL_DIR}"
     shift
 
 done
