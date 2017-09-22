@@ -2,6 +2,14 @@
 # (c) Stefan Countryman 2017
 # some MacOS-specific crap. most of this breaks if you load in non-Mac.
 
+# if there is a system matlab, alias it to `matlab`
+MATLAB="$(
+    find /Applications -maxdepth 1 -iname '*matlab*' | sort -r | head -n 1
+)"
+if [ "${MATLAB}" != "" ]; then
+    alias matlab="${MATLAB}"/bin/matlab
+fi
+
 # donkey, get back in the heap!
 alias donkey="cat \"${DOTFILEDIR}\"/static/ogre.txt; say donkey get back in the heap;"
 
