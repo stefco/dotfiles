@@ -3,6 +3,8 @@
 # commands for generating a nice command prompt along with conditional
 # command prompt setting based on environment.
 
+PID=$$
+
 # command prompt, modified from http://ezprompt.net/
 function nonzero_return() {
     RETVAL=$?
@@ -13,11 +15,38 @@ function parse_git_branch() {
     BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
     if [ ! "${BRANCH}" == "" ]
     then
-        STAT=`parse_git_dirty`
-        echo " [${BRANCH}${STAT}] "
+        # STAT=`parse_git_dirty`
+        # echo "  ${BRANCH}${STAT} "
+        echo "  ${BRANCH} "
     else
-        echo ""
+        # end it with the same color as the rest of the prompt line
+        echo ''
     fi
+}
+# add a divider if there is no git branch
+function no_branch() {
+    # set git branch globally so we don't have to check many times
+    BRANCH_NOW="`parse_git_branch`"
+    printf '%s' "${BRANCH_NOW}" >~/.prompt_branch.${PID}
+    if [ "${BRANCH_NOW}" == "" ]; then
+        echo ''
+    else
+        echo ''
+    fi
+}
+function git_branch_with_div() {
+    # look up the branch name, found in `no_branch`; don't recalculate
+    BRANCH_NOW="`cat ~/.prompt_branch.${PID}`"
+    echo "${BRANCH_NOW}"
+}
+function yes_branch() {
+    BRANCH_NOW="`cat ~/.prompt_branch.${PID}`"
+    if [ "${BRANCH_NOW}" == "" ]; then
+        echo ''
+    else
+        echo ''
+    fi
+    rm ~/.prompt_branch.${PID}
 }
 # get current status of git repo
 function parse_git_dirty {
@@ -64,7 +93,7 @@ function print_bad_exit_status {
 # set the actual command prompt variable based on the host
 if [[ $OSTYPE == darwin* ]]; then
     if [ $(hostname) == 'Alexis-Nelsons-MacBook-Pro.local' ]; then
-        export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[41m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[31;47m\]\[\e[m\]\[\e[m\]\[\e[30;47m\] \w \[\e[m\]\[\e[37m\]\[\e[m\] '
+        export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[41m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[31;47m\]\[\e[m\]\[\e[m\]\[\e[30;47m\] \w \[\e[m\]\[\e[37m\]`no_branch`\[\e[m\]\[\e[37;41m\]`git_branch_with_div`\[\e[m\]\[\e[31m\]`yes_branch`\[\e[m\] '
     elif [ $(hostname) == 'Stefans-iMac.local' ]; then
         export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[44m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[34;47m\]\[\e[m\]\[\e[m\]\[\e[30;47m\] \w \[\e[m\]\[\e[37m\]\[\e[m\] '
     fi
