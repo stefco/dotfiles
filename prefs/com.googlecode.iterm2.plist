@@ -3214,7 +3214,7 @@
 	<key>NSFontPanelSizeSliderParams</key>
 	<string>2 0 100</string>
 	<key>NSNavLastRootDirectory</key>
-	<string>~/dev/dotfiles/submodules/iTerm2-Color-Schemes/schemes</string>
+	<string>~/Documents</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{712, 448}</string>
 	<key>NSNavPanelExpandedSizeForSaveMode</key>
@@ -3260,7 +3260,7 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>1049 448 231 329 0 0 1280 777 </string>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>252 87 877 94 0 0 1280 800 </string>
+	<string>314 473 877 94 0 0 1280 800 </string>
 	<key>NSWindow Frame Preferences</key>
 	<string>515 311 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
@@ -3268,9 +3268,11 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 107 599 501 0 0 1280 800 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>332 215 796 473 0 0 1280 800 </string>
+	<string>332 186 796 473 0 0 1280 800 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>80 194 592 584 0 0 1280 778 </string>
+	<key>NSWindow Frame com.apple.typography_panel_IosevkaNerdFontCM-Light</key>
+	<string>212 247 260 282 0 0 1280 800 </string>
 	<key>NSWindow Frame com.apple.typography_panel_UbuntuMonoDerivativePowerline-Regular</key>
 	<string>344 294 260 319 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
@@ -4058,7 +4060,7 @@
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Vertical Spacing</key>
-			<real>1</real>
+			<real>0.89630200489457834</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
@@ -5817,7 +5819,7 @@
 			<key>Badge Color</key>
 			<dict>
 				<key>Alpha Component</key>
-				<real>0.5</real>
+				<real>0.6970367431640625</real>
 				<key>Blue Component</key>
 				<real>0.0</real>
 				<key>Color Space</key>
@@ -8842,7 +8844,7 @@
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Vertical Spacing</key>
-			<real>1</real>
+			<real>1.0076301298945785</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
@@ -9048,7 +9050,7 @@
 	<key>SmartPlacement</key>
 	<false/>
 	<key>SplitPaneDimmingAmount</key>
-	<real>0.35757461190223694</real>
+	<real>0.23470302483974356</real>
 	<key>StretchTabsToFillBar</key>
 	<false/>
 	<key>SwitchPaneModifier</key>
