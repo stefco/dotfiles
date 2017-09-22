@@ -49,6 +49,7 @@ Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-unimpaired'
 " add some unix sugar
 Plugin 'tpope/vim-eunuch'
+"Plugin 'edkolev/promptline.vim'
 " tmux bindings for vim with nice tab completion
 " Plugin 'tpope/vim-tbone'
 " JSON tools
