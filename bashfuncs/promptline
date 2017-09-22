@@ -97,5 +97,5 @@ if [ $(hostname) == 'Alexis-Nelsons-MacBook-Pro.local' ]; then
 elif [ $(hostname) == 'Stefans-iMac.local' ]; then
     export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[44m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[34;47m\]\[\e[m\]\[\e[m\]\[\e[30;47m\] \w \[\e[m\]\[\e[37m\]\[\e[m\] '
 elif [ $(hostname) == 'gwhen.com' ]; then
-    export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[42m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[32;47m\]\[\e[m\]\[\e[m\]\[\e[30;47m\] \w \[\e[32m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
+    export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \w \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
 fi
