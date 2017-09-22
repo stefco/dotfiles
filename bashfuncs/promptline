@@ -64,9 +64,8 @@ function print_bad_exit_status {
 # set the actual command prompt variable based on the host
 if [[ $OSTYPE == darwin* ]]; then
     if [ $(hostname) == 'Alexis-Nelsons-MacBook-Pro.local' ]; then
-        export SHORT_HOST_NAME=mbp
+        export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[41m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[31;47m\]\[\e[m\]\[\e[m\]\[\e[30;47m\] \w \[\e[m\]\[\e[37m\]\[\e[m\] '
     elif [ $(hostname) == 'Stefans-iMac.local' ]; then
-        export SHORT_HOST_NAME=imac
+        export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[44m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[34;47m\]\[\e[m\]\[\e[m\]\[\e[30;47m\] \w \[\e[m\]\[\e[37m\]\[\e[m\] '
     fi
-    export PS1="\[\e[37;45m\]\`print_bad_exit_status\`\[\e[m\]\[\e[37;43m\] $SHORT_HOST_NAME \[\e[m\]\[\e[44m\] \${#NAVIGATION_BWD[@]} \[\e[m\]\[\e[37;41m\] \w \[\e[m\]\[\e[44m\] \${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37;42m\]\`parse_git_branch\`\[\e[m\]\[\e[30;47m\]\[\e[m\]\[\e[30;47m\] > \[\e[m\] "
 fi
