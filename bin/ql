@@ -1,0 +1,58 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# quicklook at files.
+
+help () {
+    cat <<"__EOF__"
+USAGE: ql file1 [file2 ... fileN]
+
+Open a MacOS preview of one or more files. Exit the preview as you usually
+would by tapping space. Works on remote servers through SSH and caches files
+locally; will therefore lag roughly proportionally to how much data you are
+trying to preview. In this sense it is not technically any different than
+downloading files and previewing them locally, though it is certainly easier.
+
+Locally cached files will be stored in ~/.quicklook_cache/${HOSTNAME}/${PATH},
+where ${HOSTNAME} is the name of the host (as returned by the `hostname`
+executable) and ${PATH} is the path to the file without resolving any symlinks,
+i.e. what you would get from running `pwd` in the `dirname` of the file fed to
+`ql`.
+
+Copying is done in the background using `rsync` to try to avoid redundant
+copies; an attempt is always made to use `rsync -R` to try to avoid out of date
+caching and to preserve directory structure. note that soft and hard links
+will not be resolved, so you can easily end up with redundant copies if your
+use case is exotic and your files exist as many different paths resolving to
+the same inodes.
+
+Also note that the SSH version of this feature requires iTerm2 with a profile
+set up to listen for a trigger. The trigger string is:
+
+TODO
+
+This will run some sort of program on the client to `rsync` the specified
+directories.
+
+Finally, note that rsync will only work with GSISSH hosts if the
+ControlMaster and ControlPath SSH config opitons are set so that the existing
+gsissh session can be used with regular ssh connections for rsync without
+further configuration. See:
+
+https://www.anchor.com.au/blog/2010/02/ssh-controlmaster-the-good-the-bad-the-ugly/
+__EOF__
+
+readlinks () {
+    for f in "$@"; do
+        fpath="$(cd "$(dirname "$f")" && pwd)"/"$(basename "$f")"
+        echo "${fpath}"
+    done
+}
+
+if [[ $SESSION_TYPE == remote/ssh ]] && [[ $TERM_PROGRAM == iTerm.app ]]; then
+    echo "quick look not yet enabled."
+elif [[ $OSTYPE == darwin* ]]; then
+    qlmanage -p 1>/dev/null 2>&1 "$@"
+else
+    echo >&2 "Sorry, quicklook requires you to either use iTerm.app in an SSH"
+    echo >&2 "session or to run locally on a Mac in any terminal emulator."
+fi
