@@ -40,6 +40,12 @@ further configuration. See:
 
 https://www.anchor.com.au/blog/2010/02/ssh-controlmaster-the-good-the-bad-the-ugly/
 __EOF__
+}
+
+if [[ $1 == -h ]]; then
+    help
+    exit 1
+fi
 
 readlinks () {
     for f in "$@"; do
