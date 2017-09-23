@@ -1,0 +1,161 @@
+Hi all,
+
+I propose we start using python instead of MATLAB for all new projects for the
+reasons outlined below. (I know we don't have time to rewrite all legacy code;
+I'm not suggesting that.) I realize this is a long list email, and that I might
+not change any minds. But I have had more experience than most in the group
+with MATLAB, python, and Julia, and so I feel that I should share my
+observations and suggestions, which I believe could be very beneficial for the
+efficiency of the group in the immediate and long-term future.
+
+I am also basing my observations on extensive conversations with other members
+of our group (and other groups). I am far from being alone in these opinions,
+but I haven't heard anyone else make a concerted push towards python in our
+group, so I feel I should say something.
+
+PYTHON ADVANTAGES
+
+- all undergrads now learn python (not matlab)
+- all data scientists use python (or R, but python is taking over)
+- all new LIGO tools are moving towards python (see: GWpy)
+- all collaborative astronomy is moving towards python (see: the extremely
+  robust astropy projects, as well as HEALpy)
+- python has extremely mature library support and can be used as a swiss-army
+  knife for any project. you can build *any* app in python.
+- you can trivially compile python to C code using Cython to get a binary
+  executable.
+- even better, you can add Cython type annotations to basically
+  get C performance without changing your code much.
+- python is open source. it is easy to ship virtual machines using vagrant that
+  use matlab; undergrads know about vagrant and will appreciate being able to
+  use it to *immediately* start making productive scientific contributions in
+  python.
+- in python, you can define plenty of functions in a single file and then
+  selectively import what you need in another file. this encourages nice,
+  sanitized, but also portable single-file python libraries, which are perfect
+  for collaboration. in matlab, the desire to keep functionality in a single
+  file drives people to write bloated, unreadable MATLAB functions hundreds
+  of lines long.
+- python is free. we can collaborate more flexibly using it since people don't
+  need to worry about licensing.
+- using a shared group language will make it much easier to debug, review, and
+  use each other's code.
+- online documentation and help resources are far more robust for python.
+- it is easy to write and organize complex code in python.
+- our group is already using tons of python. making a conscious effort to only
+  use python (except for specialty, legacy, or experimental projects) is a
+  natural step.
+- python code is easier to automate *(and hence easier to use for reproducible
+  results!!)* at every level. it is much easier to do responsible science in
+  python in my experience.
+- python code's syntax is more consistent and hence more readable. it is a
+  little bit harder to write, but much easier to read and reason about because
+  of its simplicity and consistency.
+- python's whitespace-syntax forces people to write more nicely and
+  consistently indented code. it also has a syntax that lends itself to greater
+  readability compared to many other langs. this is *very important* for
+  collaboration.
+- python's numpy and matplotlib libraries copy a lot of MATLAB conventions. you
+  can bring over a lot of your MATLAB skills to numerical python coding.
+- you can turn on some options in ipython that make it feel just as convenient
+  as the MATLAB command line. but when it comes time to write your python
+  script, you are forced to write less ambiguous and dangerous code by adding
+  some parentheses here and there; MATLAB lets you put crappy prototype code
+  into production too easily, which very quickly costs more time than it saves
+  (except for true one-off projects; see end of this document).
+- python is used everywhere and it runs everywhere. it is a good time
+  investment for anybody who will spend any time coding to learn python. it is
+  the C programming language of the 2000s in terms of ubiquity and flexibility.
+  there is a reason it has become the language of choice in intro CS classes.
+- python has tons and tons of free tools for writing quality code. This is
+  great for complex projects.
+- python 3.5+ has optional type annotations, which in the future will allow for
+  higher reliability through static code analysis, as well as higher
+  performance (for free). this is an awesome feature it shares with Julia. you
+  can write sloppy dynamic prototype code and then put typing in when you need
+  to have higher reliability and performance and aren't changing your code as
+  much.
+- python lets you define classes and document all of their interfaces. this is
+  phenomenally useful for organizing scientific code. you can view the
+  methods and properties of a class using python's documentation tools as you
+  interactively code. this is super useful for developing new features with
+  other people's code, or even your own old code. MATLAB structs have none of
+  this, making it impossible to just look at a struct and instantly know what
+  types of data it contains, what its intended use is, etc.
+
+SHARED ADVANTAGES
+
+- MATLAB is only fast if you vectorize your code. python is just as easy to
+  vectorize.
+- python has all of the same LAPACK optimizations for matrix algebra as
+  MATLAB. you can even trivially install the Intel MKL and NVIDIA Cuda matrix
+  algebra kernels (for free!!) if you want to use the latest CPU and GPU
+  optimizations for your linear algebra. it is hence the same even in the
+  extreme speed case.
+- python is also cross-platform (if you need to do a native install, this is
+  important, but python is much easier to put in a virtual machine than
+  MATLAB, which is important in reducing sysadmin loads on group members)
+- python has several mature interactive development environments that are as
+  good or better than MATLAB, and certainly more flexible. GUI options include
+  spyder and jupyter notebooks, but ipython can also be used at the command
+  line, and is far superior to command line matlab.
+- both have rich documentation features. it is easy in both to write code whose
+  documentation can be read interactively.
+
+MATLAB DISADVANTAGES
+
+- matlab syntax is sloppy and has *repeatedly* led to subtle bugs in our code
+  that are time consuming to fix.
+- MATLAB is very hard to administer, particularly on non-GUI environments,
+  compared to python. it is very difficult to install without a GUI and is
+  illegal to distribute.
+- consequently, maintaining a cross-platform LIGO-ready computing environment
+  is *several times harder* with MATLAB included.
+- GWHEN pipeline setup is approx. 2-3x harder than it should be because of
+  MATLAB. This will be true for any complex project involving MATLAB because
+  MATLAB is too weak of a language to allow for complicated non-mathematical
+  coding logic (like communicating with remote servers or APIs). python, on the
+  other hand, can be used for every part of a complex project (see: python
+  advantages, above)
+- similarly, debugging time is 3-4x longer with MATLAB for GWHEN because of
+  mental context switching and various inter-process communication
+  complexities necessitated by using a mongrel codebase.
+- MATLAB is not open source, which means I can't distribute it as part of my
+  virtual machines, which means group members will waste time configuring
+  MATLAB and not doing science.
+- MATLAB is a resource hog. the GWHEN server has more ram than it should need
+  because MATLAB is so resource intensive. forget about doing a raspberry-pi
+  cluster in MATLAB.
+- *every* young people i talk to just prefers python (for many of the reasons I
+  have listed, as well as others). this is admittedly a consideration
+  of fashion, but we're always trying to attract the brightest contributors,
+  and for this goal, a popular language like python is a good choice.
+
+The only MATLAB advantage I can think of is for prototyping. MATLAB's powerful
+interactive plotting and forgiving syntax can make it easy to hack in. for
+one-off projects, I don't think MATLAB is a terrible idea, though I think we
+should quickly transition prototype code to python code if we plan on reusing
+something at all.
+
+HOWEVER, python has been catching up. using matplotlib with jupyter notebook is
+almost as nice as using MATLAB, but has bonus features like easy sharing and
+even remote viewing (since jupyter notebooks can be displayed in the browser,
+you can set up a jupyter server to be viewed by a remote collaborator).
+similarly, python's syntax is a bit less forgiving, but there are ipython
+features that you can easily enable that make ipython feel like MATLAB's
+command line (see above). (I'm happy to write some help guides on how to
+configure ipython to feel more like MATLAB.)
+
+So, given the fact that python is, in my opinion, almost as easy as
+MATLAB for almost everything, it probably makes sense *even for prototypes and
+one-off projects* to try working in python. The time saved by avoiding mental
+language context switching, debugging, and awful code refactoring will more
+than make up for whatever marginal advantages MATLAB offers.
+
+Of course, the true language of the future is Julia. Emphasis on future,
+though; in ~5-10 years we should consider using that for everything. For now,
+though, python is unquestionably the sanest choice, and the benefit of making a
+conscious effort to develop exclusively in python (where practical) are huge.
+
+Best,
+Stefan
