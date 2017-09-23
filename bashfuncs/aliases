@@ -33,3 +33,7 @@ alias queryencode="python -c 'import urllib, sys; print urllib.quote_plus(sys.st
 # workaround; vim saves files in a way that pisses off crontab
 alias crontab="VIM_CRONTAB=true crontab"
 
+# just always use gsissh instead of ssh for laziness's sake
+if type >/dev/null 2>&1 gsissh; then
+    alias ssh=gsissh
+fi
