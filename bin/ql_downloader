@@ -9,6 +9,11 @@ log () {
     echo >>"${LOG}" "$(date):" "$@"
 }
 
+check_args () {
+    for arg in "$@"; do
+        log "$arg"
+    done
+}
 check_cache_dir () {
     if ! [ -d "${CACHEDIR}" ]; then
         mkdir -p "${CACHEDIR}"
@@ -67,10 +72,11 @@ fi
 # below prepends a : to each argument.
 log "Starting download."
 log "Download command is:"
-log rsync -Rv "${URL}""${@/\//:/}" "${ROOT}" >>"${LOG}"
-rsync -Rv "${URL}""${@/\//:/}" "${ROOT}" >>"${LOG}"
+check_args rsync -Rv "${@/\//${URL}:/}" "${ROOT}" >>"${LOG}"
+# use macports rsync; the default version is garbage
+/opt/local/bin/rsync -Rv "${@/\//${URL}:/}"  "${ROOT}" >>"${LOG}" 2>&1
 
 # launch quicklook. we strip the leading / from each argument so that the
 # path is relative to the current fake root directory.
 pushd "${ROOT}"
-qlmanage -p 2>&1 "${@#/}" >>"${LOG}"
+qlmanage -p "${@#/}" >>"${LOG}" 2>&1
