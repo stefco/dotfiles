@@ -80,3 +80,6 @@ check_args rsync -Rv "${@/\//${URL}:/}" "${ROOT}" >>"${LOG}"
 # path is relative to the current fake root directory.
 pushd "${ROOT}"
 qlmanage -p "${@#/}" >>"${LOG}" 2>&1
+
+# switch back to iterm once done.
+open -a iTerm

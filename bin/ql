@@ -18,6 +18,10 @@ executable) and ${PATH} is the path to the file without resolving any symlinks,
 i.e. what you would get from running `pwd` in the `dirname` of the file fed to
 `ql`.
 
+Note that this will fail if your remote has `hostname` set to something besides
+its URL or the name you use in your ssh_config. This is a bug. Too lazy to
+fix it right now.
+
 Copying is done in the background using `rsync` to try to avoid redundant
 copies; an attempt is always made to use `rsync -R` to try to avoid out of date
 caching and to preserve directory structure. note that soft and hard links

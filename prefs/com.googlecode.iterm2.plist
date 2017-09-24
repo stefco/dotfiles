@@ -3272,7 +3272,7 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 107 599 501 0 0 1280 800 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>300 188 796 473 0 0 1280 800 </string>
+	<string>300 60 796 473 0 0 1280 800 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>80 194 592 584 0 0 1280 778 </string>
 	<key>NSWindow Frame com.apple.typography_panel_IosevkaNerdFontCM-Light</key>
@@ -3280,7 +3280,7 @@
 	<key>NSWindow Frame com.apple.typography_panel_UbuntuMonoDerivativePowerline-Regular</key>
 	<string>344 294 260 319 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>5 4 1275 796 0 0 1280 800 </string>
+	<string>0 375 1280 403 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>10 8 1270 792 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -4829,9 +4829,11 @@
 			<array>
 				<dict>
 					<key>action</key>
-					<string>CaptureTrigger</string>
+					<string>ScriptTrigger</string>
+					<key>parameter</key>
+					<string>/Users/Stefan/dev/dotfiles/bin/ql_downloader c1 \2</string>
 					<key>regex</key>
-					<string></string>
+					<string>^YouAreAlreadyDead;Url=(.*);PathsToRsync=(.* __EndOfFile__)</string>
 				</dict>
 			</array>
 			<key>Unlimited Scrollback</key>
@@ -5612,9 +5614,11 @@
 			<array>
 				<dict>
 					<key>action</key>
-					<string>CaptureTrigger</string>
+					<string>ScriptTrigger</string>
+					<key>parameter</key>
+					<string>/Users/Stefan/dev/dotfiles/bin/ql_downloader c2 \2</string>
 					<key>regex</key>
-					<string></string>
+					<string>^YouAreAlreadyDead;Url=(.*);PathsToRsync=(.* __EndOfFile__)</string>
 				</dict>
 			</array>
 			<key>Unlimited Scrollback</key>
@@ -6395,9 +6399,11 @@
 			<array>
 				<dict>
 					<key>action</key>
-					<string>CaptureTrigger</string>
+					<string>ScriptTrigger</string>
+					<key>parameter</key>
+					<string>/Users/Stefan/dev/dotfiles/bin/ql_downloader \1 \2</string>
 					<key>regex</key>
-					<string></string>
+					<string>^YouAreAlreadyDead;Url=(.*);PathsToRsync=(.* __EndOfFile__)</string>
 				</dict>
 			</array>
 			<key>Unlimited Scrollback</key>
@@ -7975,7 +7981,16 @@
 			<key>Transparency</key>
 			<real>0.0</real>
 			<key>Triggers</key>
-			<array/>
+			<array>
+				<dict>
+					<key>action</key>
+					<string>ScriptTrigger</string>
+					<key>parameter</key>
+					<string>/Users/Stefan/dev/dotfiles/bin/ql_downloader \1 \2</string>
+					<key>regex</key>
+					<string>^YouAreAlreadyDead;Url=(.*);PathsToRsync=(.* __EndOfFile__)</string>
+				</dict>
+			</array>
 			<key>Unlimited Scrollback</key>
 			<false/>
 			<key>Use Bold Font</key>
@@ -8844,7 +8859,9 @@
 			<array>
 				<dict>
 					<key>action</key>
-					<string>CoprocessTrigger</string>
+					<string>ScriptTrigger</string>
+					<key>parameter</key>
+					<string>/Users/Stefan/dev/dotfiles/bin/ql_downloader \1 \2</string>
 					<key>partial</key>
 					<true/>
 					<key>regex</key>
@@ -9054,7 +9071,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-09-19T12:52:39Z</date>
+	<date>2017-09-24T16:03:08Z</date>
 	<key>SavePasteHistory</key>
 	<true/>
 	<key>Secure Input</key>
@@ -9092,10 +9109,12 @@
 		<string>Profiles</string>
 		<string>Paste History</string>
 	</array>
+	<key>TriggerRadius</key>
+	<integer>10</integer>
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<true/>
 	<key>UKCrashReporterLastCrashReportDate</key>
-	<real>1505825536</real>
+	<real>1506269184</real>
 	<key>URLHandlersByGuid</key>
 	<dict/>
 	<key>UseBorder</key>
