@@ -60,7 +60,7 @@ print_escaped_paths () {
     printf '\nYouAreAlreadyDead;Url=%s;PathsToRsync=' "$1"
     shift
     while [ $# -gt 0 ]; do
-        printf "'%s' " "$@"
+        printf "'%s' " "${@:1:1}"
         shift
     done
     printf '__EndOfFile__\n'
