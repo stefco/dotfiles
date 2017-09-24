@@ -26,15 +26,18 @@ use case is exotic and your files exist as many different paths resolving to
 the same inodes.
 
 Also note that the SSH version of this feature requires iTerm2 with a profile
-set up to listen for a trigger. The trigger string is:
+set up to listen for a trigger. The trigger string matches the following
+ICU <http://userguide.icu-project.org/strings/regexp> regular expression:
 
-^YouAreAlreadyDead;PathsToRsync=(.* __EndOfFile__)
+^YouAreAlreadyDead;Url=(.*);PathsToRsync=(.* __EndOfFile__)
 
 This will run some sort of program on the client to `rsync` the specified
 directories. You can therefore print a list of paths to a file, each within
 single quotes, ending with "__EndOfFile__", like so:
 
-printf 'YouAreAlreadyDead;PathsToRsync=%s __EndOfFile__' "'path1' 'path 2'"
+printf 'YouAreAlreadyDead;Url=%s;PathsToRsync=%s __EndOfFile__' \
+    "username@example.com" \
+    "'path1' 'path 2' 'another path to a file.txt'"
 
 etc.
 
@@ -63,6 +66,7 @@ print_escaped_paths () {
     printf '__EndOfFile__\n'
 }
 
+# get the paths to files provided as arguments to this script
 readlinks () {
     for f in "$@"; do
         fpath="$(cd "$(dirname "$f")" && pwd)"/"$(basename "$f")"
@@ -70,12 +74,20 @@ readlinks () {
     done
 }
 
+# get the user@hostname for this server
 url () {
     printf '%s' "$(whoami)"@"$(hostname)"
 }
 
 if [[ $SESSION_TYPE == remote/ssh ]] && [[ $TERM_PROGRAM == iTerm.app ]]; then
     echo "quick look not yet enabled."
+    # only split on newlines
+    old_IFS="$IFS"
+    IFS=$'\n'
+    # this next command should trigger ql_download on the client machine
+    print_escaped_paths $(url) $(readlinks "$@")
+    # return to default IFS behavior
+    IFS="$old_IFS"
 elif [[ $OSTYPE == darwin* ]]; then
     qlmanage -p 1>/dev/null 2>&1 "$@"
 else
