@@ -74,18 +74,21 @@ syntax on
 " don't word wrap
 set nowrap
 
+" define a function for setting textwidth. this is necessary to enable the
+" ToggleInteractive function.
+function! ActivateTextWidth()
+    " autoenter after 79 characters
+    set textwidth=79
+    " except in the following filetypes
+    if &filetype == 'crontab'
+        set textwidth=0
+    elseif &filetype == 'sh'
+        set textwidth=0
+    endif
+endfunction
+
 " automatically enter after 79 characters; requires 't' to be in formatoptions.
-set textwidth=79
-" except in the following filetypes
-autocmd FileType crontab    setlocal textwidth=0
-
-" define comment strings for various langs
-autocmd FileType vim                setlocal commentstring=\"\ %s
-autocmd FileType crontab,sh,python  setlocal commentstring=#\ %s
-autocmd FileType tex,matlab         setlocal commentstring=%\ %s
-
-"update gitgutter 250ms after changes
-set updatetime=250
+autocmd FileType * call ActivateTextWidth()
 
 " set the <Leader> key to space
 let mapleader = ' '
@@ -191,6 +194,9 @@ noremap <Leader>1 :!
 " update gitgutter 250ms after changes
 set updatetime=250
 
+" toggle highlighting of diffs
+noremap <Leader>hd :GitGutterLineHighlightsToggle<CR>
+
 "-----------------------------------------------------------------------
 " DISPLAY/FOLDING/INTERACTION SETTINGS
 "-----------------------------------------------------------------------
@@ -208,6 +214,7 @@ noremap <Bs> :call ToggleInteractive()<CR>
 function! ToggleInteractive()
     if &mouse == "a"
         GitGutterDisable
+        setlocal textwidth=0
         setlocal mouse=
         setlocal nonumber
         setlocal norelativenumber
@@ -216,6 +223,7 @@ function! ToggleInteractive()
         echom "Interactive off."
     else
         GitGutterEnable
+        call ActivateTextWidth()
         setlocal mouse=a
         setlocal number
         setlocal relativenumber
@@ -229,24 +237,51 @@ endfunction
 noremap <CR> zz
 
 " toggle folding for whole document
-noremap <Leader><Delete> :call ToggleFolding()<CR>
+noremap <Leader><Bs> :call ToggleAllFolding()<CR>
 
-function! ToggleFolding()
-    if exists('b:stefco_is_whole_file_folded')
-        if b:stefco_is_whole_file_folded
-            echom "unfolding."
-            execute "normal! ggVGzO\<C-O>\<C-O>"
-            let b:stefco_is_whole_file_folded=0
-        else
-            echom "folding."
-            execute "normal! ggVGzC\<C-O>\<C-O>"
-            let b:stefco_is_whole_file_folded=1
-        endif
+function! UnfoldAll()
+    if line('.') == 1
+        let b:not_first_line = 0
     else
-        echom "fold state undefined, assuming folded; unfolding."
-        execute "normal! ggVGzO\<C-O>\<C-O>"
-        let b:stefco_is_whole_file_folded=0
+        let b:not_first_line = 1
     endif
+    execute "normal! ggVGzO\<C-O>"
+    " if we did not start on the first line, then we will need to undo the
+    " first `gg` command in addition to the `G` command; add an extra <C-O>
+    if b:not_first_line
+        execute "normal! \<C-O>"
+    endif
+endfunction
+
+function! FoldAll()
+    if line('.') == 1
+        let b:not_first_line = 0
+    else
+        let b:not_first_line = 1
+    endif
+    execute "normal! ggVGzC\<C-O>"
+    " if we did not start on the first line, then we will need to undo the
+    " first `gg` command in addition to the `G` command; add an extra <C-O>
+    if b:not_first_line
+        execute "normal! \<C-O>"
+    endif
+    " put the cursor in the middle of the screen for consistency.
+    normal zz
+endfunction
+
+function! ToggleAllFolding()
+    " if the file is folded or the fold state is undefined, unfold
+    if (! exists('b:stefco_whole_file_folded')) || b:stefco_whole_file_folded
+        echom "unfolding."
+        call UnfoldAll()
+        let b:stefco_whole_file_folded=0
+    else
+        echom "folding."
+        call FoldAll()
+        let b:stefco_whole_file_folded=1
+    endif
+    " put the cursor in the middle of the screen for consistency.
+    normal zz
 endfunction
 
 " sync syntax from start with <Leader>s (default leader is \)
@@ -286,15 +321,15 @@ let g:airline_mode_map = {
     \ }
 
 " use the base16 airline theme. some favs below.
-let g:airline_theme = 'laederon'
-"let g:airline_theme = 'raven'
-"let g:airline_theme = 'papercolor'
-"let g:airline_theme = 'monochrome'
-"let g:airline_theme = 'jellybeans'
-"let g:airline_theme = 'distinguished'
-"let g:airline_theme = 'cool'
+" let g:airline_theme = 'laederon'
+" let g:airline_theme = 'raven'
+let g:airline_theme = 'papercolor'
+" let g:airline_theme = 'monochrome'
+" let g:airline_theme = 'jellybeans'
+" let g:airline_theme = 'distinguished'
+" let g:airline_theme = 'cool'
 " let g:airline_theme = 'behelit'
-"let g:airline_theme = 'aurora'
+" let g:airline_theme = 'aurora'
 
 " use airline powerline fonts
 let g:airline_powerline_fonts = 1
@@ -405,8 +440,8 @@ nnoremap <Leader>gd :Gresolvelink<CR>:Gdiff<CR>
 " show a really nicely pretty-printed git log
 nnoremap <Leader>gl :!git lg2<Space>
 
-" run git diff in CWD
-nnoremap <Leader>gD :Gresolvelink<CR>:!git diff<CR>
+" run git diff in (user can enter extra commands)
+nnoremap <Leader>gD :Gresolvelink<CR>:!git diff<Space>
 
 " git commit
 nnoremap <Leader>gc :Gresolvelink<CR>:Gcommit<CR>
@@ -490,14 +525,25 @@ function! RunCommandOnFileUnderCursor(command)
   if bufname("") == "NERD_tree_1"
     " move to end of line to make sure we are over the filename in NERDTree
     normal $
+    " if we are in a nerdtree directory, we should execute this in the same
+    " directory but then reset working directory to what it was before.
+    let pre_preview_in_nerdtree = 1
+    let pre_preview_cwd = fnameescape(getcwd())
+    normal cd
   endif
   let fname=expand("<cfile>")
   execute("!" . a:command . ' "' . fname . '"')
   "execute("!tput clear")
   silent !tput clear
   redraw!
+  if exists(pre_preview_in_nerdtree) && pre_preview_in_nerdtree
+    " change back to the old directory now that the preview is done
+    let pre_preview_in_nerdtree = 0
+    execute "cd ".pre_preview_cwd
+  endif
   if bufname("") == "NERD_tree_1"
-    " move back to the start of the line in NERDTree after we finish
+    " if we are still in the NERDTree window, move back to the start of the
+    " line in NERDTree after we finish.
     normal 0
   endif
 endfunction
@@ -563,8 +609,11 @@ map <Leader>fs :w<CR>
 " save all files
 map <Leader>fS :wa<CR>
 
+" e(x)it after saving file
+map <Leader>fx :wq<CR>
+
 " e(x)it after saving all files
-map <Leader>fx :wqa<CR>
+map <Leader>fX :wqa<CR>
 
 " move the current file relative to PWD (eunuch)
 map <Leader>fR :Rename<Space>
@@ -594,6 +643,9 @@ map <Leader>fF <F1>file_rec buffer<CR>
 
 " access all window-prefix stuff
 map <Leader>w <C-w>
+
+" delete window (from current emacs version, by analogy to SPC b d)
+map <Leader>wd <C-w>c
 
 " quit window
 map <Leader>wq :q<CR>
