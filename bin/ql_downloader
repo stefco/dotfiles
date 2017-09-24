@@ -47,6 +47,7 @@ fi
 # strip the user@host URL, which should be the first arg
 URL="$1"
 shift
+log "Args: " "$@"
 
 # only use the host part of user@host URL pattern for the root of the cache
 ROOT="${CACHEDIR}/${URL##*@}"/
@@ -65,7 +66,9 @@ fi
 # rsync everything, preserving directory structure; the parameter expansion
 # below prepends a : to each argument.
 log "Starting download."
-rsync -Rv "${URL}""${@/\//:\/}" "${ROOT}" >>"${LOG}"
+log "Download command is:"
+log rsync -Rv "${URL}""${@/\//:/}" "${ROOT}" >>"${LOG}"
+rsync -Rv "${URL}""${@/\//:/}" "${ROOT}" >>"${LOG}"
 
 # launch quicklook. we strip the leading / from each argument so that the
 # path is relative to the current fake root directory.
