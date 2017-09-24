@@ -28,10 +28,15 @@ the same inodes.
 Also note that the SSH version of this feature requires iTerm2 with a profile
 set up to listen for a trigger. The trigger string is:
 
-TODO
+^YouAreAlreadyDead;PathsToRsync=(.* __EndOfFile__)
 
 This will run some sort of program on the client to `rsync` the specified
-directories.
+directories. You can therefore print a list of paths to a file, each within
+single quotes, ending with "__EndOfFile__", like so:
+
+printf 'YouAreAlreadyDead;PathsToRsync=%s __EndOfFile__' "'path1' 'path 2'"
+
+etc.
 
 Finally, note that rsync will only work with GSISSH hosts if the
 ControlMaster and ControlPath SSH config opitons are set so that the existing
@@ -47,11 +52,26 @@ if [[ $1 == -h ]]; then
     exit 1
 fi
 
+print_escaped_paths () {
+    # take user@hostname as first argument followed by paths to sync
+    printf '\nYouAreAlreadyDead;Url=%s;PathsToRsync=' "$1"
+    shift
+    while [ $# -gt 0 ]; do
+        printf "'%s' " "$@"
+        shift
+    done
+    printf '__EndOfFile__\n'
+}
+
 readlinks () {
     for f in "$@"; do
         fpath="$(cd "$(dirname "$f")" && pwd)"/"$(basename "$f")"
         echo "${fpath}"
     done
+}
+
+url () {
+    printf '%s' "$(whoami)"@"$(hostname)"
 }
 
 if [[ $SESSION_TYPE == remote/ssh ]] && [[ $TERM_PROGRAM == iTerm.app ]]; then
