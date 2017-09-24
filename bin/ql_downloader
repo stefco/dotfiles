@@ -1,0 +1,73 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# download files using rsync
+
+CACHEDIR=~/.ql_caches
+LOG="${CACHEDIR}"/log
+
+log () {
+    echo >>"${LOG}" "$(date):" "$@"
+}
+
+check_cache_dir () {
+    if ! [ -d "${CACHEDIR}" ]; then
+        mkdir -p "${CACHEDIR}"
+        log "Had to make new cachedir."
+    fi
+}
+
+help () {
+    echo <<"__EOF__"
+
+Usage: ql_downloader user@host :path1 [ :path2 ... :pathN ] __EndOfFile__
+
+This script downloads files from user@host to ~/.ql_caches/host/path, creating
+a partial copy of the filesystem tree on the remote host that can be used for
+things like previewing files with quicklook. It also strips the `__EndOfFile__`
+delimiter that is required at the end of the argument list for iTerm2 triggered
+commands due to the way that iTerm2 processes quoted arguments. It is not meant
+to be used interactively. All arguments passed must be absolute paths! No
+relative paths or user home directories may be used.
+
+Logs will be stored in ~/.ql_caches/log
+__EOF__
+}
+
+if [[ $# -lt 2 ]] || [[ $1 == -h ]] || [[ ${@:$#:$#} != __EndOfFile__ ]]; then
+    # write help to stdout if interactive
+    if [ -t 0 ]; then
+        help
+    else
+        check_cache_dir
+        help >>"${LOG}"
+    fi
+    exit 1
+fi
+
+# strip the user@host URL, which should be the first arg
+URL="$1"
+shift
+
+# only use the host part of user@host URL pattern for the root of the cache
+ROOT="${CACHEDIR}/${URL##*@}"/
+
+# strip the last argument, which should be __EndOfFile__, from the args
+set -- "${@:1:$(($#-1))}"
+
+# make sure the whole cache dir exists
+check_cache_dir
+
+# make sure the root directory of the cached machine exists
+if ! [ -d "${ROOT}" ]; then
+    mkdir "${ROOT}"
+fi
+
+# rsync everything, preserving directory structure; the parameter expansion
+# below prepends a : to each argument.
+log "Starting download."
+rsync -Rv "${URL}""${@/\//:\/}" "${ROOT}" >>"${LOG}"
+
+# launch quicklook. we strip the leading / from each argument so that the
+# path is relative to the current fake root directory.
+pushd "${ROOT}"
+qlmanage -p 2>&1 "${@#/}" >>"${LOG}"
