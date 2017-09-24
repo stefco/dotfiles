@@ -3268,7 +3268,7 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 107 599 501 0 0 1280 800 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>332 186 796 473 0 0 1280 800 </string>
+	<string>214 60 796 473 0 0 1280 800 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>80 194 592 584 0 0 1280 778 </string>
 	<key>NSWindow Frame com.apple.typography_panel_IosevkaNerdFontCM-Light</key>
@@ -3276,7 +3276,7 @@
 	<key>NSWindow Frame com.apple.typography_panel_UbuntuMonoDerivativePowerline-Regular</key>
 	<string>344 294 260 319 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 400 1280 378 0 0 1280 778 </string>
+	<string>5 4 1275 796 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>10 8 1270 792 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -4042,7 +4042,7 @@
 			<array>
 				<dict>
 					<key>action</key>
-					<string>CaptureTrigger</string>
+					<string>ScriptTrigger</string>
 					<key>regex</key>
 					<string></string>
 				</dict>
@@ -7195,7 +7195,14 @@
 			<key>Transparency</key>
 			<real>0.17401303624260356</real>
 			<key>Triggers</key>
-			<array/>
+			<array>
+				<dict>
+					<key>action</key>
+					<string>BounceTrigger</string>
+					<key>regex</key>
+					<string>\x1b]133t;RsyncPathsToLocalCache=\x07</string>
+				</dict>
+			</array>
 			<key>Unlimited Scrollback</key>
 			<false/>
 			<key>Use Bold Font</key>
@@ -8235,7 +8242,7 @@
 			<key>Badge Color</key>
 			<dict>
 				<key>Alpha Component</key>
-				<real>0.9683380126953125</real>
+				<real>0.9280548095703125</real>
 				<key>Blue Component</key>
 				<real>0.0</real>
 				<key>Color Space</key>
@@ -8300,13 +8307,13 @@
 			<key>Cursor Guide Color</key>
 			<dict>
 				<key>Alpha Component</key>
-				<real>0.4452972412109375</real>
+				<real>0.2222747802734375</real>
 				<key>Blue Component</key>
 				<real>0.0</real>
 				<key>Color Space</key>
 				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.14901961386203766</real>
+				<real>0.25341796875</real>
 				<key>Red Component</key>
 				<real>1</real>
 			</dict>
@@ -8830,7 +8837,18 @@
 			<key>Transparency</key>
 			<real>0.0</real>
 			<key>Triggers</key>
-			<array/>
+			<array>
+				<dict>
+					<key>action</key>
+					<string>AlertTrigger</string>
+					<key>parameter</key>
+					<string>dem nitrogen</string>
+					<key>partial</key>
+					<true/>
+					<key>regex</key>
+					<string>\x1b]133t;RsyncPathsToLocalCache=\x07</string>
+				</dict>
+			</array>
 			<key>Unlimited Scrollback</key>
 			<false/>
 			<key>Use Bold Font</key>
