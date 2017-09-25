@@ -68,18 +68,44 @@ if ! [ -d "${ROOT}" ]; then
     mkdir "${ROOT}"
 fi
 
+# launch quicklook. we strip the leading / from each argument so that the
+# path is relative to the current fake root directory. note that the file
+# will not initially be available unless previously caches, and even if
+# already available, it may be out of date.
+pushd "${ROOT}"
+# open preview and then return to iterm on close; communicate through a
+# named pipe and then wait at the end to receive a line of text indicating
+# that the operation is done. have to do it this way because qlmanage
+# returns 0 even if you SIGTERM it and its children.
+qlmanage -p "${@#/}" >>"${LOG}" 2>&1 &
+pid=$!
+
 # rsync everything, preserving directory structure; the parameter expansion
 # below prepends a : to each argument.
 log "Starting download."
 log "Download command is:"
 check_args rsync -Rv "${@/\//${URL}:/}" "${ROOT}" >>"${LOG}"
-# use macports rsync; the default version is garbage
-/opt/local/bin/rsync -Rv "${@/\//${URL}:/}"  "${ROOT}" >>"${LOG}" 2>&1
+# use macports rsync; the default version is garbage.
+/opt/local/bin/rsync --times -iR "${@/\//${URL}:/}" "${ROOT}" 2>${LOG} \
+    | tee -a "${LOG}" \
+    | grep -q -e '^..++' -e '^>.c' -e '^>..s'
+# also check whether files were updated; if so, relaunch quicklook. grep
+# will return nonzero if no changes were made, i.e. $? == 0 implied changes.
+changed=$?
 
-# launch quicklook. we strip the leading / from each argument so that the
-# path is relative to the current fake root directory.
-pushd "${ROOT}"
-qlmanage -p "${@#/}" >>"${LOG}" 2>&1
+# restart quicklook if something changed
+if [ $changed -eq 0 ]; then
+    log "Files changed! Killing and restarting quicklook."
+    kill $pid
+    # make sure to kill child processes as well!
+    log "Killing child processes:"
+    ps -o pid,ppid \
+        | grep '^.* '$pid \
+        | awk '{ print $1 }' \
+        | tee -a "${LOG}" \
+        | xargs kill
+    qlmanage -p "${@#/}" >>"${LOG}" 2>&1
+fi
 
 # switch back to iterm once done.
-open -a iTerm
+# open -a iTerm
