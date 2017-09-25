@@ -30,6 +30,7 @@ Plugin 'ryanoasis/vim-devicons'
 Plugin 'mileszs/ack.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'skywind3000/asyncrun.vim'
+Plugin 'vim-scripts/GrepCommands'
 " let me not use this for now and instead see how vim-dispatch treats me
 " Plugin 'janko-m/vim-test'
 Plugin 'sjl/gundo.vim'
@@ -63,6 +64,9 @@ call vundle#end()            " required
 "------------------------------------------------------------------------------
 " BASIC VIM PREFS
 "------------------------------------------------------------------------------
+
+" leave plenty of time to enter key combinations; 10 seconds
+set timeoutlen=10000
 
 " automatically read file updates
 set autoread
@@ -294,6 +298,7 @@ map <Leader>S :syntax sync fromstart<CR>
 " define comment strings for various langs
 autocmd FileType vim                setlocal commentstring=\"\ %s
 autocmd FileType crontab,sh,python  setlocal commentstring=#\ %s
+autocmd FileType mailcap            setlocal commentstring=#\ %s
 autocmd FileType tex,matlab         setlocal commentstring=%\ %s
 
 "-----------------------------------------------------------------------
@@ -583,12 +588,61 @@ map <Space>c gc
 " SPACEMACS BINDINGS
 "-----------------------------------------------------------------------
 
-" SEARCH RELATED BINDINGS
+"-----------------------------------------------------------------------
+" FILE SEARCH RELATED BINDINGS
+"-----------------------------------------------------------------------
 
-" start git ack/ag search (probably more useful). search for selection if
-" there is one.
-nnoremap <Leader>fg :Ack<Space>
-vnoremap <Leader>fg y:Ack <C-r>"<CR>
+" combos: {b,f,fr}{g,f}{s,(n)c,(v)c,g}
+
+" Searches (fundamental): {b,f,fr}{g,f}s
+
+" SPC b f s -- find a buffer using fake helm, i.e. Unite/Denite
+map <Leader>bfs <F1> -no-split -no-auto-resize -ignorecase -start-insert buffer<CR>
+
+" SPC b g s -- grep a buffer by contents using Ack
+" map <Leader>bgs :bufdo AckAdd -n threading<Space>
+map <Leader>bgs :BufGrep<Space>
+
+" SPC f f s -- find a file using fake helm in current dir
+" add a spacemacs binding to find a file using helm, i.e. Unite/Ddenite
+map <Leader>ffs <F1> -no-split -no-auto-resize -ignorecase -start-insert file buffer<CR>
+
+" SPC f g s -- search files by contents using Ack in this directory
+nnoremap <Leader>fgs :Ack --follow --no-recurse<Space>
+
+" SPC f r f s -- searches files recursively
+map <Leader>frfs <F1> -no-split -no-auto-resize -ignorecase -start-insert file_rec buffer<CR>
+
+" SPC f r g s -- search files recursively by contents using Ack
+nnoremap <Leader>frgs :Ack --follow<Space>
+
+" Cursor (always the same modification of the above): {b,f,fr}{g,f}c
+
+" visual mode maps
+nmap <Leader>bfc yiw<Leader>bfs<C-r>"
+nmap <Leader>bgc yiw<Leader>bgs<C-r>"
+nmap <Leader>ffc yiw<Leader>ffs<C-r>"
+nmap <Leader>fgc yiw<Leader>fgs<C-r>"
+nmap <Leader>frfc yiw<Leader>frfs<C-r>"
+nmap <Leader>frgc yiw<Leader>frgs<C-r>"
+
+" normal mode maps
+vmap <Leader>bfc y<Leader>bfs<C-r>"<Space>
+vmap <Leader>bgc y<Leader>bgs<C-r>"<Space>
+vmap <Leader>ffc y<Leader>ffs<C-r>"<Space>
+vmap <Leader>fgc y<Leader>fgs<C-r>"<Space>
+vmap <Leader>frfc y<Leader>frfs<C-r>"<Space>
+vmap <Leader>frgc y<Leader>frgs<C-r>"<Space>
+
+" Go (i'm feeling lucky): {b,f,fr}{g,f}g
+
+" all maps
+map <Leader>bfg <Leader>bfc<Bs><CR>
+map <Leader>bgg <Leader>bgc<Bs><CR>
+map <Leader>ffg <Leader>ffc<Bs><CR>
+map <Leader>fgg <Leader>fgc<Bs><CR>
+map <Leader>frfg <Leader>frfc<Bs><CR>
+map <Leader>frgg <Leader>frgc<Bs><CR>
 
 " CONFIG FILE BINDINGS
 
@@ -609,12 +663,6 @@ map <Leader>fs :w<CR>
 " save all files
 map <Leader>fS :wa<CR>
 
-" e(x)it after saving file
-map <Leader>fx :wq<CR>
-
-" e(x)it after saving all files
-map <Leader>fX :wqa<CR>
-
 " move the current file relative to PWD (eunuch)
 map <Leader>fR :Rename<Space>
 
@@ -633,12 +681,6 @@ map <Leader>fa :saveas<Space>
 " open file as sudo
 map <Leader>fE :SudoEdit<CR>
 
-" add a spacemacs binding to find a file using helm, i.e. Unite/Ddenite
-map <Leader>ff <F1>file buffer<CR>
-
-" capital F searches files recursively
-map <Leader>fF <F1>file_rec buffer<CR>
-
 " WINDOW-RELATED BINDINGS
 
 " access all window-prefix stuff
@@ -647,19 +689,21 @@ map <Leader>w <C-w>
 " delete window (from current emacs version, by analogy to SPC b d)
 map <Leader>wd <C-w>c
 
-" quit window
-map <Leader>wq :q<CR>
-
-" quit all
-map <Leader>wQ :qa<CR>
-
 " BUFFER-RELATED BINDINGS
 
 " unload current buffer and delete from buffer list
 map <Leader>bd :bd<CR>
 
-" switch to a buffer using helm, i.e. Unite/Denite
-map <Leader>bb <F1>buffer<CR>
+" QUITTING
+
+" quit all, don't force
+map <Leader>qq :qa<CR>
+
+" quit all, losing unsaved changes
+map <Leader>qQ :qa!<CR>
+
+" e(x)it after saving all files
+map <Leader>qs :wqa<CR>
 
 "-----------------------------------------------------------------------
 " NEOVIM SHORTCUTS

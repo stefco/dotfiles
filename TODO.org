@@ -16,25 +16,62 @@ Actual solution was to just let the `ql` script handle reopening iterm.
 **** Use a [[https://gist.github.com/Integralist/cc2616ece918fdd8239d16cca62e37de][script]] for some further sorting, like quicklook stuff maybe
 
 ** Vim
+
+*** TODO add git bindings for grep and search that match the other ones
+    basically, make it SPC {b,f,fr,g}{f,g}{s,c,g}
+*** TODO add spacemacs keybindings for quitting, deprecate SPC w misuse.
+    #+BEGIN-SRC bash
+    ## Quit
+    SPC q q	Quit Emacs and kill the server, prompt for changed buffers to save
+    SPC q Q	Quit Emacs and kill the server, lose all unsaved changes.
+    SPC q r	Restart both Emacs and the server, prompting to save any changed buffers
+    SPC q s	Save the buffers, quit Emacs and kill the server
+    SPC q z	Kill the current frame
+    #+END-SRC
+*** TODO fix mnemonic mappings for grepping open buffers
+    Need to find an alternative to Ack. Probably use [[https://github.com/vim-scripts/GrepCommands][GrepCommands]].
+*** DONE Add mnemonic mappings for file opening
+    CLOSED: [2017-09-25 Mon 15:46]
+    Follows this heirarchy of decisions:
+
+    The ultimate tree of bindings is {b,f,fr}{g,f}{s,c,g}, i.e. 18 combos.
+
+    The ~cursor~ mappings requre different implementations for normal and visual
+    mode, so these need two bindings; hence a total of 24 bindings.
+
+**** Buffer or file?
+***** grep or find? (grep searches contents, find searches names of bufs/files)
+      [[https://stackoverflow.com/questions/11975174/how-do-i-search-the-open-buffers-in-vim][You can use Ack for this]].
+****** Recursive or flat? (file only, leading to b, f, or fr branches)
+******* Search, cursor, or go?
+******** ~search~
+         opens a search window for this type of query and lets the user type
+******** ~cursor~
+         uses the current selection or word under cursor to prepopulate the search bar,
+         but lets the user confirm or modify before confirming
+******** ~go~
+         the "i'm feeling lucky" of these nav mnemonics. Same as ~cursor~, but hits <CR>
+         for you on the assumption that the first result will be good.
+
 *** DONE Add a nerdtree feature for previewing image files with imgcat
     CLOSED: [2017-09-24 Sun 14:04]
 
 ** Vim + IPython
 
 *** TODO Add an async thread to ipython
-...that listens for a file and runs it in ipython when it is written to, then
-       appends output to it (or somehow alerts vim to the result)
+    ...that listens for a file and runs it in ipython when it is written to, then
+    appends output to it (or somehow alerts vim to the result)
 *** TODO Add vim binding that writes to a file that IPython is watching (easy)
 *** TODO Print history on demand from vim for a given profile
 *** TODO Use BFG to remove my email from dotfiles
-Make it marginally less easy for spammers to find my shit
+    Make it marginally less easy for spammers to find my shit
 *** DONE Add ipython profiles with some nice env checks to make em portable
     CLOSED: [2017-09-24 Sun 14:07]
 *** Add some vim features:
 **** TODO Add TeX-to-unicode
 **** TODO Add vim-orgmode, maybe
-Forget this for now. Too much trouble and spacemacs works just fine. But would
-be nice to have eventually.
+     Forget this for now. Too much trouble and spacemacs works just fine. But would
+     be nice to have eventually.
 **** DONE Add better python indentation
      CLOSED: [2017-09-24 Sun 14:08]
 **** DONE Add some markdown mode regexs for better indentation
@@ -62,3 +99,22 @@ be nice to have eventually.
     CLOSED: [2017-09-24 Sun 14:12]
 *** DONE Add software I use in a "submodules" subdir as git submodules
     CLOSED: [2017-09-24 Sun 14:12]
+** Mail (Mutt, Offlineimap, Notmuch, etc.)
+
+*** TODO Find a nicer binding than <F8> for notmuch search.
+*** TODO Find a nicer binding than <F9> for notmuch thread reconstruction.
+*** TODO Find a binding for Archive Thread
+*** TODO Make a binding that sends a thread to "scratch" dir
+    Would be nice to use this with notmuch, since those searches happen in a
+    virtual mailbox dir.
+**** TODO Copy an individual email
+**** TODO Copy an entire thread
+*** TODO Rename local maildirs to make them more friendly
+    These mangled names like [Gmail].Sent are horrid. Must find a way to use
+    nametrans in ~offlineimap~ to fix this.
+**** TODO Figure out how to do this renaming without forcing massive resyncs.
+     Offlineimap seems to have some internal DB that does not pay attention do
+     dir renames (fair enough). There must be some way to inform this DB of
+     changes to local dirnames so that it does not try to redownload entire
+     directories just because the nametrans changes.
+**** TODO Come up with replacement names and implement them in nametrans.
