@@ -77,7 +77,7 @@ pushd "${ROOT}"
 # named pipe and then wait at the end to receive a line of text indicating
 # that the operation is done. have to do it this way because qlmanage
 # returns 0 even if you SIGTERM it and its children.
-qlmanage -p "${@#/}" >>"${LOG}" 2>&1 &
+~/dev/dotfiles/bin/ql "${@#/}" >>"${LOG}" 2>&1 &
 pid=$!
 
 # rsync everything, preserving directory structure; the parameter expansion
@@ -97,15 +97,9 @@ changed=$?
 if [ $changed -eq 0 ]; then
     log "Files changed! Killing and restarting quicklook."
     kill $pid
-    # make sure to kill child processes as well!
-    log "Killing child processes:"
-    ps -o pid,ppid \
-        | grep '^.* '$pid \
-        | awk '{ print $1 }' \
-        | tee -a "${LOG}" \
-        | xargs kill
-    qlmanage -p "${@#/}" >>"${LOG}" 2>&1
+    # relaunch quicklook (will open over the out-of-date files
+    ~/dev/dotfiles/bin/ql "${@#/}" >>"${LOG}" 2>&1
+    # make sure to kill the outdated qlmanage windows when done
+    log "Killing all qlmanage windows."
+    pkill qlmanage
 fi
-
-# switch back to iterm once done.
-# open -a iTerm

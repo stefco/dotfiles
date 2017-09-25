@@ -4,7 +4,10 @@ Features I would like to add.
 
 ** Bash
 
-*** TODO Rewrite quicklook script in python
+*** DONE Rewrite quicklook script in python
+    CLOSED: [2017-09-25 Mon 12:25]
+
+Actual solution was to just let the `ql` script handle reopening iterm.
 
 *** TODO Add bash completion to ~nd~; see [[http://www.tldp.org/LDP/abs/html/tabexpansion.html][these instructions]].
 
