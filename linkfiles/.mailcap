@@ -1,0 +1,4 @@
+application/pdf;~/dev/dotfiles/bin/ql '%s';
+image/*;~/dev/dotfiles/bin/ql '%s';
+# image/*;~/dev/dotfiles/bin/imgcat '%s';
+text/*;vim '%s';
