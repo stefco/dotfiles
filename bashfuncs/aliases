@@ -37,3 +37,6 @@ alias crontab="VIM_CRONTAB=true crontab"
 if type >/dev/null 2>&1 gsissh; then
     alias ssh=gsissh
 fi
+
+# shortcut for non-gui matlab
+alias matcli='matlab -no{splash,desktop,jvm}'
