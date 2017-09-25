@@ -73,3 +73,6 @@ set forward_quote
 ignore *                               # first, ignore all headers
 unignore from: to: cc: date: subject:  # then, show only these
 hdr_order from: to: cc: date: subject: # and in this order
+
+# load notmuch integration
+source ~/dev/dotfiles/submodules/notmuch/contrib/notmuch-mutt/notmuch-mutt.rc
