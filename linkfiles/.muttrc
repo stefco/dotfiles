@@ -23,6 +23,7 @@ mailboxes "+[Gmail].Sent Mail"
 mailboxes "+[Gmail].All Mail"
 mailboxes +Notices.LVC_Circular
 mailboxes "+[Gmail].Important"
+mailboxes +scratch
 
 macro index D \
     "<save-message>+[Gmail]/Trash<enter>" \
