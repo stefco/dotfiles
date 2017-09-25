@@ -4,6 +4,8 @@ Features I would like to add.
 
 ** Bash
 
+*** TODO Rewrite quicklook script in python
+
 *** TODO Add bash completion to ~nd~; see [[http://www.tldp.org/LDP/abs/html/tabexpansion.html][these instructions]].
 
 *** TODO Set up mail attachment viewing capabilities
