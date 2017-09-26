@@ -131,8 +131,9 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:markdown_syntax_conceal = 0
 let g:markdown_minlines = 100
 
-" turn on folding
+" turn on folding, but start with all folds open
 set foldmethod=indent
+autocmd Syntax * normal zR
 
 " use smart contextual hybrid linenumbers
 " https://jeffkreeftmeijer.com/vim-number/#relative-line-numbers
@@ -239,54 +240,6 @@ endfunction
 
 " center the screen
 noremap <CR> zz
-
-" toggle folding for whole document
-noremap <Leader><Bs> :call ToggleAllFolding()<CR>
-
-function! UnfoldAll()
-    if line('.') == 1
-        let b:not_first_line = 0
-    else
-        let b:not_first_line = 1
-    endif
-    execute "normal! ggVGzO\<C-O>"
-    " if we did not start on the first line, then we will need to undo the
-    " first `gg` command in addition to the `G` command; add an extra <C-O>
-    if b:not_first_line
-        execute "normal! \<C-O>"
-    endif
-endfunction
-
-function! FoldAll()
-    if line('.') == 1
-        let b:not_first_line = 0
-    else
-        let b:not_first_line = 1
-    endif
-    execute "normal! ggVGzC\<C-O>"
-    " if we did not start on the first line, then we will need to undo the
-    " first `gg` command in addition to the `G` command; add an extra <C-O>
-    if b:not_first_line
-        execute "normal! \<C-O>"
-    endif
-    " put the cursor in the middle of the screen for consistency.
-    normal zz
-endfunction
-
-function! ToggleAllFolding()
-    " if the file is folded or the fold state is undefined, unfold
-    if (! exists('b:stefco_whole_file_folded')) || b:stefco_whole_file_folded
-        echom "unfolding."
-        call UnfoldAll()
-        let b:stefco_whole_file_folded=0
-    else
-        echom "folding."
-        call FoldAll()
-        let b:stefco_whole_file_folded=1
-    endif
-    " put the cursor in the middle of the screen for consistency.
-    normal zz
-endfunction
 
 " sync syntax from start with <Leader>s (default leader is \)
 map <Leader>S :syntax sync fromstart<CR>
