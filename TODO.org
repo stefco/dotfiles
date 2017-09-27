@@ -2,19 +2,6 @@
 
 Features I would like to add.
 
-** Bash
-
-*** DONE Rewrite quicklook script in python
-    CLOSED: [2017-09-25 Mon 12:25]
-
-Actual solution was to just let the `ql` script handle reopening iterm.
-
-*** TODO Add bash completion to ~nd~; see [[http://www.tldp.org/LDP/abs/html/tabexpansion.html][these instructions]].
-
-*** TODO Set up mail attachment viewing capabilities
-**** Use [[http://sand.truman.edu/~dbindner/guide/x2059.htm][.mailcap]] to specify scripts/executables
-**** Use a [[https://gist.github.com/Integralist/cc2616ece918fdd8239d16cca62e37de][script]] for some further sorting, like quicklook stuff maybe
-
 ** Vim
 
 *** TODO add git bindings for grep and search that match the other ones
@@ -56,6 +43,20 @@ Actual solution was to just let the `ql` script handle reopening iterm.
 *** DONE Add a nerdtree feature for previewing image files with imgcat
     CLOSED: [2017-09-24 Sun 14:04]
 
+
+** Bash
+
+*** DONE Rewrite quicklook script in python
+    CLOSED: [2017-09-25 Mon 12:25]
+
+ Actual solution was to just let the `ql` script handle reopening iterm.
+
+*** TODO Set up mail attachment viewing capabilities
+**** Use [[http://sand.truman.edu/~dbindner/guide/x2059.htm][.mailcap]] to specify scripts/executables
+**** Use a [[https://gist.github.com/Integralist/cc2616ece918fdd8239d16cca62e37de][script]] for some further sorting, like quicklook stuff maybe
+
+*** TODO Add bash completion to ~nd~; see [[http://www.tldp.org/LDP/abs/html/tabexpansion.html][these instructions]].
+
 ** Vim + IPython
 
 *** TODO Add an async thread to ipython
@@ -65,8 +66,6 @@ Actual solution was to just let the `ql` script handle reopening iterm.
 *** TODO Print history on demand from vim for a given profile
 *** TODO Use BFG to remove my email from dotfiles
     Make it marginally less easy for spammers to find my shit
-*** DONE Add ipython profiles with some nice env checks to make em portable
-    CLOSED: [2017-09-24 Sun 14:07]
 *** Add some vim features:
 **** TODO Add TeX-to-unicode
 **** TODO Add vim-orgmode, maybe
@@ -95,6 +94,8 @@ Actual solution was to just let the `ql` script handle reopening iterm.
 ****** TODO can specify a full url
 **** TODO Should also be possible to specify files using globs
 **** TODO Add option to recursively act on git submodules
+*** DONE Add ipython profiles with some nice env checks to make em portable
+    CLOSED: [2017-09-24 Sun 14:07]
 *** DONE Add a cronscripts directory
     CLOSED: [2017-09-24 Sun 14:12]
 *** DONE Add software I use in a "submodules" subdir as git submodules
@@ -118,3 +119,4 @@ Actual solution was to just let the `ql` script handle reopening iterm.
      changes to local dirnames so that it does not try to redownload entire
      directories just because the nametrans changes.
 **** TODO Come up with replacement names and implement them in nametrans.
+     
