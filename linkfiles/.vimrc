@@ -1,6 +1,6 @@
-"------------------------------------------------------------------------------
+"==============================================================================
 " LOAD VUNDLE
-"------------------------------------------------------------------------------
+"==============================================================================
 
 " these settings are required for Vundle
 set nocompatible
@@ -61,9 +61,9 @@ noremap <F1> :Unite<Space>
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
-"------------------------------------------------------------------------------
+"==============================================================================
 " BASIC VIM PREFS
-"------------------------------------------------------------------------------
+"==============================================================================
 
 " leave plenty of time to enter key combinations; 10 seconds
 set timeoutlen=10000
@@ -184,7 +184,13 @@ endif
 
 " format onto the next line but without combining with the contents of the
 " next line
-noremap g<Down> o<Esc>gqkddk
+noremap gq<Down> o<Esc>gqkddk
+
+" yank to system clipboard by prefixing with <Leader>
+noremap <Leader>y "*y
+
+" pull from system clipboard by prefixing with <Leader>
+noremap <Leader>p "*p
 
 " start command with double tap of the spacebar
 noremap <Leader><Space> :
@@ -192,9 +198,9 @@ noremap <Leader><Space> :
 " start a shell command without hitting shift
 noremap <Leader>1 :!
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " GIT GUTTER SETTINGS
-"-----------------------------------------------------------------------
+"=======================================================================
 
 " update gitgutter 250ms after changes
 set updatetime=250
@@ -202,9 +208,9 @@ set updatetime=250
 " toggle highlighting of diffs
 noremap <Leader>hd :GitGutterLineHighlightsToggle<CR>
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " DISPLAY/FOLDING/INTERACTION SETTINGS
-"-----------------------------------------------------------------------
+"=======================================================================
 
 " toggle search highlighting
 noremap - :set hlsearch!<CR>
@@ -244,9 +250,9 @@ noremap <CR> zz
 " sync syntax from start with <Leader>s (default leader is \)
 map <Leader>S :syntax sync fromstart<CR>
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " COMMENT SYNTAX
-"-----------------------------------------------------------------------
+"=======================================================================
 
 " define comment strings for various langs
 autocmd FileType vim                setlocal commentstring=\"\ %s
@@ -254,9 +260,9 @@ autocmd FileType crontab,sh,python  setlocal commentstring=#\ %s
 autocmd FileType mailcap            setlocal commentstring=#\ %s
 autocmd FileType tex,matlab         setlocal commentstring=%\ %s
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " AIRLINE CONFIG
-"-----------------------------------------------------------------------
+"=======================================================================
 
 " display all buffs in tab bar when only one tab is open
 let g:airline#extensions#tabline#enabled = 1
@@ -296,9 +302,9 @@ let g:airline_powerline_fonts = 1
 " let g:airline_left_sep = "\uE0B8"
 " let g:airline_right_sep = "\uE0BE"
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " NAVIGATION COMMANDS
-"-----------------------------------------------------------------------
+"=======================================================================
 
 " next or previous window
 noremap <Up> <C-w>W
@@ -322,9 +328,9 @@ noremap <S-Left> :N<CR>
 noremap <S-Up> :cp<CR>
 noremap <S-Down> :cn<CR>
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " HELP COMMANDS
-"-----------------------------------------------------------------------
+"=======================================================================
 
 " run help for some string
 map <Leader>hh :help<Space>
@@ -336,18 +342,18 @@ map <Leader>hm :map<Space>
 nnoremap <Leader>hw yiw:help <C-r>"<CR>
 vnoremap <Leader>hw y:help <C-r>"<CR>
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " SEARCH TOOLS
-"-----------------------------------------------------------------------
+"=======================================================================
 
 " use Ag if available even when using Ack package
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " NERDTREE SETTINGS
-"-----------------------------------------------------------------------
+"=======================================================================
 
 " ignore .pyc files in nerdtree as well as HDF5 data files
 let NERDTreeIgnore=['\.pyc$', '\~$', '\.hdf5$']
@@ -358,9 +364,9 @@ let NERDTreeAutoDeleteBuffer = 1
 "hide the '? for help' message in NERDTree
 let NERDTreeMinimalUI = 1
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " ASYNCRUN COMMANDS
-"-----------------------------------------------------------------------
+"=======================================================================
 
 " start a shell command to run asynchronously
 noremap <Leader>2 :AsyncRun<Space>
@@ -374,14 +380,14 @@ let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status
 " make fugitive fetch and push async
 command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " TABULARIZE
-"-----------------------------------------------------------------------
+"=======================================================================
 noremap <Leader>t :Tabularize /
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " FUGITIVE (GIT) MAPPINGS
-"-----------------------------------------------------------------------
+"=======================================================================
 
 " git pull
 map <Leader>gp :Gresolvelink<CR>:Gpull<CR>
@@ -467,14 +473,14 @@ command! Gresolvelink call MyGitResolveSymlink()
 " uncomment the line below to reolve symlinks at start
 "autocmd BufReadPost * call MyGitResolveSymlink(expand('<afile>'))
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " GUNDO
-"-----------------------------------------------------------------------
+"=======================================================================
 nnoremap <Leader>u :GundoToggle<CR>
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " PREVIEWING THINGS
-"-----------------------------------------------------------------------
+"=======================================================================
 
 " run whatever command on the filename under the cursor; for nerdtree
 " windows, make sure to get the filename from the line rather than the
@@ -506,18 +512,22 @@ function! RunCommandOnFileUnderCursor(command)
   endif
 endfunction
 
-" image preview in terminal with imgcat
-nnoremap <Leader>pi :call RunCommandOnFileUnderCursor("imgcat")<CR>
-vnoremap <Leader>pi y:!imgcat <C-r>"<CR>
+" image view in terminal with imgcat
+nnoremap <Leader>vi :call RunCommandOnFileUnderCursor("imgcat")<CR>
+vnoremap <Leader>vi y:!imgcat <C-r>"<CR>
 
 " use mac's quicklook (or whatever command has been deemed to fulfill this
 " role in the present environment)
-nnoremap <Leader>pp :call RunCommandOnFileUnderCursor("ql")<CR>
-vnoremap <Leader>pp y:!ql <C-r>"<CR>
+nnoremap <Leader>vp :call RunCommandOnFileUnderCursor("ql")<CR>
+vnoremap <Leader>vp y:!ql <C-r>"<CR>
 
-"-----------------------------------------------------------------------
+" open a file under the cursor using mac's 'open' command
+nnoremap <Leader>vo :call RunCommandOnFileUnderCursor("open")<CR>
+vnoremap <Leader>vo y:!open <C-r>"<CR>
+
+"=======================================================================
 " IPYTHON
-"-----------------------------------------------------------------------
+"=======================================================================
 
 " place contents of ipyscratch at cursor
 autocmd FileType python nnoremap <Leader>iP   :.-1r ~/.ipyscratch<CR>
@@ -537,13 +547,13 @@ autocmd FileType python vnoremap <Leader>iy :w! ~/.ipyscratch<CR>gvd
 " toggle comments on various things using vim-commentary with leader
 map <Space>c gc
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " SPACEMACS BINDINGS
-"-----------------------------------------------------------------------
+"=======================================================================
 
-"-----------------------------------------------------------------------
+"---------------------------------------
 " FILE SEARCH RELATED BINDINGS
-"-----------------------------------------------------------------------
+"---------------------------------------
 
 " combos: {b,f,fr}{g,f}{s,(n)c,(v)c,g}
 
@@ -597,7 +607,9 @@ map <Leader>fgg <Leader>fgc<Bs><CR>
 map <Leader>frfg <Leader>frfc<Bs><CR>
 map <Leader>frgg <Leader>frgc<Bs><CR>
 
+"---------------------------------------
 " CONFIG FILE BINDINGS
+"---------------------------------------
 
 " load .vimrc
 map <Leader>feR :source ~/.vimrc<CR>
@@ -605,7 +617,9 @@ map <Leader>feR :source ~/.vimrc<CR>
 " edit .vimrc
 map <Leader>fed :e ~/.vimrc<CR>
 
+"---------------------------------------
 " FILE-RELATED BINDINGS
+"---------------------------------------
 
 " open nerdtree
 map <Leader>ft :NERDTreeToggle<CR>
@@ -634,7 +648,9 @@ map <Leader>fa :saveas<Space>
 " open file as sudo
 map <Leader>fE :SudoEdit<CR>
 
+"---------------------------------------
 " WINDOW-RELATED BINDINGS
+"---------------------------------------
 
 " access all window-prefix stuff
 map <Leader>w <C-w>
@@ -642,12 +658,16 @@ map <Leader>w <C-w>
 " delete window (from current emacs version, by analogy to SPC b d)
 map <Leader>wd <C-w>c
 
+"---------------------------------------
 " BUFFER-RELATED BINDINGS
+"---------------------------------------
 
 " unload current buffer and delete from buffer list
 map <Leader>bd :bd<CR>
 
+"---------------------------------------
 " QUITTING
+"---------------------------------------
 
 " quit all, don't force
 map <Leader>qq :qa<CR>
@@ -658,9 +678,9 @@ map <Leader>qQ :qa!<CR>
 " e(x)it after saving all files
 map <Leader>qs :wqa<CR>
 
-"-----------------------------------------------------------------------
+"=======================================================================
 " NEOVIM SHORTCUTS
-"-----------------------------------------------------------------------
+"=======================================================================
 
 if has('nvim')
     " <Esc> enters normal mode in term mode instead of sending <Esc> to term
