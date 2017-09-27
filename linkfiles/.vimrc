@@ -125,6 +125,9 @@ set backspace=indent,eol,start
 " set 2-space indent for HTML, CSS, and JSON
 autocmd FileType html,css,json set softtabstop=2|set tabstop=2|set shiftwidth=2
 
+" set 6-space indent for git commit messages (to allow for checklists
+autocmd FileType gitcommit set softtabstop=6|set tabstop=6|set shiftwidth=6
+
 " force .md to be interpreted as Markdown, include code syntax
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
