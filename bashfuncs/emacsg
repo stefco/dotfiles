@@ -1,0 +1,12 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# Edit the file in the gui version of emacs if it is installed. Only runs on
+# Macs and assumes the emacs binary is the EmacsMac distribution.
+
+emacsg () {
+    # mac's `open` command needs a path to exist in order to be opened
+    if [ ! -e "$1" ]; then
+        touch "$1"
+    fi
+    open -a EmacsMac "$1"
+}

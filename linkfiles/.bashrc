@@ -72,6 +72,8 @@ dotsource promptline
 # MacOS-specific crap
 if [[ $OSTYPE == darwin* ]]; then
     dotsource macos
+    # load MacOS-specific functions
+    dotsource emacsg
 fi
 
 # define simple functions (their names are the same as the source files)
