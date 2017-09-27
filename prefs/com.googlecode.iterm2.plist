@@ -2907,7 +2907,7 @@
 	<key>Default Arrangement Name</key>
 	<string>No Windows</string>
 	<key>Default Bookmark Guid</key>
-	<string>5C597927-7BA0-4E24-8608-0EA2C6649893</string>
+	<string>9631824B-771E-438D-A836-A806637124C6</string>
 	<key>DimBackgroundWindows</key>
 	<false/>
 	<key>DimInactiveSplitPanes</key>
@@ -3264,7 +3264,7 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>1049 448 231 329 0 0 1280 777 </string>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>314 473 877 94 0 0 1280 800 </string>
+	<string>321 356 877 77 0 0 1280 800 </string>
 	<key>NSWindow Frame Preferences</key>
 	<string>515 311 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
@@ -3272,7 +3272,7 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>296 236 606 469 0 0 1280 800 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>264 261 796 473 0 0 1280 800 </string>
+	<string>264 185 796 473 0 0 1280 800 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>80 194 592 584 0 0 1280 778 </string>
 	<key>NSWindow Frame com.apple.typography_panel_IosevkaNerdFontCM-Light</key>
@@ -3280,7 +3280,7 @@
 	<key>NSWindow Frame com.apple.typography_panel_UbuntuMonoDerivativePowerline-Regular</key>
 	<string>344 294 260 319 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 375 1280 403 0 0 1280 778 </string>
+	<string>0 391 490 402 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>10 8 1270 792 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -6234,11 +6234,11 @@
 			<key>Name</key>
 			<string>gwhen</string>
 			<key>Non Ascii Font</key>
-			<string>HasklugNerdFontCM-Regular 11</string>
+			<string>IosevkaNerdFontCM-Light 11</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>HasklugNerdFontCM-Regular 11</string>
+			<string>IosevkaNerdFontCM-Light 11</string>
 			<key>Option Key Sends</key>
 			<integer>1</integer>
 			<key>Prompt Before Closing 2</key>
@@ -6419,7 +6419,7 @@
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Vertical Spacing</key>
-			<real>1</real>
+			<real>1.0402390813253013</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
@@ -8854,7 +8854,7 @@
 			<key>Thin Strokes</key>
 			<integer>2</integer>
 			<key>Transparency</key>
-			<real>0.0</real>
+			<real>0.36737388959390865</real>
 			<key>Triggers</key>
 			<array>
 				<dict>
