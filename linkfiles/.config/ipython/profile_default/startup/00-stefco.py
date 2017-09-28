@@ -20,6 +20,7 @@ get_ipython().run_line_magic('alias', 'find find')
 get_ipython().run_line_magic('alias', 'git git')
 get_ipython().run_line_magic('alias', 'pstree pstree')
 get_ipython().run_line_magic('alias', 'mutt mutt')
+get_ipython().run_line_magic('alias', 'ql ql')
 
 @IPython.core.magic.register_line_magic
 def shel(line):
