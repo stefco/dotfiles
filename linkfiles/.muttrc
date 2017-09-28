@@ -1,5 +1,12 @@
 # from https://pbrisbin.com/posts/mutt_gmail_offlineimap/
 
+# allow fancy terminal stuff
+set allow_ansi
+
+# automatically dump html files, but try to view the plaintext version first
+auto_view text/html
+alternative_order text/plain text/enriched text/html
+
 # aliases stored in Dropbox, if it exists
 source `alias_file=~/Dropbox/crypt/.mutt/aliases; if [ ! -s "${alias_file}" ]; then alias_file=/dev/null; fi; echo "${alias_file}"`
 

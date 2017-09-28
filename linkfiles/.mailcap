@@ -1,4 +1,6 @@
 application/pdf;~/dev/dotfiles/bin/ql '%s';
 image/*;~/dev/dotfiles/bin/ql '%s';
 # image/*;~/dev/dotfiles/bin/imgcat '%s';
+text/html; open %s; nametemplate=%s.html;
+text/html; links -dump %s; nametemplate=%s.html; copiousoutput
 text/*;vim '%s';
