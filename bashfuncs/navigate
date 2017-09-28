@@ -5,6 +5,9 @@
 NAVIGATION_FWD=()
 NAVIGATION_BWD=()
 
+BOOKMARKS="${DOTFILEDIR}/bookmarks/"
+LOCAL_BOOKMARKS=~/"bookmarks/"
+
 navigate_forward () {
     if [ ${#NAVIGATION_FWD[@]} -gt 0 ]; then
         NAVIGATION_BWD+=("$(pwd)")
@@ -27,69 +30,124 @@ show_link () {
     local fmt="${_BLUE}%s${_RESET}%*s-> ${_MAGENTA}%s${_RESET}\n"
     local arrowindent=16
     while read line; do
-        local basename="${line##*/}"
-        local indent=$((arrowindent - ${#basename}))
-        local src="$(readlink "${line}")"
+        local basename
+        local indent
+        local src
+        basename="${line##*/}"
+        indent=$((arrowindent - ${#basename}))
+        src="$(readlink "${line}")"
         printf "$fmt" "$basename" "$indent" " " "$src"
+    done
+}
+
+# change directory to a bookmark
+bcd () {
+    local bookmarkdir
+    for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
+        if [ -L "${bookmarkdir}/$1" ]; then
+            destination="$(readlink "${bookmarkdir}/$1")"
+            resolved_destination="${destination/\~/${HOME}}"
+            # replace tilde with the actual home directory
+            if [ ! -d "${resolved_destination}" ]; then
+                echo >&2 "Target directory doesn't exist: ${destination}"
+                return 1
+            fi
+            NAVIGATION_BWD+=("$(pwd)")
+            NAVIGATION_FWD=()
+            cd "${resolved_destination}"
+            return
+        fi
+    done
+    echo >&2 "Bookmark not found: $1"
+    return 2
+}
+
+# list available bookmarks
+bls () {
+    local bookmarkdir
+    # if no string is provided, list all bookmarks.
+    if [ $# -eq 0 ]; then
+        for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
+            printf "${_GREEN}Bookmarks in ${bookmarkdir}:${_RESET}\n"
+            find "${bookmarkdir}" -type l 2>/dev/null | show_link
+        done
+        return 0
+    fi
+    # otherwise, just see if arguments are bookmarks and list them
+    while [ $# -gt 0 ]; do
+        local link_resolved=1
+        for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
+            local candidate="${bookmarkdir}/$1"
+            if [ -L "${candidate}" ]; then
+                printf "%s\n" "${candidate}" | show_link
+                link_resolved=0
+                break
+            fi
+        done
+        if [ ${link_resolved} -eq 1 ]; then
+            printf >&2 "${_RED}Not found: ${_BLUE}%s${_RESET}\n" "$1"
+        fi
+        shift
     done
 }
 
 # 'navigate' directory, i.e. change directory but keep nav history
 # can also specify a bookmark with the -b flag
 nd () {
-    NAVIGATION_BWD+=("$(pwd)")
-    NAVIGATION_FWD=()
-    local BOOKMARKS="${DOTFILEDIR}/bookmarks/"
-    local LOCAL_BOOKMARKS=~/"bookmarks/"
     # specify a bookmark with -b
     if [[ "$1" == "-b" ]]; then
-        local bookmarkdir
-        for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
-            if [ -L "${bookmarkdir}/$2" ]; then
-                destination="$(readlink "${bookmarkdir}/$2")"
-                resolved_destination="${destination/\~/${HOME}}"
-                # replace tilde with the actual home directory
-                if [ ! -d "${resolved_destination}" ]; then
-                    echo >&2 "Target directory doesn't exist: ${destination}"
-                    return 1
-                fi
-                cd "${resolved_destination}"
-                return
-            fi
-        done
-        echo >&2 "Bookmark not found: $2"
-        return 2
+        shift # get rid of the -b arg
+        bcd "$@"
     # list all bookmarks
     elif [[ "$1" == "-l" ]]; then
-        local bookmarkdir
-        # if no string is provided, list all bookmarks.
-        if [ $# -eq 1 ]; then
-            for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
-                printf "${_GREEN}Bookmarks in ${bookmarkdir}:${_RESET}\n"
-                find "${bookmarkdir}" -type l 2>/dev/null | show_link
-            done
-            return 0
-        fi
-        # otherwise, just see if arguments are bookmark and list them
-        # get rid of the `-l` argument
+        shift # get rid of the -l arg
+        bls "$@"
+    # act like `cd` but with history saving
+    elif [[ "$1" == "-a" ]]; then
+        local OLD_PWD
+        OLD_PWD="$(pwd)"
+        # get rid of the '-a' arg
         shift
-        while [ $# -gt 0 ]; do
-            local link_resolved=1
-            for bookmarkdir in "${LOCAL_BOOKMARKS}" "${BOOKMARKS}"; do
-                local candidate="${bookmarkdir}/$1"
-                if [ -L "${candidate}" ]; then
-                    printf "%s\n" "${candidate}" | show_link
-                    link_resolved=0
-                    break
-                fi
-            done
-            if [ ${link_resolved} -eq 1 ]; then
-                printf >&2 "${_RED}Not found: ${_BLUE}%s${_RESET}\n" "$1"
-            fi
-            shift
-        done
+        builtin cd "$@"
+        NAVIGATION_BWD+=("${OLD_PWD}")
+        NAVIGATION_FWD=()
+    # if no arg is provided, change to ~, just like `cd`
+    elif [ $# -eq 0 ]; then
+        nd -a ~
+    # by default, look first for matching physical directories, then bookmarks
     else
-        "cd" "$@"
+        if [ -d "$1" ]; then
+            nd -a "$@"
+        else
+            nd -b "$@"
+        fi
     fi
 }
 
+# autocompletion for `nd`; http://www.tldp.org/LDP/abs/html/tabexpansion.html
+_nd () {
+    # pointer to current completion word. named `cur` by convention.
+    local cur
+
+    # array variable storing possible completions
+    COMPREPLY=()
+    cur=${COMP_WORDS[COMP_CWORD]}
+
+    # an array of completions
+    COMPREPLY=(
+        $(
+            compgen -W "$(
+                cd "${BOOKMARKS}"
+                echo *
+                cd "${LOCAL_BOOKMARKS}"
+                echo *
+            )" -- "$cur"
+        )
+    )
+
+    return 0
+}
+
+complete -F _nd bcd
+complete -F _nd bls
+complete -F _nd -o plusdirs nd
