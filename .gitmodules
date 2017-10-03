@@ -19,3 +19,6 @@
 [submodule "submodules/notmuch"]
 	path = submodules/notmuch
 	url = git://git.notmuchmail.org/git/notmuch
+[submodule "submodules/signal-cli"]
+	path = submodules/signal-cli
+	url = https://github.com/AsamK/signal-cli.git

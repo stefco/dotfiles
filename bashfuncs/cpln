@@ -1,0 +1,19 @@
+#!/bin/bash
+# (c) Stefan Countryman, 2017
+# take a file path and copy an absolute file path for it to the clipboard. if
+# no clipboard can be found, just print the full path so that it can be easily
+# copy-pasted by the user.
+
+cpln () {
+    local fpath
+    fpath="$(cd "$(dirname "$1")" && pwd)"/"$(basename "$1")"
+    if [[ $SESSION_TYPE == remote/ssh ]] && type >/dev/null 2>&1 it2copy; then
+        printf '%s' "${fpath}" | it2copy
+    elif [[ $OSTYPE == darwin* ]]; then
+        printf '%s' "${fpath}" | pbcopy
+    else
+        echo "Link path:"
+        echo "${fpath}"
+    fi
+}
+
