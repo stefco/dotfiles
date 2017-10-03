@@ -25,6 +25,9 @@ alias vim='DISPLAY="" vim'
 alias vimdiff='DISPLAY="" vimdiff'
 alias vimtutor='DISPLAY="" vimtutor'
 
+# gotta use signal-cli
+alias signal=~/dev/dotfiles/bin/signal-cli-0.5.6/bin/signal-cli
+
 # url encode and decode from stdin
 alias urlencode="python -c 'import urllib, sys; print urllib.quote(sys.stdin.read())'"
 alias urldecode="python -c 'import urllib, sys; print urllib.unquote(sys.stdin.read())'"
