@@ -44,6 +44,13 @@ dotsource () {
 # SOURCE CONFIGURATION GRANULARLY
 ########################################################################
 
+# MacOS-specific crap
+if [[ $OSTYPE == darwin* ]]; then
+    dotsource macos
+    # load MacOS-specific functions
+    dotsource emacsg
+fi
+
 #check if this is an ssh session
 dotsource sessiontype
 
@@ -68,13 +75,6 @@ alias cd=nd
 
 # load the command prompt
 dotsource promptline
-
-# MacOS-specific crap
-if [[ $OSTYPE == darwin* ]]; then
-    dotsource macos
-    # load MacOS-specific functions
-    dotsource emacsg
-fi
 
 # define simple functions (their names are the same as the source files)
 dotsource l nohupw path cpln vimex
