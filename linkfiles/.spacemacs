@@ -301,6 +301,11 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+  ;; the next two lines pin helm to the stable version in order to fix the
+  ;; helm-bookmark-map bug; see:
+  ;; https://github.com/syl20bnr/spacemacs/issues/9549
+  (push '("melpa-stable" . "stable.melpa.org/packages/") configuration-layer--elpa-archives)
+  (push '(helm . "melpa-stable") package-pinned-packages)
   )
 
 (defun dotspacemacs/user-config ()
@@ -315,13 +320,17 @@ you should place your code here."
   (unless window-system
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
-  )
   (setq org-src-fontify-natively t)
   (setq org-todo-keyword-faces
         '(("TODO" . (:foreground "red"))
           ("STARTED" . (:foreground "orange"))
           ("TESTING" . (:foreground "yellow"))
           ("CANCELED" . (:foreground "blue" :weight bold))))
+  ;; this next line is a fix to force reload of helm, which is pinned to the
+  ;; stable version, in order to fix the helm-bookmark-map bug; see:
+  ;; https://github.com/syl20bnr/spacemacs/issues/9549#issuecomment-327788403
+  (require 'helm-bookmark)
+  )
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 (custom-set-variables
