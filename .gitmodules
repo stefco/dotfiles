@@ -22,3 +22,6 @@
 [submodule "submodules/signal-cli"]
 	path = submodules/signal-cli
 	url = https://github.com/AsamK/signal-cli.git
+[submodule "submodules/imessageclient"]
+	path = submodules/imessageclient
+	url = https://github.com/CamHenlin/imessageclient.git
