@@ -4,6 +4,7 @@
 
 vimex () {
     local cmdtype
+    local cmd
     if ! cmdtype="$(type 2>/dev/null "$1")"; then
         echo >&2 "Command not found."
         return 1
@@ -13,8 +14,13 @@ vimex () {
     elif [[ $cmdtype == "$1 is a function"* ]]; then
         echo >&2 "Command is a function, cannot edit."
         return 3
+    elif [[ $cmdtype == "$1 is hashed ("* ]]; then
+        cmd="${cmdtype#$1 is hashed (}"
+        cmd="${cmd%)}"
+    else
+        cmd="${cmdtype#$1 is }"
     fi
-    vim "${cmdtype/$1 is /}"
+    vim "$cmd"
 }
 
 # `vimex` autocompletion; http://www.tldp.org/LDP/abs/html/tabexpansion.html
