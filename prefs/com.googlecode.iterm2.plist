@@ -3264,7 +3264,7 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>1049 448 231 329 0 0 1280 777 </string>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>321 356 877 77 0 0 1280 800 </string>
+	<string>321 222 877 77 0 0 1280 800 </string>
 	<key>NSWindow Frame Preferences</key>
 	<string>515 311 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
@@ -3272,7 +3272,7 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>296 236 606 469 0 0 1280 800 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>264 107 796 473 0 0 1280 800 </string>
+	<string>0 111 918 507 0 0 1280 800 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>80 194 592 584 0 0 1280 800 </string>
 	<key>NSWindow Frame com.apple.typography_panel_IosevkaNerdFontCM-Light</key>
@@ -3280,9 +3280,9 @@
 	<key>NSWindow Frame com.apple.typography_panel_UbuntuMonoDerivativePowerline-Regular</key>
 	<string>344 294 260 319 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>83 23 1197 664 0 0 1280 800 </string>
+	<string>304 12 976 657 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>10 8 1270 792 0 0 1280 800 </string>
+	<string>10 164 850 625 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>0 4 1274 796 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -3885,7 +3885,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>HasklugNerdFontCM-Regular 11</string>
+			<string>IosevkaNerdFontCM-Italic 11</string>
 			<key>Option Key Sends</key>
 			<integer>1</integer>
 			<key>Prompt Before Closing 2</key>
@@ -4063,6 +4063,8 @@
 			<true/>
 			<key>Use Italic Font</key>
 			<true/>
+			<key>Use Non-ASCII Font</key>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>0.89630200489457834</real>
 			<key>Visual Bell</key>
@@ -4668,7 +4670,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>HasklugNerdFontCM-Regular 11</string>
+			<string>IosevkaNerdFontCM-Italic 11</string>
 			<key>Option Key Sends</key>
 			<integer>1</integer>
 			<key>Prompt Before Closing 2</key>
@@ -4848,6 +4850,8 @@
 			<true/>
 			<key>Use Italic Font</key>
 			<true/>
+			<key>Use Non-ASCII Font</key>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>1</real>
 			<key>Visual Bell</key>
@@ -5453,7 +5457,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>HasklugNerdFontCM-Regular 11</string>
+			<string>IosevkaNerdFontCM-Italic 11</string>
 			<key>Option Key Sends</key>
 			<integer>1</integer>
 			<key>Prompt Before Closing 2</key>
@@ -5633,6 +5637,8 @@
 			<true/>
 			<key>Use Italic Font</key>
 			<true/>
+			<key>Use Non-ASCII Font</key>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>1</real>
 			<key>Visual Bell</key>
@@ -6418,6 +6424,8 @@
 			<true/>
 			<key>Use Italic Font</key>
 			<true/>
+			<key>Use Non-ASCII Font</key>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>1.0402390813253013</real>
 			<key>Visual Bell</key>
@@ -7223,6 +7231,8 @@
 			<false/>
 			<key>Use Italic Font</key>
 			<true/>
+			<key>Use Non-ASCII Font</key>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>1</real>
 			<key>Visual Bell</key>
@@ -8003,6 +8013,8 @@
 			<true/>
 			<key>Use Italic Font</key>
 			<true/>
+			<key>Use Non-ASCII Font</key>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>1</real>
 			<key>Visual Bell</key>
@@ -8880,6 +8892,8 @@
 			<true/>
 			<key>Use Italic Font</key>
 			<true/>
+			<key>Use Non-ASCII Font</key>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>1.0076301298945785</real>
 			<key>Visual Bell</key>
@@ -9755,6 +9769,8 @@
 			<true/>
 			<key>Use Italic Font</key>
 			<true/>
+			<key>Use Non-ASCII Font</key>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>1.0076301298945785</real>
 			<key>Visual Bell</key>
@@ -9946,7 +9962,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-10-01T20:39:50Z</date>
+	<date>2017-10-03T18:35:25Z</date>
 	<key>SavePasteHistory</key>
 	<true/>
 	<key>Secure Input</key>
@@ -9989,7 +10005,7 @@
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<true/>
 	<key>UKCrashReporterLastCrashReportDate</key>
-	<real>1506269184</real>
+	<real>1507055744</real>
 	<key>URLHandlersByGuid</key>
 	<dict>
 		<key>mailto</key>
