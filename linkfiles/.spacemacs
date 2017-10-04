@@ -317,6 +317,11 @@ you should place your code here."
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
   )
   (setq org-src-fontify-natively t)
+  (setq org-todo-keyword-faces
+        '(("TODO" . (:foreground "red"))
+          ("STARTED" . (:foreground "orange"))
+          ("TESTING" . (:foreground "yellow"))
+          ("CANCELED" . (:foreground "blue" :weight bold))))
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 (custom-set-variables
