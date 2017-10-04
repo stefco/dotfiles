@@ -16,3 +16,8 @@ vimex () {
     fi
     vim "${cmdtype/$1 is /}"
 }
+
+# `vimex` autocompletion; http://www.tldp.org/LDP/abs/html/tabexpansion.html
+# details on `complete` and `compgen` builtins:
+# https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
+complete -c vimex
