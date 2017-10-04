@@ -77,4 +77,4 @@ if [[ $OSTYPE == darwin* ]]; then
 fi
 
 # define simple functions (their names are the same as the source files)
-dotsource l nohupw path cpln
+dotsource l nohupw path cpln vimex
