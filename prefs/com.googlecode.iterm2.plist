@@ -3264,7 +3264,7 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>1049 448 231 329 0 0 1280 777 </string>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>321 222 877 77 0 0 1280 800 </string>
+	<string>403 214 877 77 0 0 1280 800 </string>
 	<key>NSWindow Frame Preferences</key>
 	<string>515 311 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
@@ -3272,7 +3272,7 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>296 236 606 469 0 0 1280 800 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>0 111 918 507 0 0 1280 800 </string>
+	<string>180 109 918 512 0 0 1280 800 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>80 194 592 584 0 0 1280 800 </string>
 	<key>NSWindow Frame com.apple.typography_panel_IosevkaNerdFontCM-Light</key>
@@ -3282,7 +3282,7 @@
 	<key>NSWindow Frame iTerm Window 0</key>
 	<string>304 12 976 657 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>10 164 850 625 0 0 1280 800 </string>
+	<string>10 83 730 717 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>0 4 1274 796 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -3885,7 +3885,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>IosevkaNerdFontCM-Italic 11</string>
+			<string>IosevkaNerdFontCM-Light 11</string>
 			<key>Option Key Sends</key>
 			<integer>1</integer>
 			<key>Prompt Before Closing 2</key>
@@ -4066,7 +4066,7 @@
 			<key>Use Non-ASCII Font</key>
 			<false/>
 			<key>Vertical Spacing</key>
-			<real>0.89630200489457834</real>
+			<real>1.0153073072433472</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
@@ -4259,15 +4259,15 @@
 			<key>Badge Color</key>
 			<dict>
 				<key>Alpha Component</key>
-				<real>0.5</real>
+				<real>0.98431372549019602</real>
 				<key>Blue Component</key>
 				<real>0.0</real>
 				<key>Color Space</key>
 				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.1491314172744751</real>
+				<real>0.20784313725490197</real>
 				<key>Red Component</key>
-				<real>1</real>
+				<real>0.63137254901960782</real>
 			</dict>
 			<key>Badge Text</key>
 			<string>ཫ1</string>
@@ -5046,15 +5046,15 @@
 			<key>Badge Color</key>
 			<dict>
 				<key>Alpha Component</key>
-				<real>0.5</real>
+				<real>0.9855194091796875</real>
 				<key>Blue Component</key>
 				<real>0.0</real>
 				<key>Color Space</key>
 				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.1491314172744751</real>
+				<real>0.20903446711599827</real>
 				<key>Red Component</key>
-				<real>1</real>
+				<real>0.6307220458984375</real>
 			</dict>
 			<key>Badge Text</key>
 			<string>ཫ2</string>
@@ -5457,7 +5457,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>IosevkaNerdFontCM-Italic 11</string>
+			<string>IosevkaNerdFontCM-Light 11</string>
 			<key>Option Key Sends</key>
 			<integer>1</integer>
 			<key>Prompt Before Closing 2</key>
@@ -5640,7 +5640,7 @@
 			<key>Use Non-ASCII Font</key>
 			<false/>
 			<key>Vertical Spacing</key>
-			<real>1</real>
+			<real>1.0092479292168675</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
