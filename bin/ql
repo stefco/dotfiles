@@ -84,7 +84,6 @@ url () {
 }
 
 if [[ $SESSION_TYPE == remote/ssh ]]; then
-    echo "quick look not yet enabled."
     # only split on newlines
     old_IFS="$IFS"
     IFS=$'\n'
