@@ -49,6 +49,13 @@ if [[ $# -lt 2 ]] || [[ $1 == -h ]] || [[ ${@:$#:$#} != __EndOfFile__ ]]; then
     exit 1
 fi
 
+# use gsissh as the rsync ssh executable if it is available
+if type >/dev/null 2>&1 gsissh; then
+    rsh="--rsh=$(which gsissh)"
+else
+    rsh=""
+fi
+
 # strip the user@host URL, which should be the first arg
 URL="$1"
 shift
@@ -86,11 +93,11 @@ log "Starting download."
 log "Download command is:"
 check_args rsync -Rv "${@/\//${URL}:/}" "${ROOT}" >>"${LOG}"
 # use macports rsync; the default version is garbage.
-/opt/local/bin/rsync --times -iR "${@/\//${URL}:/}" "${ROOT}" 2>${LOG} \
-    | tee -a "${LOG}" \
-    | grep -q -e '^..++' -e '^>.c' -e '^>..s'
 # also check whether files were updated; if so, relaunch quicklook. grep
 # will return nonzero if no changes were made, i.e. $? == 0 implied changes.
+/opt/local/bin/rsync $rsh --times -iR "${@/\//${URL}:/}" "${ROOT}" 2>>${LOG} \
+    | tee -a "${LOG}" \
+    | grep -q -e '^..++' -e '^>.c' -e '^>..s'
 changed=$?
 
 # restart quicklook if something changed
