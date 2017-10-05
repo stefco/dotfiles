@@ -3264,7 +3264,7 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>1049 448 231 329 0 0 1280 777 </string>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>403 214 877 77 0 0 1280 800 </string>
+	<string>403 80 877 77 0 0 1280 800 </string>
 	<key>NSWindow Frame Preferences</key>
 	<string>515 311 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
@@ -3272,7 +3272,7 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>296 236 606 469 0 0 1280 800 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>180 109 918 512 0 0 1280 800 </string>
+	<string>203 127 796 473 0 0 1280 800 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>80 194 592 584 0 0 1280 800 </string>
 	<key>NSWindow Frame com.apple.typography_panel_IosevkaNerdFontCM-Light</key>
@@ -3280,11 +3280,11 @@
 	<key>NSWindow Frame com.apple.typography_panel_UbuntuMonoDerivativePowerline-Regular</key>
 	<string>344 294 260 319 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>304 12 976 657 0 0 1280 800 </string>
+	<string>4 4 1276 796 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>10 83 730 717 0 0 1280 800 </string>
+	<string>4 8 1276 792 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>0 4 1274 796 0 0 1280 800 </string>
+	<string>283 312 490 402 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
 	<string>0 4 1280 796 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
@@ -4043,14 +4043,7 @@
 			<key>Transparency</key>
 			<real>0.0</real>
 			<key>Triggers</key>
-			<array>
-				<dict>
-					<key>action</key>
-					<string>ScriptTrigger</string>
-					<key>regex</key>
-					<string></string>
-				</dict>
-			</array>
+			<array/>
 			<key>Unlimited Scrollback</key>
 			<false/>
 			<key>Use Bold Font</key>
@@ -4670,7 +4663,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>IosevkaNerdFontCM-Italic 11</string>
+			<string>IosevkaNerdFontCM-Light 11</string>
 			<key>Option Key Sends</key>
 			<integer>1</integer>
 			<key>Prompt Before Closing 2</key>
@@ -4853,7 +4846,7 @@
 			<key>Use Non-ASCII Font</key>
 			<false/>
 			<key>Vertical Spacing</key>
-			<real>1</real>
+			<real>1.0383859657379517</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
@@ -9962,7 +9955,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-10-03T18:35:25Z</date>
+	<date>2017-10-05T18:35:08Z</date>
 	<key>SavePasteHistory</key>
 	<true/>
 	<key>Secure Input</key>
@@ -10001,7 +9994,7 @@
 		<string>Paste History</string>
 	</array>
 	<key>TriggerRadius</key>
-	<integer>10</integer>
+	<integer>15</integer>
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<true/>
 	<key>UKCrashReporterLastCrashReportDate</key>
