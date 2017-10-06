@@ -40,11 +40,6 @@ macro index S \
     "<save-message>+[Gmail]/Spam<enter>" \
     "mark message as spam"
 
-# archive with e, like in gmail
-macro index,pager e  \
-    "<save-message>=[Gmail]/All Mail<enter><enter>" \
-    "Archive conversation"
-
 # main options
 set realname   = "Stefan Countryman"
 set from       = "stefan.countryman@gmail.com"
@@ -83,4 +78,4 @@ unignore from: to: cc: date: subject:  # then, show only these
 hdr_order from: to: cc: date: subject: # and in this order
 
 # load notmuch integration
-source ~/dev/dotfiles/submodules/notmuch/contrib/notmuch-mutt/notmuch-mutt.rc
+source ~/dev/dotfiles/static/notmuch-mutt.rc
