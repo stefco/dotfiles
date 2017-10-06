@@ -326,6 +326,7 @@ you should place your code here."
           ("STARTED" . (:foreground "orange"))
           ("TESTING" . (:foreground "yellow"))
           ("CANCELED" . (:foreground "blue" :weight bold))))
+  (setq org-image-actual-width nil)
   ;; this next line is a fix to force reload of helm, which is pinned to the
   ;; stable version, in order to fix the helm-bookmark-map bug; see:
   ;; https://github.com/syl20bnr/spacemacs/issues/9549#issuecomment-327788403
