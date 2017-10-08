@@ -325,6 +325,7 @@ you should place your code here."
         '(("TODO" . (:foreground "red"))
           ("STARTED" . (:foreground "orange"))
           ("TESTING" . (:foreground "yellow"))
+          ("NIXED"   . (:foreground "blue" :weight bold))
           ("CANCELED" . (:foreground "blue" :weight bold))))
   (setq org-image-actual-width nil)
   ;; this next line is a fix to force reload of helm, which is pinned to the
