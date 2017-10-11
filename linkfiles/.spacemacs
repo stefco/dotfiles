@@ -321,11 +321,17 @@ you should place your code here."
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
   (setq org-src-fontify-natively t)
+  ;; Add some default TODO mode keywords
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "STARTED(s)" "TESTING(t)" "|"
+                    "NIXED(n)" "DONE(d)")
+          (sequence "OPTION(o)" "BUG(b)" "TESTING(c)" "|" "FIXED(f)")))
   (setq org-todo-keyword-faces
-        '(("TODO" . (:foreground "red"))
-          ("STARTED" . (:foreground "orange"))
-          ("TESTING" . (:foreground "yellow"))
-          ("NIXED"   . (:foreground "blue" :weight bold))
+        '(("TODO"     . (:foreground "red"))
+          ("BUG"      . (:foreground "red"))
+          ("STARTED"  . (:foreground "orange"))
+          ("TESTING"  . (:foreground "yellow"))
+          ("NIXED"    . (:foreground "blue" :weight bold))
           ("CANCELED" . (:foreground "blue" :weight bold))))
   (setq org-image-actual-width nil)
   ;; this next line is a fix to force reload of helm, which is pinned to the
