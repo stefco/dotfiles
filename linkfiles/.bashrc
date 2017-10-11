@@ -48,7 +48,7 @@ dotsource () {
 if [[ $OSTYPE == darwin* ]]; then
     dotsource macos
     # load MacOS-specific functions
-    dotsource emacsg
+    dotsource emacsg opent
 fi
 
 #check if this is an ssh session

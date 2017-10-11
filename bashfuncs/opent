@@ -1,0 +1,11 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# Open the file after touching in the default MacOS app
+
+opent () {
+    # mac's `open` command needs a path to exist in order to be opened
+    if [ ! -e "$1" ]; then
+        touch "$1"
+    fi
+    open "$@"
+}
