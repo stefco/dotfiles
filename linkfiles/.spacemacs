@@ -323,9 +323,10 @@ you should place your code here."
   (setq org-src-fontify-natively t)
   ;; Add some default TODO mode keywords
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "STARTED(s)" "TESTING(t)" "|"
+        '((sequence "TODO(t)" "OPTION(o)" "STARTED(s)" "TESTING(t)" "|"
                     "NIXED(n)" "DONE(d)")
-          (sequence "OPTION(o)" "BUG(b)" "TESTING(c)" "|" "FIXED(f)")))
+          (sequence "BUG(b)" "BROKEN(r)" "IMPORTANT(i)" "TESTING(c)" "|"
+                    "FIXED(f)")))
   (setq org-todo-keyword-faces
         '(("TODO"     . (:foreground "red"))
           ("BUG"      . (:foreground "red"))
