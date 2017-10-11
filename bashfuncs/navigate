@@ -9,6 +9,9 @@ BOOKMARKS="${DOTFILEDIR}/bookmarks/"
 LOCAL_BOOKMARKS=~/"bookmarks/"
 
 navigate_forward () {
+    if [ $# -eq 1 ] && [ "$1" -gt 1 ]; then
+        navigate_forward $(($1 - 1))
+    fi
     if [ ${#NAVIGATION_FWD[@]} -gt 0 ]; then
         NAVIGATION_BWD+=("$(pwd)")
         "cd" "${NAVIGATION_FWD[${#NAVIGATION_FWD[@]}-1]}"
@@ -18,6 +21,9 @@ navigate_forward () {
 alias fwd=navigate_forward
 
 navigate_backward () {
+    if [ $# -eq 1 ] && [ "$1" -gt 1 ]; then
+        navigate_backward $(($1 - 1))
+    fi
     if [ ${#NAVIGATION_BWD[@]} -gt 0 ]; then
         NAVIGATION_FWD+=("$(pwd)")
         "cd" "${NAVIGATION_BWD[${#NAVIGATION_BWD[@]}-1]}"

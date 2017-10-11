@@ -34,7 +34,7 @@ port -f install >$log 2>$errlog \
     julia libcaca msmtp offlineimap vim ncdu neomutt notmuch OpenBLAS pstree \
     psutils tree readline dtrx fortune bash-completion poppler djvulibre \
     unrar tiff sshfs sshfs-gui jp2a shellcheck p5.24-term-readline-gnu \
-    findutils youtube-dl qrencode
+    findutils youtube-dl qrencode ripgrep
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
 
