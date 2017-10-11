@@ -47,6 +47,12 @@ port -f install >$log 2>$errlog \
     py27-pyflakes py27-greenlet py27-neovim py27-gobject3
 
 logdate
+echo "Installing IceCube dependencies." | tee -a $log
+port -f install >$log 2>$errlog \
+    cmake boost +python27 gsl +doc_python27 hdf5 libarchive \
+    qt5 py27-pyqt5 +graceful +webkit doxygen +docs +wizard wget # pal
+
+logdate
 echo "Setting default python, ipython, and pip binaries." | tee -a $log
 port select --set python python27 >$log 2>$errlog
 port select --set ipython ipython27 >$log 2>$errlog
