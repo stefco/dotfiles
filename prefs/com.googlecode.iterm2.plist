@@ -3218,7 +3218,7 @@
 	<key>NSFontPanelSizeSliderParams</key>
 	<string>2 0 100</string>
 	<key>NSNavLastRootDirectory</key>
-	<string>~/Documents</string>
+	<string>~/Downloads</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{712, 448}</string>
 	<key>NSNavPanelExpandedSizeForSaveMode</key>
@@ -3272,7 +3272,7 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>296 236 606 469 0 0 1280 800 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>203 127 796 473 0 0 1280 800 </string>
+	<string>203 201 918 452 0 0 1280 800 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>80 194 592 584 0 0 1280 800 </string>
 	<key>NSWindow Frame com.apple.typography_panel_IosevkaNerdFontCM-Light</key>
@@ -3280,11 +3280,11 @@
 	<key>NSWindow Frame com.apple.typography_panel_UbuntuMonoDerivativePowerline-Regular</key>
 	<string>344 294 260 319 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>4 4 1276 796 0 0 1280 800 </string>
+	<string>0 421 1280 379 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>4 8 1276 792 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>283 312 490 402 0 0 1280 800 </string>
+	<string>4 4 1276 796 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
 	<string>0 4 1280 796 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
@@ -7196,7 +7196,7 @@
 				</dict>
 			</array>
 			<key>Space</key>
-			<integer>0</integer>
+			<integer>-1</integer>
 			<key>Sync Title</key>
 			<false/>
 			<key>Tags</key>
