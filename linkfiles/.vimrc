@@ -272,7 +272,7 @@ map <Leader>S :syntax sync fromstart<CR>
 " define comment strings for various langs
 autocmd FileType vim                setlocal commentstring=\"\ %s
 autocmd FileType crontab,sh,python  setlocal commentstring=#\ %s
-autocmd FileType mailcap            setlocal commentstring=#\ %s
+autocmd FileType mailcap,muttrc     setlocal commentstring=#\ %s
 autocmd FileType tex,matlab         setlocal commentstring=%\ %s
 
 "=======================================================================

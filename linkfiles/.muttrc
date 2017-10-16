@@ -17,8 +17,8 @@ set mbox_type   = Maildir
 set sendmail    = /opt/local/bin/msmtp
 
 set folder      = ~/Mail/Gmail
-#set spoolfile   = "+INBOX"
-set spoolfile   = "+GECo"
+set spoolfile   = "+INBOX"
+# set spoolfile   = "+GECo"
 set mbox        = "+[Gmail].All Mail"
 set postponed   = "+[Gmail].Drafts"
 unset record
