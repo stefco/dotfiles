@@ -1,0 +1,8 @@
+#!/bin/bash
+# (c) Stefan Countryman 2017
+# Kludgy function to copy the last screenshot in Dropbox/Screenshots to a
+# different path.
+
+cp-last-screen () {
+    cp ~/Dropbox/Screenshots/"`ls -t ~/Dropbox/Screenshots | head -1`" "$1"
+}

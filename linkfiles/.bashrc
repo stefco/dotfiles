@@ -77,4 +77,4 @@ alias cd=nd
 dotsource promptline
 
 # define simple functions (their names are the same as the source files)
-dotsource l nohupw path cpln vimex
+dotsource l nohupw path cpln vimex cp-last-screen
