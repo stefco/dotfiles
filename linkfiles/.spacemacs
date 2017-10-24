@@ -59,7 +59,10 @@ values."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages
+   '(
+     org-projectile
+   )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -323,10 +326,10 @@ you should place your code here."
   (setq org-src-fontify-natively t)
   ;; Add some default TODO mode keywords
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "OPTION(o)" "STARTED(s)" "TESTING(t)" "|"
-                    "NIXED(n)" "DONE(d)")
-          (sequence "BUG(b)" "BROKEN(r)" "IMPORTANT(i)" "TESTING(c)" "|"
-                    "FIXED(f)")))
+        '((sequence "TODO(t)" "NEXT(n)" "OPTION(o)" "STARTED(s)" "TESTING(c)"
+                    "|" "NIXED(q)" "DONE(d)")
+          (sequence "BUG(b)" "BROKEN(r)" "IMPORTANT(i)"
+                    "|" "FIXED(f)")))
   (setq org-todo-keyword-faces
         '(("TODO"     . (:foreground "red"))
           ("BUG"      . (:foreground "red"))
