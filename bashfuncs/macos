@@ -36,7 +36,7 @@ if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
 fi
 
 # welcome message
-if [ $(hostname) == 'Alexis-Nelsons-MacBook-Pro.local' ]; then
+if [ "`scutil --get ComputerName`" = "Alexis Nelson’s MacBook Pro" ]; then
     cat ${DOTFILEDIR}/static/tachikoma-title.txt
 else
     # a cryptic greeting from an old friend, if he is around...

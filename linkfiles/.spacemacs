@@ -330,6 +330,7 @@ you should place your code here."
                     "|" "NIXED(q)" "DONE(d)")
           (sequence "BUG(b)" "BROKEN(r)" "IMPORTANT(i)"
                     "|" "FIXED(f)")))
+  (setq org-enforce-todo-dependencies t)
   (setq org-todo-keyword-faces
         '(("TODO"     . (:foreground "red"))
           ("BUG"      . (:foreground "red"))
