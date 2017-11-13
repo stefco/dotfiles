@@ -331,6 +331,7 @@ you should place your code here."
                     "|" "NIXED(x)" "DONE(d)")
           (sequence "BUG(b)" "BROKEN(k)" "IMPORTANT(i)"
                     "|" "FIXED(f)")
+          (sequence "PURCHASE(p)" "LOWSTOCK(l)" "|" "GOTEEM(g)")
           (sequence "ASK(q)" "ASKED(a)""|" "ANSWERED(r)")))
   (setq org-enforce-todo-dependencies t)
   (setq org-todo-keyword-faces
