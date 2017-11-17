@@ -77,7 +77,7 @@ alias cd=nd
 dotsource promptline
 
 # load q console settings for kdb+
-dotsource q
+dotsource qconfig
 
 # define simple functions (their names are the same as the source files)
 dotsource l nohupw path cpln vimex cp-last-screen
