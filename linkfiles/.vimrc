@@ -75,9 +75,6 @@ set autoread
 filetype indent on
 syntax on
 
-" don't word wrap
-set nowrap
-
 " define a function for setting textwidth. this is necessary to enable the
 " ToggleInteractive function.
 function! ActivateTextWidth()
@@ -281,10 +278,15 @@ autocmd FileType tex,matlab         setlocal commentstring=%\ %s
 " SOFT WORD WRAP
 "=======================================================================
 
+" don't soft wrap by default
+set nowrap
+
 " define a function for setting soft word wrap options, including mapping
 " up/down motion within wrapped lines to j/k instead of gj/gk
 function! ActivateSoftWrap()
-    setlocal wrap
+    " linebreak ensures that we break on words instead of wrapping around in
+    " the middle of one
+    setlocal wrap linebreak
     noremap j gj
     noremap k gk
 endfunction
@@ -694,8 +696,13 @@ map <Leader>wd <C-w>c
 " BUFFER-RELATED BINDINGS
 "---------------------------------------
 
-" unload current buffer and delete from buffer list
-map <Leader>bd :bd<CR>
+" unload current buffer and delete from buffer list the way it would be done in
+" emacs, i.e. don't delete the window, just the buffer; requires a hacky
+" approach that used :bd#<CR> to delete the most recent buffer.
+map <Leader>bd :bp<CR>:bd#<CR>
+
+" this command refreshes the buffer list in airline after deleting a buffer.
+autocmd BufDelete * call airline#extensions#tabline#buflist#invalidate()
 
 "---------------------------------------
 " QUITTING
