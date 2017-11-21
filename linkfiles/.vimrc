@@ -88,6 +88,8 @@ function! ActivateTextWidth()
         set textwidth=0
     elseif &filetype == 'sh'
         set textwidth=0
+    elseif &filetype == 'tex'
+        set textwidth=0
     endif
 endfunction
 
@@ -274,6 +276,21 @@ autocmd FileType vim                setlocal commentstring=\"\ %s
 autocmd FileType crontab,sh,python  setlocal commentstring=#\ %s
 autocmd FileType mailcap,muttrc     setlocal commentstring=#\ %s
 autocmd FileType tex,matlab         setlocal commentstring=%\ %s
+
+"=======================================================================
+" SOFT WORD WRAP
+"=======================================================================
+
+" define a function for setting soft word wrap options, including mapping
+" up/down motion within wrapped lines to j/k instead of gj/gk
+function! ActivateSoftWrap()
+    setlocal wrap
+    noremap j gj
+    noremap k gk
+endfunction
+
+" activate soft wrap for text files where this is desirable
+autocmd FileType tex                call ActivateSoftWrap()
 
 "=======================================================================
 " AIRLINE CONFIG
