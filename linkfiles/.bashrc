@@ -80,4 +80,4 @@ dotsource promptline
 dotsource qconfig
 
 # define simple functions (their names are the same as the source files)
-dotsource l nohupw path cpln vimex cp-last-screen
+dotsource l nohupw path cpln vimex cp-last-screen imap

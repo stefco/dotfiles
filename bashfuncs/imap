@@ -1,0 +1,11 @@
+#!/bin/bash
+# (c) Stefan Countryman, 2017
+# A function for syncing mailboxes quickly using offlineimap
+
+imap () {
+    # We will use $* to expand the arguments provided and pass them to
+    # offlineimap.  This requires setting $IFS to ',' since $* will join the
+    # arguments using the first character of $IFS.
+    local IFS=,
+    offlineimap -f "$*"
+}
