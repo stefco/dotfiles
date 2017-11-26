@@ -6,5 +6,8 @@ if [[ $OSTYPE == darwin* ]]; then
     if [ "`scutil --get ComputerName`" = "Alexis Nelson’s MacBook Pro" ]; then
         export QHOME=~/bin
         export QLIC=~/lic/kc.lic
+    elif [ "`scutil --get ComputerName`" = "motoko" ]; then
+        export QHOME=~/bin
+        export QLIC=~/lic/kc.lic
     fi
 fi
