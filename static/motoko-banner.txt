@@ -1,8 +1,3 @@
- ..       .KMO;   .ckNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM  
-            'xWM0.lc'. 'lkKWMMMMMMMMMMWKOkkOl'.     .',cokKWMMMMMMMMMMMMMMMMMMMM
-;      .       ;dXOoll:;......;ldOKk:.                       'ckNMMMMMMMWNKOxo: 
-:,;,           . .dKWMMMO x0Oxok,                                .,';           
-'.;oKx;              .,l..MMMMl;                                                
 ,lloOWM:  ..              .',.                                                  
   .;'ld.  xkokdc,.                                                              
   ;'      k;...cx0NNKk                            :c O,   ,k                    
@@ -34,15 +29,15 @@
        .MMMMMMMMMMMMMMM,NMMMMMMMMMMMMMWOddONMMMMMMMMMMMKdoNMMkNMM0kOWMMMMMMMMMx 
        .MMMMMMMMMMMMMMxdMMMMMMMMMMMMMMMMMMNOOkkkkkkxxxx0WMMMMMxMMMMXdxKMMMMXd.  
        .MMMMMMMMMMMMMN 'WMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMKMMMMMMMMMc.      
-,---.  'M,---.MMMM,-----.NM,---------.MMMM,-----.MMMM.--.MMM.--.MMMMMM,-----.   
-|    \ :/    |MM.'  .-,  '.\          \M.'  .-,  '.MM|  |M_/  /MMMMM.'  .-,  '. 
-|  ,  \/  ,  |M/ ,-.|  \ _ \`--.  ,---'/ ,-.|  \ _ \M| (`' ) /MMMMM/ ,-.|  \ _ \
-|  |\_   /|  |;  \  '_ /  | :  |   \MM;  \  '_ /  | :|(_ ()_)MMMMM;  \  '_ /  ||
-|  _( )_/M|  ||  _`,/ \ _/  |  :_ _:MM|  _`,/M\ _/  || (_,_)MMM__M|  _`,/.\ _/ |
-| (_ o _)M|  |: (  '\_/ \   ;  (_I_)MM: (  '\_/ \   ;|  |\ \MM|  |: (  '\_/ \  |
-|  (_,_)MM|  |'\ `"/  \  ) /  (_(=)_)M \ `"/  \  ) /M|  |M\ `'   /M\ `"/  \  ) /
-|  |.WMMMM|  |dN'. \_/``".'    (_I_)MMMM'. \_/``".'MM|  |MM\    /MMM'. \_/``".' 
-'--'KMMMMM'--'MMMM'-----'      '---'MMMMMM'-----'MMMM`--'MMM`'-'MMMMMM'-----'   
+,---.  'M,---.MMMM,-----.NM,---------.MMMM,-----.MMMM.--.MMM.--.MMMMM,-----.    
+|    \ :/    |MM.'  .-,  '.\          \M.'  .-,  '.MM|  |M_/  /MMMM.'  .-,  '.  
+|  ,  \/  ,  |M/ ,-.|  \ _ \`--.  ,---'/ ,-.|  \ _ \M| (`' ) /MMMM/ ,-.|  \ _ \ 
+|  |\_   /|  |;  \  '_ /  | :  |   \MM;  \  '_ /  | :|(_ ()_)MMMM;  \  '_ /  | :
+|  _( )_/M|  ||  _`,/ \ _/  |  :_ _:MM|  _`,/M\ _/  || (_,_)MMM__|  _`,/.\ _/  |
+| (_ o _)M|  |: (  '\_/ \   ;  (_I_)MM: (  '\_/ \   ;|  |\ \MM|  | (  '\_/ \   :
+|  (_,_)MM|  |'\ `"/  \  ) /  (_(=)_)M \ `"/  \  ) /M|  |M\ `'   /\ `"/  \  ) / 
+|  |.WMMMM|  |dN'. \_/``".'    (_I_)MMMM'. \_/``".'MM|  |MM\    /MM'. \_/``".'  
+'--'KMMMMM'--'MMMM'-----'      '---'MMMMMM'-----'MMMM`--'MMM`'-'MMMMM'-----'    
    xMMMMMMMMMMMMMMd           .0MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMxoMMMMMXlMMN      
   ,MMMMMMMMMMMMMMM,         .OMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM'MMMMMMx,MMMK     
   0MMMMMMMMMMMMMMN         dMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMlXMMMMMW:NMMMO    
