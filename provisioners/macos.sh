@@ -77,6 +77,10 @@ port -f install >$log 2>$errlog \
     nds2-client py27-lalframe
 
 logdate
+echo "Installing LaTeX packages." | tee -a $log
+port -f install >$log 2>$errlog texlive-publishers
+
+logdate
 echo "Installing GWpy with all options. Details here:" | tee -a $log
 echo "  https://gwpy.github.io/docs/stable/install/index.html" | tee -a $log
 pip install gwpy[all] >$log 2>$errlog
