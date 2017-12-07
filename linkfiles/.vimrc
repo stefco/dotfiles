@@ -75,6 +75,11 @@ set autoread
 filetype indent on
 syntax on
 
+" show tabs
+" https://vi.stackexchange.com/questions/422/displaying-tabs-as-characters
+set list
+set listchars=tab:▸·
+
 " define a function for setting textwidth. this is necessary to enable the
 " ToggleInteractive function.
 function! ActivateTextWidth()
@@ -198,6 +203,38 @@ noremap <Leader><Space> :
 noremap <Leader>1 :!
 
 "=======================================================================
+" TODO STATE SETTINGS
+"=======================================================================
+
+" These settings are inspired by org mode with spacemacs bindings, though they
+" use <Leader>t instead of bare t to avoid clobbering the t operator.
+
+" mark this paragraph as having a particular state
+function! TodoState_TeX_Paragraph(state)
+    execute "normal! {jc}\\". a:state. "{\<CR>}\<Esc>P}"
+endfunction
+
+" strip todo state from this paragraph
+function! TodoState_TeX_Paragraph_Strip()
+    normal! {jdd}kdd
+endfunction
+
+" add bindings for various TODO states
+function! TodoState_TeX_AddBindings()
+    noremap <Leader>tt :call TodoState_TeX_Paragraph("TODO")<CR>
+    noremap <Leader>ts :call TodoState_TeX_Paragraph("STARTED")<CR>
+    noremap <Leader>tr :call TodoState_TeX_Paragraph("REVIEW")<CR>
+    noremap <Leader>td :call TodoState_TeX_Paragraph("DONE")<CR>
+    noremap <Leader>tq :call TodoState_TeX_Paragraph("QUESTION")<CR>
+    noremap <Leader>tc :call TodoState_TeX_Paragraph("COMMENT")<CR>
+    " add binding to strip TODO state, but only if there is already a binding
+    noremap <Leader>tn :call TodoState_TeX_Paragraph_Strip()<CR>
+endfunction
+
+" activate bindings by file type
+autocmd FileType tex                call TodoState_TeX_AddBindings()
+
+"=======================================================================
 " MARKDOWN/GIT COMMIT SETTINGS
 "=======================================================================
 
@@ -289,6 +326,9 @@ function! ActivateSoftWrap()
     setlocal wrap linebreak
     noremap j gj
     noremap k gk
+    " show partial wrapped lines even when there is not enough space
+    " on the page for the full wrapped line
+    set display=lastline
 endfunction
 
 " activate soft wrap for text files where this is desirable
@@ -417,7 +457,7 @@ command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 "=======================================================================
 " TABULARIZE
 "=======================================================================
-noremap <Leader>t :Tabularize /
+noremap gt :Tabularize /
 
 "=======================================================================
 " FUGITIVE (GIT) MAPPINGS
@@ -579,11 +619,14 @@ autocmd FileType python vnoremap <Leader>iw :w! ~/.ipyscratch<CR>
 autocmd FileType python vnoremap <Leader>iy :w! ~/.ipyscratch<CR>gvd
 
 " toggle comments on various things using vim-commentary with leader
-map <Space>c gc
+map <Leader>c gc
 
 "=======================================================================
 " SPACEMACS BINDINGS
 "=======================================================================
+
+" run 'make' command with no arguments; same as 'helm-make' in emacs
+nmap <Leader>cm :make<CR><Space>:bp<CR>:bd#<CR>
 
 "---------------------------------------
 " FILE SEARCH RELATED BINDINGS
