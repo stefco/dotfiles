@@ -332,14 +332,13 @@ you should place your code here."
           (sequence "BUG(b)" "BROKEN(k)" "IMPORTANT(i)"
                     "|" "FIXED(f)")
           (sequence "PURCHASE(p)" "LOWSTOCK(l)" "|" "GOTEEM(g)")
-          (sequence "ASK(q)" "ASKED(a)""|" "ANSWERED(r)")))
+          (sequence "ASK(q)" "ASKED(a)" "|" "ANSWERED(r)" "YES(Y)" "NO(N)")))
   (setq org-enforce-todo-dependencies t)
   (setq org-todo-keyword-faces
         '(("TODO"     . (:foreground "red"))
           ("BUG"      . (:foreground "red"))
-          ("ASK"      . (:foreground "purple"))
+          ("ASK"      . (:foreground "red"))
           ("STARTED"  . (:foreground "orange"))
-          ("TESTING"  . (:foreground "yellow"))
           ("ANSWERED" . (:foreground "blue" :weight bold))
           ("NIXED"    . (:foreground "blue" :weight bold))
           ("CANCELED" . (:foreground "blue" :weight bold))))
