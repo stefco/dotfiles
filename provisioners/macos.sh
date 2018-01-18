@@ -55,7 +55,8 @@ port -f install >$log 2>$errlog \
 logdate
 echo "Setting default python, ipython, and pip binaries." | tee -a $log
 port select --set python python27 >$log 2>$errlog
-port select --set ipython ipython27 >$log 2>$errlog
+port select --set ipython py27-ipython >$log 2>$errlog
+port select --set ipython2 py27-ipython >$log 2>$errlog
 port select --set pip pip27 >$log 2>$errlog
 port select --set pylint pylint27 >$log 2>$errlog
 port select --set pyflakes py27-pyflakes >$log 2>$errlog
@@ -86,7 +87,7 @@ echo "  https://gwpy.github.io/docs/stable/install/index.html" | tee -a $log
 pip install gwpy[all] >$log 2>$errlog
 
 echo "Installing pip packages." | tee -a $log
-pip install PyForms itermplot
+pip install PyForms itermplot ffmpeg-python untangle twilio
 
 logdate
 tee -a <<"__EOF__"
