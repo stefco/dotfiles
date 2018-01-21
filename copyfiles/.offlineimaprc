@@ -12,7 +12,7 @@ localfolders = ~/Mail/Gmail
 
 [Repository Gmail-Remote]
 type = Gmail
-remoteuser = <REDACTED-GMAIL>@gmail.com
+remoteuser = stefan.countryman@gmail.com
 realdelete = no
 maxconnections = 3
 sslcacertfile = /Users/Stefan/ca-certs/certs.pem

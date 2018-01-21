@@ -37,6 +37,14 @@ Plugin 'sjl/gundo.vim'
 Plugin 'tpope/vim-commentary.git'
 " smart date incrementing
 Plugin 'tpope/vim-speeddating'
+" surround strings with characters, e.g. quotes.
+" PREFIXES:
+"   - 'ys' adds adds wrapping characters, e.g. 'ysiw<em>' wraps a word with
+"     <em>
+"   - 'ds' removes wrapping characters, e.g. 'ds"' to remove wrapping double
+"     quotes
+"   - 'cs' changes wrapping characters, e.g. 'cs"<q>' swaps double quotes for
+"     quotation tags <q>
 Plugin 'tpope/vim-surround'
 " case changes/complex substitutions/programmable autocorrect
 Plugin 'tpope/tpope-vim-abolish'
@@ -634,6 +642,21 @@ nmap <Leader>cm :make<CR><Space>:bp<CR>:bd#<CR>
 
 " combos: {b,f,fr}{g,f}{s,(n)c,(v)c,g}
 
+" FIRST SECTION is the set of data to search:
+"   - b  is for 'buffer'
+"   - f  is for 'files' only in the current directory
+"   - fr is for 'files', searching recursively from the current directory
+" SECOND SECTION is the type of search:
+"   - g is for 'grep', i.e. we are pattern matching file *contents*
+"   - f is for 'find', i.e. we are pattern matching file *names*
+" THIRD SECTION is the search string:
+"   - s is for 'search', i.e. you will type your own search string
+"   - c is for 'current', i.e. current selection (visual) or word (normal); the
+"     field gets prepopulated
+"   - g is for 'go', i.e. hit enter after 'current', i.e. just immediately
+"     execute a search on the highlighted word (visual) or word under the
+"     cursor (normal)
+
 " Searches (fundamental): {b,f,fr}{g,f}s
 
 " SPC b f s -- find a buffer using fake helm, i.e. Unite/Denite
@@ -658,7 +681,7 @@ nnoremap <Leader>frgs :Ack --follow<Space>
 
 " Cursor (always the same modification of the above): {b,f,fr}{g,f}c
 
-" visual mode maps
+" normal mode maps
 nmap <Leader>bfc yiw<Leader>bfs<C-r>"
 nmap <Leader>bgc yiw<Leader>bgs<C-r>"
 nmap <Leader>ffc yiw<Leader>ffs<C-r>"
@@ -666,7 +689,7 @@ nmap <Leader>fgc yiw<Leader>fgs<C-r>"
 nmap <Leader>frfc yiw<Leader>frfs<C-r>"
 nmap <Leader>frgc yiw<Leader>frgs<C-r>"
 
-" normal mode maps
+" visual mode maps
 vmap <Leader>bfc y<Leader>bfs<C-r>"<Space>
 vmap <Leader>bgc y<Leader>bgs<C-r>"<Space>
 vmap <Leader>ffc y<Leader>ffs<C-r>"<Space>
