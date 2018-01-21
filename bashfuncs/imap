@@ -7,5 +7,6 @@ imap () {
     # offlineimap.  This requires setting $IFS to ',' since $* will join the
     # arguments using the first character of $IFS.
     local IFS=,
+    echo "RUNNING offlineimap -f $*"
     offlineimap -f "$*"
 }
