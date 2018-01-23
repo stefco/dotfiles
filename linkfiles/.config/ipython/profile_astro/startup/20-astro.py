@@ -51,7 +51,7 @@ def gps2mjd(gps=None):
     if gps is None:
         time = astropy.time.Time.now()
     else:
-        time = astropy.time.Time(gps, format='gps')
+        time = astropy.time.Time(gps, format='gps', scale='utc')
     return time.mjd
 
 def gps2utc(gps):
@@ -60,5 +60,5 @@ def gps2utc(gps):
     if gps is None:
         time = astropy.time.Time.now()
     else:
-        time = astropy.time.Time(gps, format='gps')
+        time = astropy.time.Time(gps, format='gps', scale='utc')
     return time.isot
