@@ -89,7 +89,7 @@ set list
 set listchars=tab:▸·
 
 " define a function for setting textwidth. this is necessary to enable the
-" ToggleInteractive function.
+" ToggleInteractive function. Used for setting hard word wraps..
 function! ActivateTextWidth()
     " autoenter after 79 characters
     set textwidth=79
