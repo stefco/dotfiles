@@ -166,6 +166,14 @@ set hlsearch
 
 " put a colored column at column 80 to show suggested max line length
 set colorcolumn=80
+" for FORTRAN, put columns at line 6 and 73-80 to follow FORTRAN formatting:
+" (Taken from https://web.stanford.edu/class/me200c/tutorial_77/03_basics.html)
+"   Col. 1     : Blank, or a 'c' or '*' for comments
+"   Col. 1-5   : Statement label (optional)
+"   Col. 6     : Continuation of previous line (optional)
+"   Col. 7-72  : Statements
+"   Col. 73-80 : Sequence number (optional, rarely used today)
+autocmd FileType fortran setlocal colorcolumn=6,73,74,75,76,77,78,79,80
 
 " allow mouse past 220th column
 " http://stackoverflow.com/questions/7000960/in-vim-why-doesnt-my-mouse-work-past-the-220th-column
