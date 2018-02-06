@@ -251,6 +251,26 @@ endfunction
 autocmd FileType tex                call TodoState_TeX_AddBindings()
 
 "=======================================================================
+" LATEX AUTOCOMPILE
+"=======================================================================
+
+" Automatically run `make` on a .tex file if Makefile exists after saving.
+
+function! TeX_Compile()
+    set cmdheight=4
+    if filereadable("Makefile")
+        echom 'Makefile found, executing `make`.'
+        execute "!make 1>/dev/null 2>&1 &"
+    else
+        echom 'Makefile NOT found, executing `pdflatex ' . @% . '`.'
+        execute "!pdflatex 1>/dev/null 2>&1 &" . @%
+    endif
+    set cmdheight=1
+endfunction
+
+autocmd FileType tex autocmd BufWritePost <buffer> call TeX_Compile()
+
+"=======================================================================
 " MARKDOWN/GIT COMMIT SETTINGS
 "=======================================================================
 
