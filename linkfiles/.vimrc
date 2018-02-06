@@ -665,6 +665,9 @@ nmap <Leader>cm :make<CR><Space>:bp<CR>:bd#<CR>
 "     execute a search on the highlighted word (visual) or word under the
 "     cursor (normal)
 
+" Grep will open up the quickfix window, which can be navigated with :cnext/:cn
+" and :cprevious/:cp, which I have remapped elsewhere in this file.
+
 " Searches (fundamental): {b,f,fr}{g,f}s
 
 " SPC b f s -- find a buffer using fake helm, i.e. Unite/Denite
