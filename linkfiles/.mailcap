@@ -1,6 +1,7 @@
-application/pdf;~/dev/dotfiles/bin/ql '%s';
-image/*;~/dev/dotfiles/bin/ql '%s';
+application/pdf;~/dev/dotfiles/bin/ql '%s'; needsterminal;
+image/*;~/dev/dotfiles/bin/ql '%s'; needsterminal;
 # image/*;~/dev/dotfiles/bin/imgcat '%s';
-text/html; open %s; nametemplate=%s.html;
+text/html; open '%s'; nametemplate=%s.html; needsterminal;
 text/html; links -dump %s; nametemplate=%s.html; copiousoutput
+text/calendar; open %s; needsterminal;
 text/*;vim '%s';

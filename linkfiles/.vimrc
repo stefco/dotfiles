@@ -89,7 +89,7 @@ set list
 set listchars=tab:▸·
 
 " define a function for setting textwidth. this is necessary to enable the
-" ToggleInteractive function.
+" ToggleInteractive function. Used for setting hard word wraps..
 function! ActivateTextWidth()
     " autoenter after 79 characters
     set textwidth=79
@@ -166,6 +166,14 @@ set hlsearch
 
 " put a colored column at column 80 to show suggested max line length
 set colorcolumn=80
+" for FORTRAN, put columns at line 6 and 73-80 to follow FORTRAN formatting:
+" (Taken from https://web.stanford.edu/class/me200c/tutorial_77/03_basics.html)
+"   Col. 1     : Blank, or a 'c' or '*' for comments
+"   Col. 1-5   : Statement label (optional)
+"   Col. 6     : Continuation of previous line (optional)
+"   Col. 7-72  : Statements
+"   Col. 73-80 : Sequence number (optional, rarely used today)
+autocmd FileType fortran setlocal colorcolumn=6,73,74,75,76,77,78,79,80
 
 " allow mouse past 220th column
 " http://stackoverflow.com/questions/7000960/in-vim-why-doesnt-my-mouse-work-past-the-220th-column
@@ -241,6 +249,26 @@ endfunction
 
 " activate bindings by file type
 autocmd FileType tex                call TodoState_TeX_AddBindings()
+
+"=======================================================================
+" LATEX AUTOCOMPILE
+"=======================================================================
+
+" Automatically run `make` on a .tex file if Makefile exists after saving.
+
+function! TeX_Compile()
+    set cmdheight=4
+    if filereadable("Makefile")
+        echom 'Makefile found, executing `make`.'
+        execute "!make 1>/dev/null 2>&1 &"
+    else
+        echom 'Makefile NOT found, executing `pdflatex ' . @% . '`.'
+        execute "!pdflatex 1>/dev/null 2>&1 &" . @%
+    endif
+    set cmdheight=1
+endfunction
+
+autocmd FileType tex autocmd BufWritePost <buffer> call TeX_Compile()
 
 "=======================================================================
 " MARKDOWN/GIT COMMIT SETTINGS
@@ -656,6 +684,9 @@ nmap <Leader>cm :make<CR><Space>:bp<CR>:bd#<CR>
 "   - g is for 'go', i.e. hit enter after 'current', i.e. just immediately
 "     execute a search on the highlighted word (visual) or word under the
 "     cursor (normal)
+
+" Grep will open up the quickfix window, which can be navigated with :cnext/:cn
+" and :cprevious/:cp, which I have remapped elsewhere in this file.
 
 " Searches (fundamental): {b,f,fr}{g,f}s
 
