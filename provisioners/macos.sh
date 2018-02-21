@@ -75,7 +75,7 @@ echo "  https://gist.github.com/stefco/5956a92cfb4394255c637471334a7984" \
 port -f install >$log 2>$errlog \
     py27-ipython py27-numpy py27-scipy py27-matplotlib +latex +dvipng \
     texlive-latex-extra py27-astropy glue kerberos5 py27-pykerberos \
-    nds2-client py27-lalframe
+    nds2-client py27-lalframe py27-gwpy +gwf +hdf5 +nds2 +segments
 
 logdate
 echo "Installing LaTeX packages." | tee -a $log
@@ -87,7 +87,7 @@ echo "  https://gwpy.github.io/docs/stable/install/index.html" | tee -a $log
 pip install gwpy[all] >$log 2>$errlog
 
 echo "Installing pip packages." | tee -a $log
-pip install PyForms itermplot ffmpeg-python untangle twilio
+pip install yolk PyForms itermplot ffmpeg-python untangle twilio
 
 logdate
 tee -a <<"__EOF__"
