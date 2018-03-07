@@ -9,7 +9,10 @@ pathchoices = {
         "/opt/local/bin",
         "/opt/local/sbin",
         "/opt/local/libexec/gnubin",
-        "/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin"
+        "/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin",
+        "/opt/local/Library/Frameworks/Python.framework/Versions/3.4/bin",
+        "/opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin",
+        "/opt/local/Library/Frameworks/Python.framework/Versions/3.6/bin"
     ],
     "conda": "/Users/Stefan/anaconda2/bin",
     "intel": "/Users/Stefan/anaconda2/bin",
