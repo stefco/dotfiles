@@ -263,7 +263,7 @@ function! TeX_Compile()
         execute "!make 1>/dev/null 2>&1 &"
     else
         echom 'Makefile NOT found, executing `pdflatex ' . @% . '`.'
-        execute "!pdflatex 1>/dev/null 2>&1 &" . @%
+        execute "!pdflatex 1>/dev/null 2>&1 " . @% . " &"
     endif
     set cmdheight=1
 endfunction
@@ -610,12 +610,12 @@ function! RunCommandOnFileUnderCursor(command)
   "execute("!tput clear")
   silent !tput clear
   redraw!
-  if exists(pre_preview_in_nerdtree) && pre_preview_in_nerdtree
-    " change back to the old directory now that the preview is done
-    let pre_preview_in_nerdtree = 0
-    execute "cd ".pre_preview_cwd
-  endif
   if bufname("") == "NERD_tree_1"
+    if exists(pre_preview_in_nerdtree) && pre_preview_in_nerdtree
+      " change back to the old directory now that the preview is done
+      let pre_preview_in_nerdtree = 0
+      execute "cd ".pre_preview_cwd
+    endif
     " if we are still in the NERDTree window, move back to the start of the
     " line in NERDTree after we finish.
     normal 0
@@ -663,6 +663,14 @@ map <Leader>c gc
 
 " run 'make' command with no arguments; same as 'helm-make' in emacs
 nmap <Leader>cm :make<CR><Space>:bp<CR>:bd#<CR>
+
+"---------------------------------------
+" FILE OPENING BINDINGS
+"---------------------------------------
+
+" use these bindings to open files (in a GUI environment)
+
+" open the filename under the cursor
 
 "---------------------------------------
 " FILE SEARCH RELATED BINDINGS
