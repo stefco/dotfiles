@@ -87,7 +87,7 @@ echo "  https://gwpy.github.io/docs/stable/install/index.html" | tee -a $log
 pip install gwpy[all] >$log 2>$errlog
 
 echo "Installing pip packages." | tee -a $log
-pip install yolk PyForms itermplot ffmpeg-python untangle twilio
+pip install yolk PyForms itermplot ffmpeg-python untangle twilio visidata
 
 logdate
 tee -a <<"__EOF__"
