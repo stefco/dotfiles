@@ -17,6 +17,10 @@ pathchoices = {
     "pyuser": os.path.expanduser("~/.local/bin"),
     "conda": os.path.expanduser("~/anaconda2/bin"),
     "intel": os.path.expanduser("~/anaconda2/bin"),
+    "user": [
+        os.path.expanduser("~/bin"),
+        os.path.expanduser("~/dev/dotfiles/linkfiles/.iterm2"),
+    ],
     "sys": [
         "/usr/bin",
         "/usr/local/bin",
