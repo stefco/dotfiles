@@ -104,9 +104,9 @@ elif [ $(hostname)z == 'gwhen.com'z ]; then
     export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \w \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
 # UWM LIGO Datagrid computers
 elif [ $(hostname)z == 'pcdev3'z ]; then
-    export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] UWM 3 ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \w \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
+    export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \w \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
 elif [ $(hostname)z == 'pcdev2'z ]; then
-    export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] UWM 2 ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \w \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
+    export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \w \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
 elif [ $(hostname)z == 'pcdev1'z ]; then
-    export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] UWM 1 ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \w \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
+    export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \w \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
 fi
