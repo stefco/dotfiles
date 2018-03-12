@@ -26,4 +26,4 @@ done
 
 # get a better PATH (only if `pathsorter` executable exists for this purpose)
 type -f 1>/dev/null 2>&1 pathsorter \
-    && export PATH="$(pathsorter port sys conda)"
+    && export PATH="$(pathsorter user port sys conda pyuser)"
