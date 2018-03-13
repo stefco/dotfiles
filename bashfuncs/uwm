@@ -1,0 +1,6 @@
+#!/bin/bash
+# (c) Stefan Countryman 2018
+# load gstlal environment
+source ~gstlalcbc/modules/post_O2/post_O2_Haswell_180309_master/env.sh
+# colors: http://wiki.bash-hackers.org/scripting/terminalcodes
+PS1='\[\e[36;45m\] GSTLAL \[\e[m\]'"$PS1"

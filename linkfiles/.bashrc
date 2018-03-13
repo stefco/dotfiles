@@ -80,4 +80,12 @@ dotsource promptline
 dotsource qconfig
 
 # define simple functions (their names are the same as the source files)
-dotsource l nohupw path cpln vimex cp-last-screen imap
+dotsource l nohupw path cpln vimex cp-last-screen imap colorgrid
+
+# load UWM-specific initialization scripts if on UWM
+hostname="$(hostname -f)"
+for i in {1..3}; do
+    if [ "${hostname}"z = pcdev${i}.nemo.uwm.eduz ]; then
+        dotsource uwm
+    fi
+done
