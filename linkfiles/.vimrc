@@ -137,6 +137,9 @@ set backspace=indent,eol,start
 " set 2-space indent for HTML, CSS, and JSON
 autocmd FileType html,css,json set softtabstop=2|set tabstop=2|set shiftwidth=2
 
+" don't expandtab for Makefiles; use actual tabs
+autocmd FileType make set noexpandtab
+
 " force .md to be interpreted as Markdown, include code syntax
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
@@ -431,12 +434,16 @@ noremap <Left> gT
 noremap <Right> gt
 
 " next or previous open file
-noremap <S-Right> :n<CR>
-noremap <S-Left> :N<CR>
+" noremap <S-Right> :n<CR>
+" noremap <S-Left> :N<CR>
 
 " next or previous vimgrep match
 noremap <S-Up> :cp<CR>
 noremap <S-Down> :cn<CR>
+
+" next or previous error from neomake
+noremap <S-Right> :lnext<CR>
+noremap <S-Left> :lprev<CR>
 
 "=======================================================================
 " HELP COMMANDS
