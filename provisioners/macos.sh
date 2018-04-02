@@ -34,7 +34,7 @@ port -f install >$log 2>$errlog \
     julia libcaca msmtp offlineimap vim ncdu neomutt notmuch OpenBLAS pstree \
     psutils tree readline dtrx fortune bash-completion poppler djvulibre \
     unrar tiff jp2a shellcheck p5.24-term-readline-gnu \
-    findutils youtube-dl qrencode ripgrep
+    findutils youtube-dl qrencode ripgrep optipng
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
 
@@ -44,7 +44,7 @@ port -f install >$log 2>$errlog \
     py27-ipython py27-numpy py27-matplotlib py27-scipy py27-healpy \
     py27-astropy py27-gnureadline py27-pykerberos py27-pygments py27-jupyter \
     py27-h5py py27-dateutil py27-cython py27-cairo py27-pip py27-pylint \
-    py27-pyflakes py27-greenlet py27-neovim py27-gobject3
+    py27-pyflakes py27-greenlet py27-neovim py27-gobject3 py27-pytest
 
 logdate
 echo "Installing IceCube dependencies." | tee -a $log
