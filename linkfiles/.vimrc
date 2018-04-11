@@ -465,7 +465,7 @@ vnoremap <Leader>hw y:help <C-r>"<CR>
 
 " use Ag if available even when using Ack package
 if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
+  let g:ackprg = 'ag -s --vimgrep'
 endif
 
 "=======================================================================
