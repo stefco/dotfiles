@@ -319,7 +319,9 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  ;; (org-indent-mode)
+  (org-indent-mode)
+  (setq fill-column 79)
+  (auto-fill-mode) ;; line wrap at `fill-column' lines.
   ;; Enable mouse support
   (unless window-system
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
@@ -334,6 +336,7 @@ you should place your code here."
           (sequence "PURCHASE(p)" "LOWSTOCK(l)" "|" "GOTEEM(g)")
           (sequence "ASK(q)" "ASKED(a)" "|" "ANSWERED(r)" "YES(Y)" "NO(N)")))
   (setq org-enforce-todo-dependencies t)
+  ;; (setq org-startup-indented t)
   (setq org-todo-keyword-faces
         '(("TODO"     . (:foreground "red"))
           ("BUG"      . (:foreground "red"))
