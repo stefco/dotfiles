@@ -1,0 +1,281 @@
+#!/usr/bin/env python
+#
+# notmuch_mutt - notmuch (of a) helper for Mutt
+#
+# Copyright: 2018 Stefan Countryman <stefan.countryman@gmail.com>
+# License: GNU General Public License (GPL) v. 3
+# Adapted from Stefano Zacchiroli's perl script, notmuch-mutt
+
+"""
+A ``notmuch`` helper for ``mutt``. Helps you find emails and reconstruct
+threads quickly and create on-the-fly directories that ``mutt`` can use for
+viewing results.
+"""
+
+import os
+import sys
+import shutil
+import shlex
+import readline
+import argparse
+from subprocess import Popen, PIPE
+from email import message_from_file
+from hashlib import sha1
+import mailbox
+
+if 'XDG_CACHE_HOME' in os.environ:
+    XDG_CACHE_DIR = os.environ["HOME"]
+else:
+    XDG_CACHE_DIR = os.path.join(os.environ["HOME"], ".cache")
+CACHE_DIR = os.path.join(XDG_CACHE_DIR, 'notmuch', 'mutt')
+PROMPT_HELP_STRING = "?"
+DEFAULT_OUTDIR = os.path.join(CACHE_DIR, 'results')
+ACTION_KEYS = ("search", "thread", "tag")
+DESC = """notmuch_mutt - notmuch (of a) helper for Mutt, now in python
+
+notmuch_mutt is a frontend to the notmuch mail indexer capable of populating
+a maildir with search results. Has the same interface as the perl script,
+``notmuch-mutt``.
+
+examples:
+    notmuch_mutt [OPTION]... search [SEARCH-TERM]...
+    notmuch_mutt [OPTION]... thread < MAIL
+    notmuch_mutt [OPTION]... tag [TAGS]... < MAIL
+"""
+EPILOG = """notmuch_mutt can be used to integrate notmuch with the Mutt mail
+user agent (unsurprisingly, given the name). To that end, you should define
+macros like the following in your Mutt configuration (usually one of:
+~/.muttrc, /etc/Muttrc, or a configuration snippet under /etc/Muttrc.d/):
+
+    macro index <F8> \\
+    "<enter-command>set my_old_pipe_decode=\\$pipe_decode my_old_wait_key=\\$wait_key nopipe_decode nowait_key<enter>\\
+    <shell-escape>notmuch_mutt -r --prompt search<enter>\\
+    <change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\\
+    <enter-command>set pipe_decode=\\$my_old_pipe_decode wait_key=\\$my_old_wait_key<enter>" \\
+          "notmuch: search mail"
+
+    macro index <F9> \\
+    "<enter-command>set my_old_pipe_decode=\\$pipe_decode my_old_wait_key=\\$wait_key nopipe_decode nowait_key<enter>\\
+    <pipe-message>notmuch_mutt -r thread<enter>\\
+    <change-folder-readonly>`echo ${XDG_CACHE_HOME:-$HOME/.cache}/notmuch/mutt/results`<enter>\\
+    <enter-command>set pipe_decode=\\$my_old_pipe_decode wait_key=\\$my_old_wait_key<enter>" \\
+          "notmuch: reconstruct thread"
+
+    macro index <F6> \\
+    "<enter-command>set my_old_pipe_decode=\\$pipe_decode my_old_wait_key=\\$wait_key nopipe_decode nowait_key<enter>\\
+    <pipe-message>notmuch_mutt tag -- -inbox<enter>\\
+    <enter-command>set pipe_decode=\\$my_old_pipe_decode wait_key=\\$my_old_wait_key<enter>" \\
+          "notmuch: remove message from inbox"
+
+The first macro (activated by <F8>) prompts the user for notmuch search terms
+and then jump to a temporary maildir showing search results. The second macro
+(activated by <F9>) reconstructs the thread corresponding to the current mail
+and show it as search results. The third macro (activated by <F6>) removes the
+tag C<inbox> from the current message; by changing C<-inbox> this macro may be
+customised to add or remove tags appropriate to the users notmuch work-flow.
+
+To keep notmuch index current you should then periodically run C<notmuch
+new>. Depending on your local mail setup, you might want to do that via cron,
+as a hook triggered by mail retrieval, etc.
+"""
+PARSER = argparse.ArgumentParser(description=DESC, epilog=EPILOG,
+                                 formatter_class=argparse.RawTextHelpFormatter)
+ARG = PARSER.add_argument
+ARG("-o", "--output-dir", default=DEFAULT_OUTDIR, help="""
+    Store search results as (symlink) messages under maildir DIR. Beware: DIR
+    will be overwritten. (DEFAULT: {})""".format(DEFAULT_OUTDIR))
+ARG("-p", "--prompt", action='store_true', help="""
+    Instead of using command line search terms, prompt the user for them (only
+    for "search").""")
+ARG("-r", "--remove-dups", action='store_true', help="""
+    Remove emails with duplicate message-ids from search results.  (Passes
+    --duplicate=1 to notmuch search command.) Note this can hide search results
+    if an email accidentally or maliciously uses the same message-id as a
+    different email.""")
+ARG("action", choices=ACTION_KEYS, help="""
+    The desired action. "search" will run a search query on the provided
+    ``params``. "thread" will reconstruct a thread from a raw email string
+    piped into STDIN. "tag" will apply the tags specified in ``params`` to a
+    raw email string piped into STDIN.""")
+ARG("params", nargs=argparse.REMAINDER, help="""
+    Optional parameters for the "search" and "tag" options.""")
+
+
+def empty_maildir(maildir):
+    """Create an empty maildir (if missing) or empty an existing maildir.
+
+    Arguments
+    ---------
+
+    ``maildir``     Path to a directory which will be an empty
+                    ``maildir``-format mail directory. If this directory
+                    already exists, it will be recursively deleted before the
+                    new empty maildir is made there.
+    """
+    if os.path.isdir(maildir):
+        shutil.rmtree(maildir)
+    mailbox.Maildir(maildir).close()
+
+
+class SearchException(IOError):
+    """An exception raised when a search fails."""
+
+
+def search(maildir, remove_dups, query):
+    """Search mail according to ``query`` with notmuch; store results in
+    ``maildir``. No return value.
+
+    Arguments
+    ---------
+
+    ``maildir``         Path to the maildir where mail is stored.
+    ``remove_dups``     Boolean indicating whether duplicates should be
+                        removed.
+    ``query``           A list of strings to pass to ``notmuch``.
+    """
+    if remove_dups:
+        query = ["--duplicate=1"] + query
+    command = ["notmuch", "search", "--output=files"] + list(query)
+    empty_maildir(maildir)
+    proc = Popen(command, stdout=PIPE, stderr=PIPE)
+    result, err = proc.communicate()
+    if proc.returncode != 0:
+        msg = "``notmuch`` had nonzero return running command: {}\nstderr:\n{}"
+        raise SearchException(msg.format(command, err))
+    if result.strip():
+        for fname in result.split('\n'):
+            print fname
+            os.symlink(fname, os.path.join(maildir, 'cur', fname.strip()))
+
+
+def prompt(text, default=tuple()):
+    """Prompt the user for input. Opens the ``man`` page for
+    ``notmuch-search-terms`` if the user answers "?" at the prompt.
+
+    Arguments
+    ---------
+
+    ``text``        Text to display at the prompt.
+    ``default``     (DEFAULT: ``tuple()``) Default value, in case the user
+                    provides nothing. If not provided, the user's empty
+                    response will be used instead.
+
+    Returns
+    -------
+
+    ``query``       The input provided by the user parsed into a list of
+                    command line args using ``shlex`` (defaults to ``default``
+                    if the user provides nothing).
+    """
+
+    # load readline preferences
+    inputrc = os.path.expanduser('~/.inputrc')
+    if os.path.isfile(inputrc):
+        readline.read_init_file(os.path.expanduser('~/.inputrc'))
+
+    # load notmuch_mutt history
+    if 'MUTT_NOTMUCH_HISTFILE' in os.environ:
+        histfile = os.environ['MUTT_NOTMUCH_HISTFILE']
+    else:
+        histfile = os.path.join(CACHE_DIR, 'history')
+    if os.path.isfile(histfile):
+        readline.read_history_file(histfile)
+    readline.set_history_length(1000)
+
+    # get the prompt
+    if default:
+        text += "(DEFAULT: {}): ".format(default)
+    query = shlex.split(raw_input(text))
+    readline.write_history_file(histfile)
+    if query != [PROMPT_HELP_STRING]:
+        if (not query) and default:
+            query = default
+        return query
+    Popen(["man", "notmuch-search-terms"]).communicate()
+
+
+def get_message_id():
+    """Get a unique ID for an email read from `STDIN`. Read the unique ID from
+    the `message-id` header value, or, if it's not available, generate a SHA1
+    hexdigest from the contents of the email."""
+    msg = message_from_file(sys.stdin)
+    if 'message-id' in msg:
+        return msg['message-id'].strip('<>')
+    return 'notmuch-sha1-' + sha1(msg.as_string).hexdigest()
+
+
+def search_action(interactive, results_dir, remove_dups, *query):
+    """Search for mail using ``notmuch``, either interactively (with user
+    input) or by passing a query as arguments to this function.
+
+    Arguments
+    ---------
+
+    ``interactive``     If True, ask user for input and parse into query.
+    ``results_dir``     Directory in which to store search results.
+    ``remove_dups``     If True, ``notmuch`` will not include duplicate
+                        messages in results.
+    ``query``           Trailing arguments are used as the default query if
+                        ``interactive`` is True (i.e. if the user provides no
+                        input). If ``interactive`` is False, ``query`` is
+                        always used as the search query for ``notmuch``.
+    """
+    if interactive:
+        query = prompt("search ('?' for man): ", query)
+    search(results_dir, remove_dups, *query)
+
+
+def thread_action(results_dir, remove_dups):
+    """Get a whole thread for a particular message-id and save it to a results
+    directory.
+
+    Arguments
+    ---------
+
+    ``results_dir``     The directory in which to save search results.
+    ``remove_dups``     If True, ``notmuch`` will not include duplicate
+                        messages in results.
+    """
+    cmd = ['notmuch', 'search', '--output=threads', 'id:' + get_message_id()]
+    proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
+    thread_id, err = proc.communicate()
+    if proc.returncode:
+        msg = "Search failed with command: {}, STDERR: {}".format(cmd, err)
+        raise SearchException(msg)
+    search(results_dir, remove_dups, thread_id.strip())
+
+
+def tag_action(*tags):
+    """Tag the message fed into STDIN using ``notmuch`` with the arguments
+    provided as tags."""
+    cmd = ['notmuch', 'tag'] + tags + ['--', 'id:' + get_message_id()]
+    proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
+    err = proc.communicate()[1]
+    if proc.returncode:
+        msg = "Tag failed with command: {}, STDERR: {}".format(cmd, err)
+        raise SearchException(msg)
+
+
+def main():
+    """Run the script at the command line with input arguments."""
+    args = PARSER.parse_args()
+    assert args.action in ACTION_KEYS
+    if not os.path.isdir(XDG_CACHE_DIR):
+        os.mkdir(XDG_CACHE_DIR)
+    if args.action == 'thread':
+        thread_action(args.output_dir, args.remove_dups)
+    else:
+        if not args.params and not args.prompt:
+            PARSER.print_help()
+            sys.stderr.write("\nERROR: Must provide parameters for 'search' or"
+                             " 'tag'.\n")
+            exit(1)
+        if args.action == 'search':
+            search_action(args.prompt, args.output_dir, args.remove_dups,
+                          args.params)
+        elif args.action == 'tag':
+            tag_action(args.params)
+
+
+if __name__ == "__main__":
+    main()
