@@ -41,12 +41,12 @@ def depth(path):
 
 
 def du(*args):  # pylint: disable=invalid-name
-    """Run ``du`` (disk usage) and pass it the given command line arguments."""
+    """Run ``du`` (disk usage) and pass it the given command line arguments.
+    Returns a list of directories as well as the return value of ``du`` in a
+    tuple."""
     proc = Popen(("du",) + args, stdout=PIPE)
     dirs = proc.communicate()[0]
-    if proc.returncode:
-        raise IOError("du failed with return code {}.".format(proc.returncode))
-    return dirs.strip().split('\n')
+    return dirs.strip().split('\n'), proc.returncode
 
 
 def nbyte(string):
@@ -60,12 +60,13 @@ def nbyte(string):
 
 def main():
     """Find disk usage and sort output."""
-    lines = du(*DU_ARGS)
+    lines, retval = du(*DU_ARGS)
     splitlines = [l.split('\t') for l in lines]
     depths = sorted(set([depth(l[1]) for l in splitlines]))
     splits = [[l for l in splitlines if depth(l[1]) == d] for d in depths]
     organized = [sorted(l, key=lambda i: nbyte(i[0])) + SEP for l in splits]
     stdout.writelines(['\t'.join(d) + '\n' for d in sum(organized, [])][:-1])
+    exit(retval)
 
 if __name__ == "__main__":
     main()
