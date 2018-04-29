@@ -1,0 +1,71 @@
+#!/usr/bin/env python
+# (c) Stefan Countryman 2018
+
+"""
+Run ``du -h --max-depth=N`` (plus any additional flags) and sort the output
+nicely.
+"""
+
+import os
+from sys import stdout
+from argparse import ArgumentParser
+from subprocess import Popen, PIPE
+
+DESC = """Equivalent to running ``du -h <remaining args> | <sort>`` where
+<sort> is a program that sorts first by directory depth and then by file size.
+The ``-h`` flag is passed to ``du`` regardless of whether it is included in the
+original command. Note that providing the ``-h`` command to ``dusorted`` will
+merely print help (since this flag is otherwise assumed)."""
+EPILOG = """For information on ``du`` option flags, run ``man du``."""
+PARSER = ArgumentParser(description=DESC, epilog=EPILOG)
+ARG = PARSER.add_argument
+ARGS, DU_ARGS = PARSER.parse_known_args()
+DU_ARGS.append("-h")  # always put in human-readable form
+SUFFIXES = {"K": 2**10, "M": 2**20, "G": 2**30, "T": 2**40}
+SEP = [["-"*70]]
+
+
+def split(path):
+    """Fully split a path into components. Does not count dots."""
+    splitpath = []
+    while path:
+        path, chunk = os.path.split(path)
+        if chunk != os.path.curdir:
+            splitpath.insert(0, chunk)
+    return splitpath
+
+
+def depth(path):
+    """How many directories deep a path is. Does not count dots."""
+    return len(split(path))
+
+
+def du(*args):  # pylint: disable=invalid-name
+    """Run ``du`` (disk usage) and pass it the given command line arguments."""
+    proc = Popen(("du",) + args, stdout=PIPE)
+    dirs = proc.communicate()[0]
+    if proc.returncode:
+        raise IOError("du failed with return code {}.".format(proc.returncode))
+    return dirs.strip().split('\n')
+
+
+def nbyte(string):
+    """Return a ``float`` with the number of bytes described by ``string`` (as
+    returned by ``du``), e.g. 1.3K would be 1.3 * 2**10 bytes."""
+    for suf in SUFFIXES:
+        if string.endswith(suf):
+            return float(string.replace(suf, "")) * SUFFIXES[suf]
+    return float(string)
+
+
+def main():
+    """Find disk usage and sort output."""
+    lines = du(*DU_ARGS)
+    splitlines = [l.split('\t') for l in lines]
+    depths = sorted(set([depth(l[1]) for l in splitlines]))
+    splits = [[l for l in splitlines if depth(l[1]) == d] for d in depths]
+    organized = [sorted(l, key=lambda i: nbyte(i[0])) + SEP for l in splits]
+    stdout.writelines(['\t'.join(d) + '\n' for d in sum(organized, [])][:-1])
+
+if __name__ == "__main__":
+    main()
