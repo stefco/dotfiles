@@ -39,12 +39,20 @@ port -f install >$log 2>$errlog \
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
 
 logdate
-echo "Installing python stuff." | tee -a $log
+echo "Installing python 2 stuff." | tee -a $log
 port -f install >$log 2>$errlog \
     py27-ipython py27-numpy py27-matplotlib py27-scipy py27-healpy \
     py27-astropy py27-gnureadline py27-pykerberos py27-pygments py27-jupyter \
     py27-h5py py27-dateutil py27-cython py27-cairo py27-pip py27-pylint \
     py27-pyflakes py27-greenlet py27-neovim py27-gobject3 py27-pytest
+
+logdate
+echo "Installing python 3 stuff." | tee -a $log
+port -f install >$log 2>$errlog \
+    py36-ipython py36-numpy py36-matplotlib py36-scipy py36-healpy \
+    py36-astropy py36-gnureadline py36-pykerberos py36-pygments py36-jupyter \
+    py36-h5py py36-dateutil py36-cython py36-cairo py36-pip py36-pylint \
+    py36-pyflakes py36-greenlet py36-neovim py36-gobject3 py36-pytest
 
 logdate
 echo "Installing IceCube dependencies." | tee -a $log
@@ -54,12 +62,12 @@ port -f install >$log 2>$errlog \
 
 logdate
 echo "Setting default python, ipython, and pip binaries." | tee -a $log
-port select --set python python27 >$log 2>$errlog
-port select --set ipython py27-ipython >$log 2>$errlog
-port select --set ipython2 py27-ipython >$log 2>$errlog
-port select --set pip pip27 >$log 2>$errlog
-port select --set pylint pylint27 >$log 2>$errlog
-port select --set pyflakes py27-pyflakes >$log 2>$errlog
+port select --set python python36 >$log 2>$errlog
+port select --set ipython py36-ipython >$log 2>$errlog
+port select --set ipython3 py36-ipython >$log 2>$errlog
+port select --set pip pip36 >$log 2>$errlog
+port select --set pylint pylint36 >$log 2>$errlog
+port select --set pyflakes py36-pyflakes >$log 2>$errlog
 
 logdate
 echo "Installing LIGO environment. Details here:" | tee -a $log
@@ -88,7 +96,8 @@ pip install gwpy[all] >$log 2>$errlog
 
 echo "Installing pip packages." | tee -a $log
 pip install \
-    yolk PyForms itermplot ffmpeg-python untangle twilio visidata pytest-cov
+    yolk PyForms itermplot ffmpeg-python untangle twilio visidata pytest-cov \
+    jupyterlab
 
 logdate
 tee -a <<"__EOF__"
