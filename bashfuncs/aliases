@@ -29,9 +29,10 @@ alias vimtutor='DISPLAY="" vimtutor'
 alias signal=~/dev/dotfiles/submodules/signal-cli/build/install/signal-cli/bin/signal-cli
 
 # url encode and decode from stdin
-alias urlencode="python -c 'import urllib, sys; print urllib.quote(sys.stdin.read())'"
-alias urldecode="python -c 'import urllib, sys; print urllib.unquote(sys.stdin.read())'"
-alias queryencode="python -c 'import urllib, sys; print urllib.quote_plus(sys.stdin.read())'"
+alias urlencode="python -c 'import urllib, sys; sys.stdout.write(urllib.quote(sys.stdin.read()))'"
+alias urldecode="python -c 'import urllib, sys; sys.stdout.write(urllib.unquote(sys.stdin.read()))'"
+alias queryencode="python -c 'import urllib, sys; sys.stdout.write(urllib.quote_plus(sys.stdin.read()))'"
+alias querydecode="python -c 'import urllib, sys; sys.stdout.write(urllib.unquote_plus(sys.stdin.read()))'"
 
 # workaround; vim saves files in a way that pisses off crontab
 alias crontab="VIM_CRONTAB=true crontab"
