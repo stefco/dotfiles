@@ -1,0 +1,99 @@
+#!/bin/bash
+# (c) Stefan Countryman, 2018
+# Prepend the date of birth (if available) or the date of modification of files
+# and folders (given as args) to their filenames.
+
+prepend_date(){
+    if [ $# -eq 0 ]; then
+        echo $'Usage: prepend_date <filenames>\n'
+        echo 'Prepend the date of birth (if available) or the date of'
+        echo 'modification of files and folders (given as args) to their'
+        echo 'filenames. You will be asked for confirmation before changes are'
+        echo 'made.'
+        return 0
+    fi
+    # check whether pipefail is on; turn it on if so
+    set -o | sed -n '/pipefail.*on/q1'
+    pipefail_off=$?
+    # if we hit an error, clean up by returning the bad value and toggling
+    # pipefail if necessary
+    trap '
+        ret=$?
+        if [ ${pipefail_off} -eq 0 ]; then
+            set +o pipefail
+        fi
+        echo "Hit an error in a pipe, returning." >&2
+        return $ret
+    ' ERR
+    if [ ${pipefail_off} -eq 0 ]; then
+        set -o pipefail
+    fi
+    local sedcmd='
+        s/^  File: \(.*\)$/\1/p
+        s/^Modify: \([^ ]*\).*$/\1/p
+        s/^ Birth: \([^ ]*\).*$/\1/p
+    '
+    local datepattern='^[0-9]{4}-[0-1][0-9]-[0-3][0-9]'
+    local fname
+    local newname
+    local oldnames=()
+    local newnames=()
+    local modify
+    local birth
+    if [ $(stat /dev/null | sed -n "$sedcmd" | wc -l) -ne 3 ]; then
+        echo 'Unexpected output of `stat`: '"$(stat /dev/null)" >&2
+        return 1
+    fi
+    echo "Planned changes:"
+    local names="$(
+        stat "$@" \
+            | sed -n "${sedcmd}" \
+            | while read fname; do
+                read modify
+                read birth
+                if [[ ${birth} =~ ${datepattern} ]]; then
+                    date="${birth}"
+                elif [[ ${modify} =~ ${datepattern} ]]; then
+                    date="${modify}"
+                else
+                    echo "Unexpected birth and modification times:" >&2
+                    echo "    File: ${fname}" >&2
+                    echo "  Modify: ${modify}" >&2
+                    echo "   Birth: ${birth}" >&2
+                    return 2
+                fi
+                # strip the date from the front if it is already there
+                newname="${date}"-"${fname#${date}-}"
+                # don't bother if this has already been renamed to this format
+                if [ "${fname}" != "${newname}" ]; then
+                    printf "%s\n" "${fname}"
+                    printf "%s\n" "${newname}"
+                fi
+            done
+    )"
+    # can't modify the values in oldnames and newnames from within the previous
+    # loop, so we need to extract them again
+    while read fname; do
+        read newname
+        oldnames+=("${fname}")
+        newnames+=("${newname}")
+    done <<<"${names}"
+    if [ ${#oldnames[@]} -ne ${#newnames[@]} ]; then
+        echo "numbers of old names and new names don't match! script bug." >&2
+        echo "oldnames: ${oldnames[@]}"
+        echo "newnames: ${newnames[@]}"
+        return 3
+    fi
+    for i in $(seq 0 $((${#oldnames[*]} - 1))); do
+        printf '\tmv -n "%s" "%s"\n' "${oldnames[$i]}" "${newnames[$i]}"
+    done
+    read -p "Continue with renaming? [Y/n]" -n 1 -r
+    echo  # newline
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Okay, cancelling."
+        return
+    fi
+    for i in $(seq 0 $((${#oldnames[*]} - 1))); do
+        mv -n "${oldnames[$i]}" "${newnames[$i]}"
+    done
+}

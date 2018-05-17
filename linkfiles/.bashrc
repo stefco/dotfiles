@@ -80,7 +80,7 @@ dotsource promptline
 dotsource qconfig
 
 # define simple functions (their names are the same as the source files)
-dotsource l nohupw path cpln vimex cp-last-screen imap colorgrid
+dotsource l nohupw path cpln vimex cp-last-screen imap colorgrid prepend_date
 
 # load UWM-specific initialization scripts if on UWM
 hostname="$(hostname -f)"
