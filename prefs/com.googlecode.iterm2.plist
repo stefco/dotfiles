@@ -3704,7 +3704,7 @@
 	<key>NSWindow Frame com.apple.typography_panel_UbuntuMonoDerivativePowerline-Regular</key>
 	<string>344 294 260 319 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 353 490 425 0 0 1280 800 </string>
+	<string>0 421 1280 379 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>4 398 490 402 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -14317,7 +14317,7 @@
 			<key>Badge Color</key>
 			<dict>
 				<key>Alpha Component</key>
-				<real>0.5</real>
+				<real>1</real>
 				<key>Blue Component</key>
 				<real>0.0</real>
 				<key>Color Space</key>
