@@ -48,3 +48,13 @@ fi
 
 # shortcut for non-gui matlab
 alias matcli='matlab -no{splash,desktop,jvm}'
+
+# shortcut for php composer
+if [[ -f ~/bin/composer.phar ]]; then
+    alias composer="php "~/"bin/composer.phar"
+fi
+
+# shortcut for instagram collection saver
+if [[ -f ~/dev/instagram_collection_saver/ig_collection_saver.py ]]; then
+    alias igcolsave=~/dev/instagram_collection_saver/ig_collection_saver.py
+fi
