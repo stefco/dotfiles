@@ -121,9 +121,6 @@ augroup CLNRSet
     autocmd! ColorScheme * hi CursorLineNR ctermfg=Yellow
 augroup END
 
-" run Neomake on write
-autocmd! BufWritePost * Neomake
-
 " indent settings
 let g:pymode_indent = 0
 set shiftround " when indenting, indent to a multiple of shiftwidth.
@@ -222,7 +219,18 @@ noremap <Leader><Space> :
 noremap <Leader>1 :!
 
 "=======================================================================
-" TODO STATE SETTINGS
+" NEOMAKE SETTINGS
+"=======================================================================
+
+" RECALL that neomake adds warnings/messages to your location list, so you can
+" navigate them with :lnext and :lprev; shortcuts for these are in the
+" NAVIGATION COMMANDS section of this file.
+
+" run Neomake on write
+autocmd! BufWritePost * Neomake
+
+"=======================================================================
+" TO DO STATE SETTINGS
 "=======================================================================
 
 " These settings are inspired by org mode with spacemacs bindings, though they
@@ -641,6 +649,25 @@ vnoremap <Leader>vp y:!ql <C-r>"<CR>
 " open a file under the cursor using mac's 'open' command
 nnoremap <Leader>vo :call RunCommandOnFileUnderCursor("open")<CR>
 vnoremap <Leader>vo y:!open <C-r>"<CR>
+
+"=======================================================================
+" PYTHON
+"=======================================================================
+
+" Automatically generate a UML diagram for this file on save
+function! StefcoPythonUmlPdf() abort
+    " From AsyncRun documentation (https://github.com/skywind3000/asyncrun.vim)
+    " %:t:r   - File name of current buffer without path and extension
+    AsyncRun 
+        \ pyreverse
+            \ "--output=pdf"
+            \ "--module-names=n"
+            \ "--all-ancestors"
+            \ "--project=%:t:r"
+            \ "%:t:r"
+endfunction
+
+autocmd FileType python autocmd BufWritePost * call StefcoPythonUmlPdf()
 
 "=======================================================================
 " IPYTHON
