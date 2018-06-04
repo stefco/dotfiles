@@ -51,7 +51,9 @@ Plugin 'tpope/tpope-vim-abolish'
 " add repeatability to supporting custom plugins
 Plugin 'tpope/vim-repeat'
 " add async via iterm and tmux to vim
-Plugin 'tpope/vim-dispatch'
+" NOTE: Disabled because it interferes with AsyncRun. See:
+" https://github.com/skywind3000/asyncrun.vim/wiki/Cooperate-with-famous-plugins#fugitive
+" Plugin 'tpope/vim-dispatch'
 " nice wrapper for existing persistence/session saving vim functionality!
 " Plugin 'tpope/vim-obsession'
 " add extra '[' and ']' mappings
