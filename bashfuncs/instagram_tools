@@ -1,0 +1,13 @@
+#!/bin/bash
+# (c) Stefan Countryman 2018
+# CLI convenience tools for working with Instagram (if they are installed)
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [[ -f ~/dev/instagram_collection_saver/bashtools.sh ]]
+then
+    source ~/dev/instagram_collection_saver/bashtools.sh
+elif [[ -f "$DIR"/../submodules/instagram_collection_saver/bashtools.sh ]]
+then
+    source "$DIR"/../submodules/instagram_collection_saver/bashtools.sh
+fi
