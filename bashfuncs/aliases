@@ -53,8 +53,3 @@ alias matcli='matlab -no{splash,desktop,jvm}'
 if [[ -f ~/bin/composer.phar ]]; then
     alias composer="php "~/"bin/composer.phar"
 fi
-
-# shortcut for instagram collection saver
-if [[ -f ~/dev/instagram_collection_saver/ig_collection_saver.py ]]; then
-    alias igcolsave=~/dev/instagram_collection_saver/ig_collection_saver.py
-fi
