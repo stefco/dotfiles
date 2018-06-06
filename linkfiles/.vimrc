@@ -347,8 +347,15 @@ endfunction
 " center the screen
 noremap <CR> zz
 
+"=======================================================================
+" REFRESHING THE VIEW
+"=======================================================================
+
 " sync syntax from start with <Leader>s (default leader is \)
-map <Leader>S :syntax sync fromstart<CR>
+map <Leader>rs :syntax sync fromstart<CR>
+
+" redraw the screen
+map <Leader>rr :redraw!<CR>
 
 "=======================================================================
 " COMMENT SYNTAX
