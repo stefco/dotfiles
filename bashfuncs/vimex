@@ -14,6 +14,9 @@ vimex () {
     elif [[ $cmdtype == "$1 is a function"* ]]; then
         echo >&2 "Command is a function, cannot edit."
         return 3
+    elif [[ $cmdtype == "$1 is a shell builtin"* ]]; then
+        echo >&2 "Command is a shell builtin, cannot edit."
+        return 4
     elif [[ $cmdtype == "$1 is hashed ("* ]]; then
         cmd="${cmdtype#$1 is hashed (}"
         cmd="${cmd%)}"
