@@ -17,6 +17,7 @@ call vundle#begin('~/dev/dotfiles/linkfiles/.vim/bundle')
 Plugin 'VundleVim/Vundle.vim'
 
 " Keep Plugin commands between vundle#begin/end.
+Plugin 'jamessan/vim-gnupg'
 Plugin 'godlygeek/tabular'
 Plugin 'neomake/neomake'
 Plugin 'nvie/vim-flake8'
