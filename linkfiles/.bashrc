@@ -41,8 +41,8 @@ declare -A _funcsources
 recordfuncsource () {
     # see which functions have been declared since the last time this function
     # was called and manually mark $1 as their source file in _funcsources
-    # if no arg is provided, just provide a blank string
-    [ $# -eq 0 ] && set -- ""
+    # if no arg is provided, indicate that no source is registered
+    [ $# -eq 0 ] && set -- "NO_SOURCE_FILE_REGISTERED"
     if [ $# -eq 1 ]; then
         # if no funcs manually provided, just register funcs that have appeared
         # since this function was last called
@@ -67,6 +67,7 @@ dotsource () {
     done
 }
 
+recordfuncsource
 recordfuncsource "${DOTFILEBASHRC}" dotsource recordfuncsource
 
 ########################################################################
