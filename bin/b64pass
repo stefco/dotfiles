@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+# (c) Stefan Countryman (2018)
+
+"""
+A function for printing a base32 password (just lowercase numbers and
+letters) using cryptographically secure random bits.
+"""
+
+from sys import argv, stderr
+from os import urandom
+from base64 import b64encode as b64
+
+if len(argv) != 2:
+    stderr.write("Error: must provide exactly one arg (number of character "
+                 "in string)\n")
+    exit(1)
+
+plen = int(argv[1])
+print(b64(urandom(plen*6//8+1))[:plen].decode())
