@@ -2,6 +2,9 @@
 # (c) Stefan Countryman (2018)
 
 b32pass() {
+    if [ $# -ne 1 ]; then
+        echo >&2 "must provide exactly one arg (number of character in string)"
+    fi
     python -c 'import textwrap; exec(textwrap.dedent(r"""
         # A function for printing a base32 password (just lowercase numbers and
         # letters) using cryptographically secure random bits.
