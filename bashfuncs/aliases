@@ -18,12 +18,13 @@ alias grep='grep --color=auto'
 # two-sided print
 alias lpdub="lp -o sides=two-sided-long-edge"
 
-# vim aliases prevent XQuartz from opening
-alias view='DISPLAY="" view'
-alias vi='DISPLAY="" vi'
-alias vim='DISPLAY="" vim'
-alias vimdiff='DISPLAY="" vimdiff'
-alias vimtutor='DISPLAY="" vimtutor'
+# vim aliases prevent XQuartz from opening and allow for GPG vim plugin use
+add_vim_environ(){
+    for cmd in "$@"; do
+        alias ${cmd}="DISPLAY='' ${cmd}"
+    done
+}
+add_vim_environ view vi vim vimdiff vimtutor
 
 # gotta use signal-cli
 alias signal=~/dev/dotfiles/submodules/signal-cli/build/install/signal-cli/bin/signal-cli
