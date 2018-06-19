@@ -17,6 +17,9 @@ export EDITOR=vim
 export CLICOLOR=1
 export LSCOLORS=Exfxcxdxbxegedabagacad
 
+# tell GPG which TTY to use
+export GPG_TTY=$(tty)
+
 ## vi mode
 set -o vi
 
