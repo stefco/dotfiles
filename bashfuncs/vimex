@@ -1,10 +1,32 @@
 #!/bin/bash
-# (c) Stefan Countryman 2017
+# (c) Stefan Countryman 2017-2018
 # If a command corresponds to a file, open that file for editing in vim.
+
+_reload_function_declaration () {
+    while true; do
+        read -p "Function edited, reload? (y/n): " -n 1 choice
+        echo
+        case "$choice" in
+            y|Y )
+                echo "reloading."
+                source "$1"
+                return $?
+                ;;
+            n|N ) echo "not reloading." && return;;
+            * ) echo "invalid, please type 'y' or 'n'.";;
+        esac
+    done
+}
 
 vimex () {
     local cmdtype
     local cmd
+    local posthook
+    local md5_pre
+
+    # a command to run after saving the file (if changes were made)
+    posthook=(true)
+
     if ! cmdtype="$(type 2>/dev/null "$1")"; then
         echo >&2 "Command not found."
         return 1
@@ -12,8 +34,13 @@ vimex () {
         echo >&2 "Command is an alias, cannot edit."
         return 2
     elif [[ $cmdtype == "$1 is a function"* ]]; then
-        echo >&2 "Command is a function, cannot edit."
-        return 3
+        if [ -e "${_funcsources["$1"]}" ]; then
+            cmd="${_funcsources["$1"]}"
+            posthook=(_reload_function_declaration "${cmd}")
+        else
+            echo >&2 "Command is a function; can't find where it's defined."
+            return 3
+        fi
     elif [[ $cmdtype == "$1 is a shell builtin"* ]]; then
         echo >&2 "Command is a shell builtin, cannot edit."
         return 4
@@ -23,7 +50,10 @@ vimex () {
     else
         cmd="${cmdtype#$1 is }"
     fi
-    vim "$cmd"
+    md5_pre="$(md5sum "$cmd")"
+    if vim "$cmd" && [[ $md5_pre != "$(md5sum "$cmd")" ]]; then
+        ${posthook[@]}
+    fi
 }
 
 # `vimex` autocompletion; http://www.tldp.org/LDP/abs/html/tabexpansion.html
