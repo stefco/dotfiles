@@ -391,7 +391,7 @@ function! ActivateSoftWrap()
 endfunction
 
 " activate soft wrap for text files where this is desirable
-autocmd FileType tex, taskedit      call ActivateSoftWrap()
+autocmd FileType tex,taskedit       call ActivateSoftWrap()
 
 "=======================================================================
 " AIRLINE CONFIG
