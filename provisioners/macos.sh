@@ -44,7 +44,8 @@ port -f install >$log 2>$errlog \
     py27-ipython py27-numpy py27-matplotlib py27-scipy py27-healpy \
     py27-astropy py27-gnureadline py27-pykerberos py27-pygments py27-jupyter \
     py27-h5py py27-dateutil py27-cython py27-cairo py27-pip py27-pylint \
-    py27-pyflakes py27-greenlet py27-neovim py27-gobject3 py27-pytest
+    py27-pyflakes py27-greenlet py27-neovim py27-gobject3 py27-pytest \
+    py27-taskw
 
 logdate
 echo "Installing python 3 stuff." | tee -a $log
@@ -52,7 +53,8 @@ port -f install >$log 2>$errlog \
     py36-ipython py36-numpy py36-matplotlib py36-scipy py36-healpy \
     py36-astropy py36-gnureadline py36-pykerberos py36-pygments py36-jupyter \
     py36-h5py py36-dateutil py36-cython py36-cairo py36-pip py36-pylint \
-    py36-pyflakes py36-greenlet py36-neovim py36-gobject3 py36-pytest
+    py36-pyflakes py36-greenlet py36-neovim py36-gobject3 py36-pytest \
+    py36-taskw
 
 logdate
 echo "Installing IceCube dependencies." | tee -a $log
@@ -97,7 +99,7 @@ pip install gwpy[all] >$log 2>$errlog
 echo "Installing pip packages." | tee -a $log
 pip install \
     yolk PyForms itermplot ffmpeg-python untangle twilio visidata pytest-cov \
-    jupyterlab
+    jupyterlab task
 
 logdate
 tee -a <<"__EOF__"
