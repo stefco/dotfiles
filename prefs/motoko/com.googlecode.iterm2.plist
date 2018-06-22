@@ -3596,7 +3596,7 @@
 	<key>HideMenuBarInFullscreen</key>
 	<true/>
 	<key>HideScrollbar</key>
-	<true/>
+	<false/>
 	<key>HideTab</key>
 	<true/>
 	<key>HideTabCloseButton</key>
@@ -3634,7 +3634,7 @@
 	<key>MaxVertically</key>
 	<false/>
 	<key>NSNavLastRootDirectory</key>
-	<string>~/Downloads</string>
+	<string>~/dev/dotfiles/prefs</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{712, 448}</string>
 	<key>NSQuotedKeystrokeBinding</key>
@@ -3681,13 +3681,13 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>547 476 620 392 0 0 1680 1027 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>655 554 796 473 0 0 1680 1027 </string>
+	<string>358 327 796 473 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>612 153 490 867 0 0 1680 1027 </string>
+	<string>0 521 1440 379 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>915 160 538 867 0 0 1680 1027 </string>
+	<string>806 32 490 867 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>660 596 490 402 0 0 1680 1027 </string>
+	<string>527 10 388 867 0 0 1440 900 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -7104,15 +7104,15 @@
 			<key>HotKey Alternate Shortcuts</key>
 			<array/>
 			<key>HotKey Characters</key>
-			<string> </string>
+			<string></string>
 			<key>HotKey Characters Ignoring Modifiers</key>
-			<string> </string>
+			<string></string>
 			<key>HotKey Key Code</key>
-			<integer>49</integer>
+			<integer>0</integer>
 			<key>HotKey Modifier Activation</key>
 			<integer>2</integer>
 			<key>HotKey Modifier Flags</key>
-			<integer>524288</integer>
+			<integer>0</integer>
 			<key>HotKey Window Animates</key>
 			<false/>
 			<key>HotKey Window AutoHides</key>
@@ -11753,6 +11753,8 @@
 	<true/>
 	<key>NoSyncInstallationId</key>
 	<string>E191DD29-9FF0-423D-95EB-E20C811F159C</string>
+	<key>NoSyncPermissionToShowTip</key>
+	<false/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>533358508.05643499</real>
 	<key>OnlyWhenMoreTabs</key>
@@ -11910,7 +11912,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-11-27T07:30:38Z</date>
+	<date>2018-06-20T15:02:11Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -22004,7 +22006,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.1.5.beta.2</string>
+	<string>3.1.6beta5</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>2</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
