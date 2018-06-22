@@ -7,3 +7,4 @@ linkfiles/.ipython
 linkfiles/.config/ipython
 linkfiles/.config
 linkfiles/scratch
+.DS_Store
