@@ -103,6 +103,8 @@ function! ActivateTextWidth()
         set textwidth=0
     elseif &filetype == 'tex'
         set textwidth=0
+    elseif &filetype == 'taskedit'
+        set textwidth=0
     endif
 endfunction
 
@@ -389,7 +391,7 @@ function! ActivateSoftWrap()
 endfunction
 
 " activate soft wrap for text files where this is desirable
-autocmd FileType tex                call ActivateSoftWrap()
+autocmd FileType tex, taskedit      call ActivateSoftWrap()
 
 "=======================================================================
 " AIRLINE CONFIG
