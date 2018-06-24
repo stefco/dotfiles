@@ -368,6 +368,7 @@ map <Leader>rr :redraw!<CR>
 autocmd FileType vim                setlocal commentstring=\"\ %s
 autocmd FileType crontab,sh,python  setlocal commentstring=#\ %s
 autocmd FileType mailcap,muttrc     setlocal commentstring=#\ %s
+autocmd FileType sshconfig          setlocal commentstring=#\ %s
 autocmd FileType tex,matlab         setlocal commentstring=%\ %s
 
 "=======================================================================
