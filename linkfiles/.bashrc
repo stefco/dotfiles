@@ -113,8 +113,17 @@ dotsource promptline
 dotsource qconfig
 
 # define simple functions (their names are the same as the source files)
-dotsource l nohupw path cpln vimex cp-last-screen imap colorgrid prepend_date
-dotsource instagram_tools
+dotsource \
+    nohupw \
+    path \
+    cpln \
+    vimex \
+    cp-last-screen \
+    imap \
+    colorgrid \
+    prepend_date \
+    instagram_tools \
+;
 
 # load UWM-specific initialization scripts if on UWM
 hostname="$(hostname -f)"
