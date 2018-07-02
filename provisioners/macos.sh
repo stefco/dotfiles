@@ -34,7 +34,7 @@ port -f install >$log 2>$errlog \
     julia libcaca msmtp offlineimap vim ncdu neomutt notmuch OpenBLAS pstree \
     psutils tree readline dtrx fortune bash-completion poppler djvulibre \
     unrar tiff jp2a shellcheck p5.24-term-readline-gnu \
-    findutils youtube-dl qrencode ripgrep optipng
+    findutils youtube-dl qrencode ripgrep optipng task vit
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
 
@@ -97,7 +97,7 @@ pip install gwpy[all] >$log 2>$errlog
 echo "Installing pip packages." | tee -a $log
 pip install \
     yolk PyForms itermplot ffmpeg-python untangle twilio visidata pytest-cov \
-    jupyterlab
+    jupyterlab taskwarrior-inthe.am
 
 logdate
 tee -a <<"__EOF__"
