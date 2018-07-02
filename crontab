@@ -6,3 +6,5 @@
 */4     *  *  *  * ( date; DOTFILEDIR="/Users/Stefan/dev/dotfiles" DOTFILEBASHSRC="/Users/Stefan/dev/dotfiles/bashfuncs" /usr/bin/time /Users/Stefan/dev/dotfiles/bin/pull dot dat; ) >>/var/log/cronscripts/pull.log 2>&1
 # refresh gwhen
 1-59/12 *  *  *  * ( date; DOTFILEDIR="/Users/Stefan/dev/dotfiles" DOTFILEBASHSRC="/Users/Stefan/dev/dotfiles/bashfuncs" /usr/bin/time /Users/Stefan/dev/dotfiles/bin/pull gwhen; ) >>/var/log/cronscripts/pull.log 2>&1
+# sync taskwarrior every 15 minutes
+3,18,33,48 * * * * /opt/local/bin/task sync >/dev/null 2>&1
