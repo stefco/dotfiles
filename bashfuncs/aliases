@@ -34,10 +34,10 @@ alias urlencode="python -c 'import urllib, sys; sys.stdout.write(urllib.quote(sy
 alias urldecode="python -c 'import urllib, sys; sys.stdout.write(urllib.unquote(sys.stdin.read()))'"
 alias queryencode="python -c 'import urllib, sys; sys.stdout.write(urllib.quote_plus(sys.stdin.read()))'"
 alias querydecode="python -c 'import urllib, sys; sys.stdout.write(urllib.unquote_plus(sys.stdin.read()))'"
-alias urlrename="for f in *; do mv "$f" $(echo $f | urlencode); done"
-alias urlunname="for f in *; do mv "$f" $(echo $f | urldecode); done"
-alias queryrename="for f in *; do mv "$f" $(echo $f | queryencode); done"
-alias queryunname="for f in *; do mv "$f" $(echo $f | querydecode); done"
+alias urlrename='for f in *; do mv "$f" $(echo $f | urlencode); done'
+alias urlunname='for f in *; do mv "$f" $(echo $f | urldecode); done'
+alias queryrename='for f in *; do mv "$f" $(echo $f | queryencode); done'
+alias queryunname='for f in *; do mv "$f" $(echo $f | querydecode); done'
 
 # workaround; vim saves files in a way that pisses off crontab
 alias crontab="VIM_CRONTAB=true crontab"
