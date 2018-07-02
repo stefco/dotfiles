@@ -12,7 +12,7 @@ alias igwhen='ipython --profile=gwhen'
 alias iheavy='ipython --profile=heavy'
 
 # edit my passwords file
-alias secrets='vim '~/Dropbox/crypt/.netrc
+alias secrets='cp ~/Dropbox/crypt/.netrc{,.backup} && vim ~/Dropbox/crypt/.netrc'
 
 # add color to some utilities
 alias ls='ls --color=auto'
