@@ -222,6 +222,27 @@ noremap <Leader><Space> :
 noremap <Leader>1 :!
 
 "=======================================================================
+" EDITING EXECUTABLES
+"=======================================================================
+
+function! StefcoGetExecutablePath(cmdname) abort
+    return system('
+        \ cmdtype="$(type 2>/dev/null "$1")"
+        \ if [[ $cmdtype == "$1 is a shell builtin"* ]]; then
+        \     echo >&2 "Command is a shell builtin, cannot edit."
+        \     return 4
+        \ elif [[ $cmdtype == "$1 is hashed ("* ]]; then
+        \     cmd="${cmdtype#$1 is hashed (}"
+        \     cmd="${cmd%)}"
+        \ else
+        \     cmd="${cmdtype#$1 is }"
+        \ fi
+        \ printf "%s" $cmd')
+endfunction
+
+" command! eex 
+
+"=======================================================================
 " NEOMAKE SETTINGS
 "=======================================================================
 
@@ -677,7 +698,7 @@ function! StefcoPythonUmlPdf() abort
             \ "%:t:r"
 endfunction
 
-autocmd FileType python autocmd BufWritePost * call StefcoPythonUmlPdf()
+" autocmd FileType python autocmd BufWritePost * call StefcoPythonUmlPdf()
 
 "=======================================================================
 " IPYTHON
