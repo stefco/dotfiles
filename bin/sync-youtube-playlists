@@ -18,7 +18,7 @@ if os.name == "posix":
     VOLUME_PREFIX = "/mnt/d"
     DEFAULT_YOUTUBEDL = "youtube-dl.exe"
 elif os.name == "nt":
-    VOLUME_PREFIX = "D:"
+    VOLUME_PREFIX = "D:\\"
     DEFAULT_YOUTUBEDL = r"C:\Users\Stefan\bin\youtube-dl.exe"
 else:
     raise ValueError("Unidentified OS.")
