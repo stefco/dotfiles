@@ -3686,7 +3686,7 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>1049 448 231 329 0 0 1280 777 </string>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>403 33 877 77 0 0 1280 800 </string>
+	<string>349 341 877 77 0 0 1280 800 </string>
 	<key>NSWindow Frame Preferences</key>
 	<string>515 311 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SUAutomaticUpdateAlert</key>
@@ -3696,15 +3696,15 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>561 135 606 469 0 0 1280 800 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>294 288 796 473 0 0 1280 800 </string>
+	<string>264 109 796 473 0 0 1280 800 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
-	<string>80 194 592 584 0 0 1280 800 </string>
+	<string>632 109 592 584 0 0 1280 800 </string>
 	<key>NSWindow Frame com.apple.typography_panel_IosevkaNerdFontCM-Light</key>
 	<string>212 247 260 282 0 0 1280 800 </string>
 	<key>NSWindow Frame com.apple.typography_panel_UbuntuMonoDerivativePowerline-Regular</key>
 	<string>344 294 260 319 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 421 1280 379 0 0 1280 800 </string>
+	<string>0 397 1280 403 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>4 398 490 402 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -7133,15 +7133,15 @@
 			<key>HotKey Alternate Shortcuts</key>
 			<array/>
 			<key>HotKey Characters</key>
-			<string> </string>
+			<string></string>
 			<key>HotKey Characters Ignoring Modifiers</key>
-			<string> </string>
+			<string></string>
 			<key>HotKey Key Code</key>
-			<integer>49</integer>
+			<integer>0</integer>
 			<key>HotKey Modifier Activation</key>
 			<integer>2</integer>
 			<key>HotKey Modifier Flags</key>
-			<integer>524288</integer>
+			<integer>0</integer>
 			<key>HotKey Window Animates</key>
 			<false/>
 			<key>HotKey Window AutoHides</key>
@@ -15105,7 +15105,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-05-18T23:14:35Z</date>
+	<date>2018-05-28T20:24:27Z</date>
 	<key>SavePasteHistory</key>
 	<true/>
 	<key>Secure Input</key>
@@ -15148,7 +15148,7 @@
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<true/>
 	<key>UKCrashReporterLastCrashReportDate</key>
-	<real>1510587136</real>
+	<real>1527369728</real>
 	<key>URLHandlersByGuid</key>
 	<dict>
 		<key>mailto</key>
