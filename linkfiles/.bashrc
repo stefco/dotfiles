@@ -123,6 +123,7 @@ dotsource \
     colorgrid \
     prepend_date \
     instagram_tools \
+    tun \
 ;
 
 # load UWM-specific initialization scripts if on UWM
