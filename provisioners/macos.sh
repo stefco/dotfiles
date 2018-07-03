@@ -96,6 +96,11 @@ echo "Installing GWpy with all options. Details here:" | tee -a $log
 echo "  https://gwpy.github.io/docs/stable/install/index.html" | tee -a $log
 pip install gwpy[all] >$log 2>$errlog
 
+echo "Installing jupyter extensions." | tee -a $log
+jupyter labextension install \
+    jupyterlab_vim
+logdate
+
 echo "Installing pip packages." | tee -a $log
 pip install \
     yolk PyForms itermplot ffmpeg-python untangle twilio visidata pytest-cov \
