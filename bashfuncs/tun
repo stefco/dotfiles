@@ -30,7 +30,11 @@ tun(){
         return 1
     fi
     if [ "${1}" = "kill" ]; then
-        echo >&2 "Killing the following processes:"
+        if [ "${2}" = "tun" ]; then
+            echo >&2 "Killing all tunnel processes:"
+        else
+            echo >&2 "Killing the following processes:"
+        fi
         tun ls \
             | grep "${*:2}"
         tun ls \
