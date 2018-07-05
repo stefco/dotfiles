@@ -48,3 +48,6 @@ tun(){
     echo >&2 "Current tunnels:"
     tun ls
 }
+
+# turn on autocompletion using SSH's autocompletion function
+complete -F _ssh tun
