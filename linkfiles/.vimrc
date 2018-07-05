@@ -224,6 +224,16 @@ noremap <Leader><Space> :
 noremap <Leader>1 :!
 
 "=======================================================================
+" ENCRYPTION SETTINGS
+"=======================================================================
+
+" Use blowfish2 for vim-encrypted stuff
+set cryptmethod=blowfish2
+
+" Use symmetric encryption
+let GPGPreferSymmetric=1
+
+"=======================================================================
 " NEOMAKE SETTINGS
 "=======================================================================
 
@@ -680,7 +690,7 @@ function! StefcoPythonUmlPdf() abort
             \ "%:t:r"
 endfunction
 
-autocmd FileType python autocmd BufWritePost * call StefcoPythonUmlPdf()
+" autocmd FileType python autocmd BufWritePost * call StefcoPythonUmlPdf()
 
 "=======================================================================
 " IPYTHON

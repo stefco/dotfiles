@@ -1,0 +1,50 @@
+#!/bin/bash
+# (c) Stefan Countryman (2018)
+# Open an ssh tunnel
+
+tun(){
+    if [ "${1}" = "ls" ]; then
+        ps -ax \
+            | grep "[s]sh -L .*:localhost:.* -N -f" \
+            | python -c 'import textwrap; exec(textwrap.dedent(r"""
+                import sys
+                for line in sys.stdin:
+                    proc = line.split(" ")[0]
+                    port = line.split(":localhost:")[1].split(" ")[0]
+                    args = line.split("-N -f ")[1].strip()
+                    print("{:<8} -> tun {} {}".format(proc, port, args))
+            """+" "*4))'
+        return 0
+    fi
+    if [ "$#" -lt 2 ]; then
+        echo >&2 "USAGE: tun PORTNUM SSHARG1 [SSHARG2...]"
+        echo >&2 "Creates a tunnel from remote PORTNUM to local PORTNUM like:"
+        echo >&2 "  ssh -L 5900:localhost:5900 -N -f gamagori"
+        echo >&2 "Some common ports for reference:"
+        echo >&2 "  VNC     -> 5900"
+        echo >&2 "  RDP     -> 3389"
+        echo >&2 "List current tunnels by procname with 'tun ls'."
+        echo >&2 "Kill a tunnel process by portname or other matching args"
+        echo >&2 "with 'tun kill PATTERN'. Kill all tunnels with "
+        echo >&2 "'tun kill tun'."
+        return 1
+    fi
+    if [ "${1}" = "kill" ]; then
+        if [ "${2}" = "tun" ]; then
+            echo >&2 "Killing all tunnel processes:"
+        else
+            echo >&2 "Killing the following processes:"
+        fi
+        tun ls \
+            | grep "${*:2}"
+        tun ls \
+            | grep "${*:2}" \
+            | awk '{ print $1 }' \
+            | xargs kill
+        return 0
+    fi
+    ssh -L "${1}":localhost:"${1}" -N -f "${@:2}"
+    echo >&2 "Proc tunneling to port '${1}' with args '${@:2}'."
+    echo >&2 "Current tunnels:"
+    tun ls
+}

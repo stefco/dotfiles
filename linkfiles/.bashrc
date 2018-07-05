@@ -82,6 +82,8 @@ if [[ $OSTYPE == darwin* ]]; then
     dotsource macos
     # load MacOS-specific functions
     dotsource emacsg opent
+elif [[ $OSTYPE = linux* ]]; then
+    dotsource linux
 fi
 
 #check if this is an ssh session
@@ -123,6 +125,7 @@ dotsource \
     colorgrid \
     prepend_date \
     instagram_tools \
+    tun \
 ;
 
 # load UWM-specific initialization scripts if on UWM

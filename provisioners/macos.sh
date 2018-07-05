@@ -34,7 +34,7 @@ port -f install >$log 2>$errlog \
     julia libcaca msmtp offlineimap vim ncdu neomutt notmuch OpenBLAS pstree \
     psutils tree readline dtrx fortune bash-completion poppler djvulibre \
     unrar tiff jp2a shellcheck p5.24-term-readline-gnu \
-    findutils youtube-dl qrencode ripgrep optipng
+    findutils youtube-dl qrencode ripgrep optipng npm6 emacs-mac-app emacs
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
 
@@ -95,6 +95,11 @@ logdate
 echo "Installing GWpy with all options. Details here:" | tee -a $log
 echo "  https://gwpy.github.io/docs/stable/install/index.html" | tee -a $log
 pip install gwpy[all] >$log 2>$errlog
+
+echo "Installing jupyter extensions." | tee -a $log
+jupyter labextension install \
+    jupyterlab_vim
+logdate
 
 echo "Installing pip packages." | tee -a $log
 pip install \
