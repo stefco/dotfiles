@@ -101,6 +101,7 @@ def download(outdir=DEFAULT_OUTPUTDIR, youtubedl=DEFAULT_YOUTUBEDL,
         'm4a',
         '--write-description',
         '--add-metadata',
+        '--embed-thumbnail',
         '--batch-file={}'.format(channel_list),
     ]
     proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
