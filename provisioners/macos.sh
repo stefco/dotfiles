@@ -44,8 +44,7 @@ port -f install >$log 2>$errlog \
     py27-ipython py27-numpy py27-matplotlib py27-scipy py27-healpy \
     py27-astropy py27-gnureadline py27-pykerberos py27-pygments py27-jupyter \
     py27-h5py py27-dateutil py27-cython py27-cairo py27-pip py27-pylint \
-    py27-pyflakes py27-greenlet py27-neovim py27-gobject3 py27-pytest \
-    py27-taskw py27-psutil
+    py27-pyflakes py27-greenlet py27-neovim py27-gobject3 py27-pytest
 
 logdate
 echo "Installing python 3 stuff." | tee -a $log
