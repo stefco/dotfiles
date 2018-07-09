@@ -7,6 +7,7 @@ export`) and apply Stef's desired transformations to them. Provides methods to
 read and write from taskwarrior's CLI.
 """
 
+import sys
 from subprocess import Popen, PIPE
 import json
 import datetime
@@ -70,8 +71,9 @@ class Transform(object):
         """Return a modified (deep copied) list of `self.tasks` with `modifier`
         applied to the tasks downselected by `filtered`."""
         taskdict = {t['uuid']: t for t in deepcopy(self.tasks)}
-        for task in deepcopy(self.filtered):
+        for task in deepcopy(self.filtered()):
             taskdict[task['uuid']] = self.modifier(task)
+            taskdict[task['uuid']]['modified'] = now()
         return list(taskdict.values())
 
 
@@ -94,39 +96,122 @@ class SortTinderMatches(Transform):
         return modify
 
 
-class AddDoingTag(Transform):
-    """If a task is in the Trello list 'Doing', tag it as 'doing'."""
+class TrelloTagTransform(Transform):
+    """Associate a certain trello list name with a specific tag."""
+
+    @abc.abstractproperty
+    def trello_list(self):
+        """The trello list to check."""
+
+    @abc.abstractproperty
+    def tag(self):
+        """The tag that corresponds to ``self.trello_list``."""
+
+
+class AddTag(TrelloTagTransform):
+    """If a task is in the Trello list ``self.trello_list``, tag it as
+    ``self.tag``."""
+
+    __metaclass__ = abc.ABCMeta
 
     def filtered(self):
         """Get tasks in Trello list 'doing' that don't have the 'doing' tag
         yet."""
         return [t for t in self.tasks
-                if ("doing" not in t.get("tags", []) and
-                    t.get("intheamtrellolistname", "") == "Doing")]
+                if (self.tag not in t.get("tags", []) and
+                    t.get("intheamtrellolistname", "") == self.trello_list)]
 
     @property
     def modifier(self):
         """Add the 'doing' tag."""
         def modify(task):
-            task["tags"] = list(set(task.get("tags", [])).union(["tinder"]))
+            task["tags"] = list(set(task.get("tags", [])).union([self.tag]))
             return task
         return modify
 
 
-class RemoveDoingTag(Transform):
-    """If a task is not in the Trello list 'Doing', remove tag 'doing'."""
+class RemoveTag(TrelloTagTransform):
+    """If a task is not in the Trello list ``self.trello_list``, remove tag
+    ``self.tag``."""
+
+    __metaclass__ = abc.ABCMeta
 
     def filtered(self):
         """Get tasks with the 'doing' tag that are not in the Trello 'Doing'
         list."""
         return [t for t in self.tasks
-                if ("doing" in t.get("tags", []) and
-                    t.get("intheamtrellolistname", "") != "Doing")]
+                if (self.tag in t.get("tags", []) and
+                    t.get("intheamtrellolistname", "") != self.trello_list)]
 
     @property
     def modifier(self):
         """Remove the 'doing' tag."""
         def modify(task):
-            task["tags"] = list(set(task["tags"]).remove("doing"))
+            task["tags"] = list(set(task["tags"]).remove(self.tag))
             return task
         return modify
+
+
+def associate_trello_list_with_tag(trello_list_name, tag_name):
+    """Return classes ``(AddTheTag, RemoveTheTag)`` that make sure that if a
+    task is in ``trello_list`` it is also tagged with ``tag``."""
+
+    def trello_list(_self):
+        """The trello list to check."""
+        return trello_list_name
+
+    def tag(_self):
+        """The tag that corresponds to ``self.trello_list``."""
+        return tag_name
+
+    add = type(
+        "Add{}Tag".format(tag_name.capitalize()),
+        (AddTag,),
+        {
+            'trello_list': property(trello_list),
+            'tag': property(tag),
+        }
+    )
+
+    remove = type(
+        "Remove{}Tag".format(tag_name.capitalize()),
+        (RemoveTag,),
+        {
+            'trello_list': property(trello_list),
+            'tag': property(tag),
+        }
+    )
+
+    return add, remove
+
+
+# pylint: disable=invalid-name
+AddDoingTag, RemoveDoingTag = associate_trello_list_with_tag("Doing", "doing")
+# pylint: disable=invalid-name
+AddPieSkyTag, RemovePieSkyTag = associate_trello_list_with_tag(
+    "Pie in the Sky",
+    "skypie"
+)
+
+
+# Transforms to run after syncing
+SYNC_TRANSFORMS = (
+    SortTinderMatches,
+    AddDoingTag,
+    RemoveDoingTag,
+    AddPieSkyTag,
+    RemovePieSkyTag,
+)
+
+
+def main():
+    original_tasks = read(*sys.argv[1:])
+    tasks = deepcopy(original_tasks)
+    for transform_class in SYNC_TRANSFORMS:
+        tasks = transform_class(tasks).transform()
+    taskdict = {t['uuid']: t for t in original_tasks}
+    write([t for t in tasks
+           if taskdict[t['uuid']]['modified'] != t['modified']])
+
+if __name__ == "__main__":
+    main()
