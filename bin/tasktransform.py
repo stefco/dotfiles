@@ -147,7 +147,7 @@ class RemoveTag(TrelloTagTransform):
     def modifier(self):
         """Remove the 'doing' tag."""
         def modify(task):
-            task["tags"] = list(set(task["tags"]).remove(self.tag))
+            task["tags"] = list(set(task["tags"]).remove(self.tag) or set())
             return task
         return modify
 
@@ -190,7 +190,7 @@ AddDoingTag, RemoveDoingTag = associate_trello_list_with_tag("Doing", "doing")
 # pylint: disable=invalid-name
 AddPieSkyTag, RemovePieSkyTag = associate_trello_list_with_tag(
     "Pie in the Sky",
-    "skypie"
+    "pie"
 )
 
 
