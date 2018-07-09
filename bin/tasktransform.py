@@ -56,13 +56,15 @@ class Transform(object):
     def __init__(self, tasks):
         self.tasks = tasks
 
-    @abc.abstractmethod
     def filtered(self):
-        """Return the list of tasks that will be modified."""
+        """Return the list of tasks that will be modified. By default, act on
+        all tasks."""
+        return self.tasks
 
     @abc.abstractproperty
     def modifier(self):
-        """A function that modifies a single task."""
+        """A function that modifies a single task. Most likely doesn't actually
+        depend on `self`."""
 
     def transform(self):
         """Return a modified (deep copied) list of `self.tasks` with `modifier`
@@ -71,3 +73,60 @@ class Transform(object):
         for task in deepcopy(self.filtered):
             taskdict[task['uuid']] = self.modifier(task)
         return list(taskdict.values())
+
+
+class SortTinderMatches(Transform):
+    """Takes tasks added from Tinder and sorts them into the Tinder list."""
+
+    def filtered(self):
+        """Identify Tinder exports by the way the description starts."""
+        return [t for t in self.tasks
+                if t['description'].startswith("What do you think about")]
+
+    @property
+    def modifier(self):
+        """Change the task's Trello Board List to 'Tinder' and add 'tinder'
+        tag."""
+        def modify(task):
+            task["intheamtrellolistname"] = "Tinder"
+            task["tags"] = list(set(task.get("tags", [])).union(["tinder"]))
+            return task
+        return modify
+
+
+class AddDoingTag(Transform):
+    """If a task is in the Trello list 'Doing', tag it as 'doing'."""
+
+    def filtered(self):
+        """Get tasks in Trello list 'doing' that don't have the 'doing' tag
+        yet."""
+        return [t for t in self.tasks
+                if ("doing" not in t.get("tags", []) and
+                    t.get("intheamtrellolistname", "") == "Doing")]
+
+    @property
+    def modifier(self):
+        """Add the 'doing' tag."""
+        def modify(task):
+            task["tags"] = list(set(task.get("tags", [])).union(["tinder"]))
+            return task
+        return modify
+
+
+class RemoveDoingTag(Transform):
+    """If a task is not in the Trello list 'Doing', remove tag 'doing'."""
+
+    def filtered(self):
+        """Get tasks with the 'doing' tag that are not in the Trello 'Doing'
+        list."""
+        return [t for t in self.tasks
+                if ("doing" in t.get("tags", []) and
+                    t.get("intheamtrellolistname", "") != "Doing")]
+
+    @property
+    def modifier(self):
+        """Remove the 'doing' tag."""
+        def modify(task):
+            task["tags"] = list(set(task["tags"]).remove("doing"))
+            return task
+        return modify
