@@ -5,14 +5,17 @@
 tun(){
     if [ "${1}" = "ls" ]; then
         ps -ax \
-            | grep "[s]sh -L .*:localhost:.* -N -f" \
+            | grep "[s]sh -L .*:.*:.* -N -f" \
             | python -c 'import textwrap; exec(textwrap.dedent(r"""
                 import sys
                 for line in sys.stdin:
                     proc = line.split(" ")[0]
-                    port = line.split(":localhost:")[1].split(" ")[0]
-                    args = line.split("-N -f ")[1].strip()
-                    print("{:<8} -> tun {} {}".format(proc, port, args))
+                    cmd = line.split("ssh -L ")[1].split(":")
+                    target = cmd[1]
+                    port = cmd[0]
+                    args = cmd[2].split("-N -f ")[1].strip()
+                    print("{:<8} -> tun {} {} {}".format(proc, target, port,
+                                                         args))
             """+" "*4))'
         return 0
     fi
@@ -20,6 +23,12 @@ tun(){
         echo >&2 "USAGE: tun PORTNUM SSHARG1 [SSHARG2...]"
         echo >&2 "Creates a tunnel from remote PORTNUM to local PORTNUM like:"
         echo >&2 "  ssh -L 5900:localhost:5900 -N -f gamagori"
+        echo >&2 "USAGE: tun TARGET PORTNUM SSHARG1 [SSHARG2...]"
+        echo >&2 "Connects to a different target through the remote. TARGET"
+        echo >&2 "should be the IP address or URL relative to the remote (the"
+        echo >&2 "default if not provided is 'localhost'). Equivalent to"
+        echo >&2 "something like:"
+        echo >&2 "  ssh -L 3389:fuchikomardp:3389 -N -f gamagori"
         echo >&2 "Some common ports for reference:"
         echo >&2 "  VNC     -> 5900"
         echo >&2 "  RDP     -> 3389"
@@ -43,8 +52,14 @@ tun(){
             | xargs kill
         return 0
     fi
-    ssh -L "${1}":localhost:"${1}" -N -f "${@:2}"
-    echo >&2 "Proc tunneling to port '${1}' with args '${@:2}'."
+    # Check whether the first arg is a valid port number, i.e. an int. If not,
+    # interpret it as a remote host. Otherwise, set it to the default,
+    # "localhost".
+    if [ "${1}" -eq "${1}" ] 2>/dev/null; then
+        set -- "localhost" "$@"
+    fi
+    ssh -L "${2}":"${1}":"${2}" -N -f "${@:3}"
+    echo >&2 "Proc tunneling to target '${1}' on port '${2}' w/ args '${@:3}'."
     echo >&2 "Current tunnels:"
     tun ls
 }
