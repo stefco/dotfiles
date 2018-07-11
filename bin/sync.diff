@@ -1,0 +1,37 @@
+5,6c5,6
+< Download audio tracks from youtube playlists in a format suitable for PLEX.
+< Taken from:
+---
+> Download videos from youtube playlists in a format suitable for PLEX. Taken
+> from:
+29c29
+<     "youtube-music",
+---
+>     "youtube",
+36c36
+<     "youtube-dl-music-playlists.txt",
+---
+>     "youtube-dl-channel-list.txt",
+40c40,44
+< FILENAME_FORMAT = '%(playlist)s - %(title)s [%(id)s].%(ext)s'
+---
+> FILENAME_FORMAT = os.path.join(
+>     '%(uploader)s',
+>     '%(playlist)s',
+>     '%(playlist)s - S01E%(playlist_index)s - %(title)s [%(id)s].%(ext)s',
+> )
+46c50
+< ARG("-o", "--outdir", default=DEFAULT_OUTPUTDIR, help="""
+---
+> ARG("-o", "--oudir", default=DEFAULT_OUTPUTDIR, help="""
+99,101c103,106
+<         '--extract-audio',
+<         '--audio-format',
+<         'm4a',
+---
+>         '-f',
+>         'bestvideo[ext=mp4]+bestaudio[ext=m4a]',
+>         '--merge-output-format',
+>         'mp4',
+103a109
+>         '--write-thumbnail',

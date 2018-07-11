@@ -1,0 +1,68 @@
+#!/bin/bash
+# (c) Stefan Countryman (2018)
+# Open an ssh tunnel
+
+tun(){
+    if [ "${1}" = "ls" ]; then
+        ps -ax \
+            | grep "[s]sh -L .*:.*:.* -N -f" \
+            | python -c 'import textwrap; exec(textwrap.dedent(r"""
+                import sys
+                for line in sys.stdin:
+                    proc = line.split(" ")[0]
+                    cmd = line.split("ssh -L ")[1].split(":")
+                    target = cmd[1]
+                    port = cmd[0]
+                    args = cmd[2].split("-N -f ")[1].strip()
+                    print("{:<8} -> tun {} {} {}".format(proc, target, port,
+                                                         args))
+            """+" "*4))'
+        return 0
+    fi
+    if [ "$#" -lt 2 ]; then
+        echo >&2 "USAGE: tun PORTNUM SSHARG1 [SSHARG2...]"
+        echo >&2 "Creates a tunnel from remote PORTNUM to local PORTNUM like:"
+        echo >&2 "  ssh -L 5900:localhost:5900 -N -f gamagori"
+        echo >&2 "USAGE: tun TARGET PORTNUM SSHARG1 [SSHARG2...]"
+        echo >&2 "Connects to a different target through the remote. TARGET"
+        echo >&2 "should be the IP address or URL relative to the remote (the"
+        echo >&2 "default if not provided is 'localhost'). Equivalent to"
+        echo >&2 "something like:"
+        echo >&2 "  ssh -L 3389:fuchikomardp:3389 -N -f gamagori"
+        echo >&2 "Some common ports for reference:"
+        echo >&2 "  VNC     -> 5900"
+        echo >&2 "  RDP     -> 3389"
+        echo >&2 "List current tunnels by procname with 'tun ls'."
+        echo >&2 "Kill a tunnel process by portname or other matching args"
+        echo >&2 "with 'tun kill PATTERN'. Kill all tunnels with "
+        echo >&2 "'tun kill tun'."
+        return 1
+    fi
+    if [ "${1}" = "kill" ]; then
+        if [ "${2}" = "tun" ]; then
+            echo >&2 "Killing all tunnel processes:"
+        else
+            echo >&2 "Killing the following processes:"
+        fi
+        tun ls \
+            | grep "${*:2}"
+        tun ls \
+            | grep "${*:2}" \
+            | awk '{ print $1 }' \
+            | xargs kill
+        return 0
+    fi
+    # Check whether the first arg is a valid port number, i.e. an int. If not,
+    # interpret it as a remote host. Otherwise, set it to the default,
+    # "localhost".
+    if [ "${1}" -eq "${1}" ] 2>/dev/null; then
+        set -- "localhost" "$@"
+    fi
+    ssh -L "${2}":"${1}":"${2}" -N -f "${@:3}"
+    echo >&2 "Proc tunneling to target '${1}' on port '${2}' w/ args '${@:3}'."
+    echo >&2 "Current tunnels:"
+    tun ls
+}
+
+# turn on autocompletion using SSH's autocompletion function
+complete -F _ssh tun

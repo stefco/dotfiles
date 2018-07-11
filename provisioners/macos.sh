@@ -34,7 +34,7 @@ port -f install >$log 2>$errlog \
     julia libcaca msmtp offlineimap vim ncdu neomutt notmuch OpenBLAS pstree \
     psutils tree readline dtrx fortune bash-completion poppler djvulibre \
     unrar tiff jp2a shellcheck p5.24-term-readline-gnu \
-    findutils youtube-dl qrencode ripgrep optipng
+    findutils youtube-dl qrencode ripgrep optipng npm6 emacs-mac-app emacs
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
 
@@ -44,8 +44,7 @@ port -f install >$log 2>$errlog \
     py27-ipython py27-numpy py27-matplotlib py27-scipy py27-healpy \
     py27-astropy py27-gnureadline py27-pykerberos py27-pygments py27-jupyter \
     py27-h5py py27-dateutil py27-cython py27-cairo py27-pip py27-pylint \
-    py27-pyflakes py27-greenlet py27-neovim py27-gobject3 py27-pytest \
-    py27-taskw
+    py27-pyflakes py27-greenlet py27-neovim py27-gobject3 py27-pytest
 
 logdate
 echo "Installing python 3 stuff." | tee -a $log
@@ -54,7 +53,7 @@ port -f install >$log 2>$errlog \
     py36-astropy py36-gnureadline py36-pykerberos py36-pygments py36-jupyter \
     py36-h5py py36-dateutil py36-cython py36-cairo py36-pip py36-pylint \
     py36-pyflakes py36-greenlet py36-neovim py36-gobject3 py36-pytest \
-    py36-taskw
+    py36-taskw py36-psutil
 
 logdate
 echo "Installing IceCube dependencies." | tee -a $log
@@ -95,6 +94,11 @@ logdate
 echo "Installing GWpy with all options. Details here:" | tee -a $log
 echo "  https://gwpy.github.io/docs/stable/install/index.html" | tee -a $log
 pip install gwpy[all] >$log 2>$errlog
+
+echo "Installing jupyter extensions." | tee -a $log
+jupyter labextension install \
+    jupyterlab_vim
+logdate
 
 echo "Installing pip packages." | tee -a $log
 pip install \
