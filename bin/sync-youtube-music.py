@@ -104,13 +104,15 @@ def download(outdir=DEFAULT_OUTPUTDIR, youtubedl=DEFAULT_YOUTUBEDL,
         '--embed-thumbnail',
         '--batch-file={}'.format(channel_list),
     ]
-    proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
-    out, err = proc.communicate()
     with open(logfile, 'a') as log:
         log.write("\n" + "-"*79 + "\n\n")
         log.write("Starting at " + datetime.datetime.now().isoformat() + "\n")
         log.write("Script that produced this:\n")
         log.write("{}\n".format(os.path.realpath(__file__)))
+    proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
+    out, err = proc.communicate()
+    with open(logfile, 'a') as log:
+        log.write("Finished at " + datetime.datetime.now().isoformat() + "\n")
         log.write("Return value: {}\n".format(proc.returncode))
         log.write("stdout:\n{}\n".format(out))
         log.write("stderr:\n{}\n".format(err))
