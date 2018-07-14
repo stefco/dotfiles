@@ -2,8 +2,8 @@
 # (c) Stefan Countryman (2018)
 
 """
-Download audio tracks from youtube playlists in a format suitable for PLEX.
-Taken from:
+Download videos from youtube playlists in a format suitable for PLEX. Taken
+from:
 
 https://diyfuturism.com/index.php/2017/12/14/auto-downloading-youtube-videos-for-plex-media-server/
 """
@@ -26,24 +26,28 @@ else:
 DEFAULT_OUTPUTDIR = os.path.join(
     VOLUME_PREFIX,
     "media-library",
-    "youtube-music",
+    "youtube",
 )
 DEFAULT_CHANNEL_LIST = os.path.join(
     os.path.expanduser("~"),
     "dev",
     "dotfiles",
     "static",
-    "youtube-dl-music-playlists.txt",
+    "youtube-dl-channel-list.txt",
 )
 DEFAULT_DOWNLOAD_RECORD = os.path.join(DEFAULT_OUTPUTDIR, "downloads.txt")
 DEFAULT_LOGFILE = os.path.join(DEFAULT_OUTPUTDIR, "youtube-dl-log.txt")
-FILENAME_FORMAT = '%(playlist)s - %(title)s [%(id)s].%(ext)s'
+FILENAME_FORMAT = os.path.join(
+    '%(uploader)s',
+    '%(playlist)s',
+    '%(playlist)s - S01E%(playlist_index)s - %(title)s [%(id)s].%(ext)s',
+)
 PARSER = ArgumentParser(description=__doc__,
                         formatter_class=ArgumentDefaultsHelpFormatter)
 ARG = PARSER.add_argument
 
 
-ARG("-o", "--outdir", default=DEFAULT_OUTPUTDIR, help="""
+ARG("-o", "--oudir", default=DEFAULT_OUTPUTDIR, help="""
     The directory where files are saved. Should be the root of the Plex library
     for your youtube videos.""")
 ARG("-y", "--youtubedl", default=DEFAULT_YOUTUBEDL, help="""
@@ -93,24 +97,28 @@ def download(outdir=DEFAULT_OUTPUTDIR, youtubedl=DEFAULT_YOUTUBEDL,
         '--playlist-reverse',
         '--download-archive',
         download_record,
-        '-i',
-        '-o',
+        '--ignore-errors',
+        '--output',
         os.path.join(outdir, FILENAME_FORMAT),
-        '--extract-audio',
-        '--audio-format',
-        'm4a',
+        '--format',
+        'bestvideo[ext=mp4]+bestaudio[ext=m4a]',
+        '--merge-output-format',
+        'mp4',
         '--write-description',
         '--add-metadata',
-        '--embed-thumbnail',
+        '--write-thumbnail',
+        '--embed-subs',
         '--batch-file={}'.format(channel_list),
     ]
-    proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
-    out, err = proc.communicate()
     with open(logfile, 'a') as log:
         log.write("\n" + "-"*79 + "\n\n")
         log.write("Starting at " + datetime.datetime.now().isoformat() + "\n")
         log.write("Script that produced this:\n")
         log.write("{}\n".format(os.path.realpath(__file__)))
+    proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
+    out, err = proc.communicate()
+    with open(logfile, 'a') as log:
+        log.write("Finished at " + datetime.datetime.now().isoformat() + "\n")
         log.write("Return value: {}\n".format(proc.returncode))
         log.write("stdout:\n{}\n".format(out))
         log.write("stderr:\n{}\n".format(err))
