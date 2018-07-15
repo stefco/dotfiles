@@ -15,7 +15,8 @@ pathchoices = {
     "py27": "/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin",
     "py36": "/opt/local/Library/Frameworks/Python.framework/Versions/3.6/bin",
     "pyuser": os.path.expanduser("~/.local/bin"),
-    "conda": os.path.expanduser("~/anaconda2/bin"),
+    "conda2": os.path.expanduser("~/anaconda2/bin"),
+    "conda3": os.path.expanduser("~/anaconda3/bin"),
     "intel": os.path.expanduser("~/anaconda2/bin"),
     "user": [
         os.path.expanduser("~/bin"),
