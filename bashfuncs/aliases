@@ -2,6 +2,9 @@
 # (c) Stefan Countryman 2017
 # the aliases i use
 
+# use `nd` instead of `cd` to allow for `fwd` and `back` plus bookmarks use
+alias cd=nd
+
 # some ipython profile aliases
 alias ipy='ipython'
 alias imath='ipython --profile=math'
@@ -10,6 +13,9 @@ alias igrace='ipython --profile=grace'
 alias igwpy='ipython --profile=gwpy'
 alias igwhen='ipython --profile=gwhen'
 alias iheavy='ipython --profile=heavy'
+
+# edit my passwords file
+alias secrets='cp ~/Dropbox/crypt/.netrc{,.backup} && cp ~/{Dropbox/crypt/,}.netrc.backup && vim ~/Dropbox/crypt/.netrc'
 
 # add color to some utilities
 alias ls='ls --color=auto'
@@ -29,15 +35,18 @@ add_vim_environ view vi vim vimdiff vimtutor
 # gotta use signal-cli
 alias signal=~/dev/dotfiles/submodules/signal-cli/build/install/signal-cli/bin/signal-cli
 
+# get battry info
+alias batt='pmset -g batt'
+
 # url encode and decode from stdin
 alias urlencode="python -c 'import urllib, sys; sys.stdout.write(urllib.quote(sys.stdin.read()))'"
 alias urldecode="python -c 'import urllib, sys; sys.stdout.write(urllib.unquote(sys.stdin.read()))'"
 alias queryencode="python -c 'import urllib, sys; sys.stdout.write(urllib.quote_plus(sys.stdin.read()))'"
 alias querydecode="python -c 'import urllib, sys; sys.stdout.write(urllib.unquote_plus(sys.stdin.read()))'"
-alias urlrename="for f in *; do mv "$f" $(echo $f | urlencode); done"
-alias urlunname="for f in *; do mv "$f" $(echo $f | urldecode); done"
-alias queryrename="for f in *; do mv "$f" $(echo $f | queryencode); done"
-alias queryunname="for f in *; do mv "$f" $(echo $f | querydecode); done"
+alias urlrename='for f in *; do mv "$f" $(echo $f | urlencode); done'
+alias urlunname='for f in *; do mv "$f" $(echo $f | urldecode); done'
+alias queryrename='for f in *; do mv "$f" $(echo $f | queryencode); done'
+alias queryunname='for f in *; do mv "$f" $(echo $f | querydecode); done'
 
 # workaround; vim saves files in a way that pisses off crontab
 alias crontab="VIM_CRONTAB=true crontab"

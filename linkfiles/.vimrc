@@ -103,6 +103,8 @@ function! ActivateTextWidth()
         set textwidth=0
     elseif &filetype == 'tex'
         set textwidth=0
+    elseif &filetype == 'taskedit'
+        set textwidth=0
     endif
 endfunction
 
@@ -222,25 +224,14 @@ noremap <Leader><Space> :
 noremap <Leader>1 :!
 
 "=======================================================================
-" EDITING EXECUTABLES
+" ENCRYPTION SETTINGS
 "=======================================================================
 
-function! StefcoGetExecutablePath(cmdname) abort
-    return system('
-        \ cmdtype="$(type 2>/dev/null "$1")"
-        \ if [[ $cmdtype == "$1 is a shell builtin"* ]]; then
-        \     echo >&2 "Command is a shell builtin, cannot edit."
-        \     return 4
-        \ elif [[ $cmdtype == "$1 is hashed ("* ]]; then
-        \     cmd="${cmdtype#$1 is hashed (}"
-        \     cmd="${cmd%)}"
-        \ else
-        \     cmd="${cmdtype#$1 is }"
-        \ fi
-        \ printf "%s" $cmd')
-endfunction
+" Use blowfish2 for vim-encrypted stuff
+set cryptmethod=blowfish2
 
-" command! eex 
+" Use symmetric encryption
+let GPGPreferSymmetric=1
 
 "=======================================================================
 " NEOMAKE SETTINGS
@@ -387,6 +378,7 @@ map <Leader>rr :redraw!<CR>
 autocmd FileType vim                setlocal commentstring=\"\ %s
 autocmd FileType crontab,sh,python  setlocal commentstring=#\ %s
 autocmd FileType mailcap,muttrc     setlocal commentstring=#\ %s
+autocmd FileType sshconfig          setlocal commentstring=#\ %s
 autocmd FileType tex,matlab         setlocal commentstring=%\ %s
 
 "=======================================================================
@@ -410,7 +402,7 @@ function! ActivateSoftWrap()
 endfunction
 
 " activate soft wrap for text files where this is desirable
-autocmd FileType tex                call ActivateSoftWrap()
+autocmd FileType tex,taskedit       call ActivateSoftWrap()
 
 "=======================================================================
 " AIRLINE CONFIG

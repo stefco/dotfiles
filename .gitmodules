@@ -22,3 +22,6 @@
 [submodule "submodules/imessageclient"]
 	path = submodules/imessageclient
 	url = https://github.com/CamHenlin/imessageclient.git
+[submodule "linkfiles/taskhistory"]
+	path = linkfiles/.task
+	url = git@github.com:stefco/taskhistory.git

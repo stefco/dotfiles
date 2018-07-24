@@ -30,3 +30,10 @@ for rcfile in $(find ~/dev/dotfiles/copyfiles -iname '.*' -exec basename {} \; )
 	cp -${F}R ~/{dev/dotfiles/copyfiles/,}"${rcfile}"
     fi
 done
+
+pushd ~/dev/dotfiles
+git submodule init
+git submodule update
+popd
+
+yes '' | vim +PluginInstall +qall

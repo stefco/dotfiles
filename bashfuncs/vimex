@@ -20,7 +20,9 @@ _reload_function_declaration () {
 
 vimex () {
     local cmdtype
-    local cmd
+    # vimargs should be arguments passed to vim; the first of them should be
+    # the filename to edit.
+    local vimargs
     local posthook
     local md5_pre
 
@@ -31,12 +33,17 @@ vimex () {
         echo >&2 "Command not found."
         return 1
     elif [[ $cmdtype == "$1 is aliased to"* ]]; then
-        echo >&2 "Command is an alias, cannot edit."
-        return 2
+        if [ -e "${_alias_sources["$1"]}" ]; then
+            vimargs=("${_alias_sources["$1"]}" "+/alias $1=")
+            posthook=(_reload_function_declaration "${vimargs[0]}")
+        else
+            echo >&2 "Command is an alias; can't find where it's defined."
+            return 2
+        fi
     elif [[ $cmdtype == "$1 is a function"* ]]; then
-        if [ -e "${_funcsources["$1"]}" ]; then
-            cmd="${_funcsources["$1"]}"
-            posthook=(_reload_function_declaration "${cmd}")
+        if [ -e "${_func_sources["$1"]}" ]; then
+            vimargs=("${_func_sources["$1"]}" "+/$1 *(*) *\n*{")
+            posthook=(_reload_function_declaration "${vimargs[0]}")
         else
             echo >&2 "Command is a function; can't find where it's defined."
             return 3
@@ -45,13 +52,14 @@ vimex () {
         echo >&2 "Command is a shell builtin, cannot edit."
         return 4
     elif [[ $cmdtype == "$1 is hashed ("* ]]; then
-        cmd="${cmdtype#$1 is hashed (}"
-        cmd="${cmd%)}"
+        tmp="${cmdtype#$1 is hashed (}"
+        vimargs=("${tmp%)}")
     else
-        cmd="${cmdtype#$1 is }"
+        vimargs=("${cmdtype#$1 is }")
     fi
-    md5_pre="$(md5sum "$cmd")"
-    if vim "$cmd" && [[ $md5_pre != "$(md5sum "$cmd")" ]]; then
+    md5_pre="$(md5sum "${vimargs[0]}")"
+    if vim "${vimargs[@]}" && [[ $md5_pre != "$(md5sum "${vimargs[0]}")" ]]
+    then
         ${posthook[@]}
     fi
 }

@@ -1,0 +1,5 @@
+#!/bin/sh
+# (c) Stefan Countryman (2018)
+# Just empty the damn clipboard
+
+pbcopy </dev/null

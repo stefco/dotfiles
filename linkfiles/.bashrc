@@ -39,25 +39,47 @@ export DOTFILEBASHRC="${DOTFILEBASHRCDIR}"/"$(basename "${BASH_SOURCE[0]}")"
 
 # we want to keep track of where each bash function is defined using an
 # associative array
-declare -A _funcsources
+declare -A _func_sources
+declare -A _alias_sources
 
-recordfuncsource () {
-    # see which functions have been declared since the last time this function
-    # was called and manually mark $1 as their source file in _funcsources
-    # if no arg is provided, indicate that no source is registered
+record_func_source () {
+    # See which functions have been declared since the last time this function
+    # was called and manually mark $1 as their source file in _func_sources.
+    # If no arg is provided, indicate that no source is registered.
     [ $# -eq 0 ] && set -- "NO_SOURCE_FILE_REGISTERED"
     if [ $# -eq 1 ]; then
         # if no funcs manually provided, just register funcs that have appeared
         # since this function was last called
         for func in $(declare -F | sed 's/^.* .* //' | sort); do
-            if ! test "${_funcsources["${func}"]+isset}"; then
-                _funcsources["${func}"]="$1"
+            if ! test "${_func_sources["${func}"]+isset}"; then
+                _func_sources["${func}"]="$1"
             fi
         done
     else
         # args following $1 are funcnames whose sources are manually specified
         for func in "${@:2}"; do
-            _funcsources["${func}"]="$1"
+            _func_sources["${func}"]="$1"
+        done
+    fi
+}
+
+record_alias_source () {
+    # See which aliases have been declared since the last time this function
+    # was called and manually mark $1 as their source file in _alias_sources.
+    # If no arg is provided, indicate that no source is registered.
+    [ $# -eq 0 ] && set -- "NO_SOURCE_FILE_REGISTERED"
+    if [ $# -eq 1 ]; then
+        # if no aliases manually provided, just register aliases that have
+        # appeared since this function was last called
+        for alias in $(alias | sed 's/^alias \([^=]*\)=.*$/\1/'); do
+            if ! test "${_alias_sources["${alias}"]+isset}"; then
+                _alias_sources["${alias}"]="$1"
+            fi
+        done
+    else
+        # args following $1 are funcnames whose sources are manually specified
+        for alias in "${@:2}"; do
+            _alias_sources["${alias}"]="$1"
         done
     fi
 }
@@ -66,12 +88,14 @@ dotsource () {
     # function for sourcing bash code from dotfile directory
     for arg in "$@"; do
         source "${DOTFILEBASHSRC}"/"$arg"
-        recordfuncsource "${DOTFILEBASHSRC}"/"$arg"
+        record_func_source "${DOTFILEBASHSRC}"/"$arg"
+        record_alias_source "${DOTFILEBASHSRC}"/"$arg"
     done
 }
 
-recordfuncsource
-recordfuncsource "${DOTFILEBASHRC}" dotsource recordfuncsource
+record_func_source
+record_alias_source
+record_func_source "${DOTFILEBASHRC}" dotsource record_func_source
 
 ########################################################################
 # SOURCE CONFIGURATION GRANULARLY
@@ -82,6 +106,8 @@ if [[ $OSTYPE == darwin* ]]; then
     dotsource macos
     # load MacOS-specific functions
     dotsource emacsg opent
+elif [[ $OSTYPE = linux* ]]; then
+    dotsource linux
 fi
 
 #check if this is an ssh session
@@ -99,12 +125,11 @@ dotsource iterm
 # initialize the PATH variable
 dotsource pathinit
 
+# load navigation functions
+dotsource navigate
+
 # load my aliases
 dotsource aliases
-
-# load navigation functions and use `nd` instead of `cd`
-dotsource navigate
-alias cd=nd
 
 # load the command prompt
 dotsource promptline
@@ -113,8 +138,18 @@ dotsource promptline
 dotsource qconfig
 
 # define simple functions (their names are the same as the source files)
-dotsource l nohupw path cpln vimex cp-last-screen imap colorgrid prepend_date
-dotsource instagram_tools
+dotsource \
+    nohupw \
+    path \
+    cpln \
+    vimex \
+    cp-last-screen \
+    imap \
+    colorgrid \
+    prepend_date \
+    instagram_tools \
+    tun \
+;
 
 # load UWM-specific initialization scripts if on UWM
 hostname="$(hostname -f)"
