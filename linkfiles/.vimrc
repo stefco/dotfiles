@@ -67,10 +67,23 @@ Plugin 'tpope/vim-eunuch'
 " JSON tools
 " Plugin 'tpope/vim-jdaddy'
 Plugin 'Shougo/unite.vim'
+" Some LaTeX tools. Taken from:
+" https://www.reddit.com/r/math/comments/43mynw
+" Plugin 'LaTeX-Box-Team/LaTeX-Box'
+Plugin 'lervag/vimtex'
+" Handle snippets, i.e. templates, like a new class definition in Python:
+Plugin 'SirVer/ultisnips'
 noremap <F1> :Unite<Space>
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
+
+"==============================================================================
+" MAC GUI VIM PREFS
+"==============================================================================
+
+set guifont=Iosevka\ Nerd\ Font\ Mono:h11
+colorscheme blue
 
 "==============================================================================
 " BASIC VIM PREFS
@@ -274,7 +287,7 @@ function! TodoState_TeX_AddBindings()
 endfunction
 
 " activate bindings by file type
-autocmd FileType tex                call TodoState_TeX_AddBindings()
+" autocmd FileType tex                call TodoState_TeX_AddBindings()
 
 "=======================================================================
 " LATEX AUTOCOMPILE
@@ -294,7 +307,7 @@ function! TeX_Compile()
     set cmdheight=1
 endfunction
 
-autocmd FileType tex autocmd BufWritePost <buffer> call TeX_Compile()
+" autocmd FileType tex autocmd BufWritePost <buffer> call TeX_Compile()
 
 "=======================================================================
 " MARKDOWN/GIT COMMIT SETTINGS
