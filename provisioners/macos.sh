@@ -30,11 +30,12 @@ port selfupdate >$log 2>$errlog
 logdate
 echo "Installing tools." | tee -a $log
 port -f install >$log 2>$errlog \
-    bash mc ranger coreutils cowsay curl the_silver_searcher git git-lfs hdf5 \
+    bash mc coreutils cowsay curl the_silver_searcher git git-lfs hdf5 \
     julia libcaca msmtp offlineimap vim ncdu neomutt notmuch OpenBLAS pstree \
     psutils tree readline dtrx fortune bash-completion poppler djvulibre \
     unrar tiff jp2a shellcheck p5.24-term-readline-gnu \
-    findutils youtube-dl qrencode ripgrep optipng npm6 emacs-mac-app emacs
+    findutils youtube-dl qrencode ripgrep optipng npm6 emacs-mac-app emacs \
+    latexmk MacVim
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
 
