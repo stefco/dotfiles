@@ -35,7 +35,7 @@ port -f install >$log 2>$errlog \
     psutils tree readline dtrx fortune bash-completion poppler djvulibre \
     unrar tiff jp2a shellcheck p5.24-term-readline-gnu \
     findutils youtube-dl qrencode ripgrep optipng npm6 emacs-mac-app emacs \
-    latexmk MacVim
+    latexmk MacVim task vit
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
 
@@ -104,7 +104,7 @@ logdate
 echo "Installing pip packages." | tee -a $log
 pip install \
     yolk PyForms itermplot ffmpeg-python untangle twilio visidata pytest-cov \
-    jupyterlab task
+    jupyterlab
 
 logdate
 tee -a <<"__EOF__"
