@@ -1,0 +1,56 @@
+#!/usr/bin/env python
+# (c) Stefan Countryman 2018
+
+"""
+Generate auth tokens for LIGO services using `kinit` and `ligo-proxy-init`.
+Looks for auth info in ~/.netrc for ligo.org machine and therefore requires no
+command line arguments (except -h or --help, which display this message).
+"""
+
+import sys
+from netrc import netrc
+from subprocess import Popen, PIPE
+
+
+def get_creds():
+    """Return (username, password) loaded from ~/.netrc."""
+    username, _, password = netrc().authenticators("ligo.org")
+    if not username:
+        raise IOError("Can't find a username for ligo.org in ~/.netrc.")
+    if not password:
+        raise IOError("Can't find a password for ligo.org in ~/.netrc.")
+    return username, password
+
+
+def auth_kinit(username, password):
+    """Create kerberos token using kinit."""
+    proc = Popen(["kinit", username + "@LIGO.ORG"], stdin=PIPE)
+    proc.stdin.write(password + "\n")
+    proc.communicate()
+    if proc.returncode:
+        raise RuntimeError("Error while using `kinit`.")
+
+
+def auth_ligo_proxy_init():
+    """Create LIGO proxy using existing kerberos token."""
+    proc = Popen(["ligo-proxy-init", "-k"])
+    proc.communicate()
+    if proc.returncode:
+        raise RuntimeError("Error while using `ligo-proxy-init -k`.")
+
+
+def main():
+    """Load login credentials from ~/.netrc and get kerberos/ligo proxy
+    credentials."""
+    if {"-h", "--help"}.intersection(sys.argv):
+        print(__doc__)
+        exit()
+    username, password = get_creds()
+    print("Trying to authenticate with `kinit`.")
+    auth_kinit(username, password)
+    print("Trying to run `ligo-proxy-init` with kerberos token.")
+    auth_ligo_proxy_init()
+
+
+if __name__ == "__main__":
+    main()
