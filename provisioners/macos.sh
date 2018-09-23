@@ -74,6 +74,7 @@ port -f install >$log 2>$errlog \
     MacVim \
     task \
     vit \
+    ImageMagick \
 # end
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
