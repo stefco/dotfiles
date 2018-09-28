@@ -25,8 +25,8 @@ try:
 except ImportError:
     print("Failed to load IceCubeNeutrinoList_txt coordinate conversions.")
 # coordinate conversions for IceCube zenith/azimuth <-> RA/Dec
-from gwhen.file_handlers.utils import zen_az2ra_dec
-from gwhen.file_handlers.utils import ra_dec2zen_az
+from gwhen.utils import zen_az2ra_dec
+from gwhen.utils import ra_dec2zen_az
 
 # initialize an event here with variable name "e" for quick work.
 print('Setting `e` to an event in the current working directory...')
