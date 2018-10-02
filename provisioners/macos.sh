@@ -218,19 +218,23 @@ jupyter labextension install \
     jupyterlab_vim
 logdate
 
-echo "Installing pip packages." | tee -a $log
-pip install \
-    yolk \
-    PyForms \
-    itermplot \
-    ffmpeg-python \
-    untangle \
-    twilio \
-    visidata \
-    pytest-cov \
-    jupyterlab \
-    svgutils \
+echo "Installing pip packages for python 2 and 3." | tee -a $log
+for PIP in pip2 pip3; do
+    $PIP install \
+        yolk \
+        PyForms \
+        itermplot \
+        ffmpeg-python \
+        untangle \
+        twilio \
+        visidata \
+        pytest-cov \
+        jupyterlab \
+        svgutils \
+        svglib \
+        reportlab \
 # end
+done
 
 logdate
 tee -a <<"__EOF__"
