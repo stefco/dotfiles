@@ -229,6 +229,7 @@ pip install \
     visidata \
     pytest-cov \
     jupyterlab \
+    svgutils \
 # end
 
 logdate
