@@ -83,7 +83,7 @@ call vundle#end()            " required
 "==============================================================================
 
 set guifont=Iosevka\ Nerd\ Font\ Mono:h11
-colorscheme blue
+colorscheme industry
 
 "==============================================================================
 " BASIC VIM PREFS
