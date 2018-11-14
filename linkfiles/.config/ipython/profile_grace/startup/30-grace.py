@@ -1,7 +1,7 @@
 # (c) Stefan Countryman 2017
 # set up an interactive environment with gracedb rest api access.
 import ligo.gracedb.rest
-client = ligo.gracedb.rest.GraceDb()
+from ligo.gracedb.rest import GraceDb
 import dateutil
 
 def gcn_notice_filenames(graceids):
@@ -9,8 +9,8 @@ def gcn_notice_filenames(graceids):
     so, print those notice filenames for GraceDB."""
     for gid in graceids:
         print("GraceID: {}".format(gid))
-        f = client.files(gid).json()
-        print filter(lambda k: 'Initial' in k, f.keys())
+        f = GraceDb().files(gid).json()
+        print(filter(lambda k: 'Initial' in k, f.keys()))
 
 def get_event_times(triggers, subtractgpstime=True):
     """Take a GraceDB event iterator and return a list of GPS times for
@@ -26,11 +26,11 @@ def get_event_times(triggers, subtractgpstime=True):
             t0 = gpstime
         else:
             t0 = 0.
-        logs = client.logs(e['graceid']).json()['log']
+        logs = GraceDb().logs(e['graceid']).json()['log']
         times[e['graceid']] = {
             'emready': ([
                 utc2gps(dateutil.parser.parse(l['created'])) - t0
-                for l in client.labels(e['graceid']).json()['labels']
+                for l in GraceDb().labels(e['graceid']).json()['labels']
                 if l['name'] == 'EM_READY'
             ] or [None])[0],
             'created': utc2gps(dateutil.parser.parse(e['created'])) - t0,
