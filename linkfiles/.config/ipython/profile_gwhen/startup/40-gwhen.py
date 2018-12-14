@@ -23,7 +23,7 @@ except ImportError:
 try:
     from gwhen.utils import zen_az2ra_dec, ra_dec2zen_az
 except ImportError:
-    print("Failed to load IceCubeNeutrinoList_txt coordinate conversions.")
+    print("Failed to load gwhen.utils coordinate conversions.")
 # coordinate conversions for IceCube zenith/azimuth <-> RA/Dec
 from gwhen.utils import zen_az2ra_dec
 from gwhen.utils import ra_dec2zen_az
