@@ -1,1 +1,1 @@
-backend : module://itermplot
+backend : Agg
