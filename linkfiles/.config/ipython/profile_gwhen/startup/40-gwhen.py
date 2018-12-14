@@ -21,7 +21,7 @@ except ImportError:
     print("Failed to load IceCube realtime_tools.")
 
 try:
-    from IceCubeNeutrinoList_txt import zen_az2ra_dec, ra_dec2zen_az
+    from gwhen.utils import zen_az2ra_dec, ra_dec2zen_az
 except ImportError:
     print("Failed to load IceCubeNeutrinoList_txt coordinate conversions.")
 # coordinate conversions for IceCube zenith/azimuth <-> RA/Dec
