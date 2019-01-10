@@ -40,7 +40,7 @@ port -f install >$log 2>$errlog \
     git-lfs \
     hdf5 \
     ffmpeg \
-    +nonfree \
+        +nonfree \
     msmtp \
     offlineimap \
     ncdu \
@@ -88,6 +88,8 @@ port -f install >$log 2>$errlog \
     py27-ipython \
     py27-numpy \
     py27-matplotlib \
+        +latex \
+        +dvipng \
     py27-scipy \
     py27-healpy \
     py27-astropy \
@@ -146,18 +148,18 @@ echo "Installing IceCube dependencies." | tee -a $log
 port -f install >$log 2>$errlog \
     cmake \
     boost \
-    +python27 \
+        +python27 \
     gsl \
-    +doc_python27 \
+        +doc_python27 \
     hdf5 \
     libarchive \
     qt5 \
     py27-pyqt5 \
-    +graceful \
-    +webkit \
+        +graceful \
+        +webkit \
     doxygen \
-    +docs \
-    +wizard \
+        +docs \
+        +wizard \
     wget \
     # pal \
 # end
@@ -178,8 +180,8 @@ port -f install >$log 2>$errlog \
     lscsoft-deps \
     ligo-gracedb \
     nds2-client \
-    +swig_java \
-    +swig_python \
+        +swig_java \
+        +swig_python \
     glue \
     lalapps \
     pylal \
