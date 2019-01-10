@@ -176,17 +176,29 @@ port select --set pyflakes py37-pyflakes >$log 2>$errlog
 logdate
 echo "Installing LIGO environment. Details here:" | tee -a $log
 echo "  https://wiki.ligo.org/Computing/DASWG/MacPorts" | tee -a $log
+echo "You can see more LAL packages than those installed by" | tee -a $log
+echo 'running something like `port search lal`.' | tee -a $log
 port -f install >$log 2>$errlog \
     lscsoft-deps \
-    ligo-gracedb \
+    py27-ligo-gracedb \
+    py37-ligo-gracedb \
     nds2-client \
-        +swig_java \
-        +swig_python \
-    glue \
+    py27-nds2-client \
+    py37-nds2-client \
+    nds2-client-java \
+    nds2-client-matlab \
+    py27-lscsoft-glue \
+    py37-lscsoft-glue \
     lalapps \
-    pylal \
     ldas-tools-framecpp \
+    py27-ldas-tools-framecpp \
+    py37-ldas-tools-framecpp \
     lalframe \
+    py27-lalframe \
+    py37-lalframe \
+    lalinference \
+    py27-lalinference \
+    py37-lalinference \
 # end
 
 logdate
