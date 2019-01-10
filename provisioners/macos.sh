@@ -106,34 +106,39 @@ port -f install >$log 2>$errlog \
     py27-neovim \
     py27-gobject3 \
     py27-pytest \
+    py27-psutil \
+    py27-pytest-cov \
+    py27-jupyterlab \
 # end
 
 logdate
 echo "Installing python 3 stuff." | tee -a $log
 port -f install >$log 2>$errlog \
-    py36-ipython \
-    py36-numpy \
-    py36-matplotlib \
-    py36-scipy \
-    py36-healpy \
-    py36-astropy \
-    py36-gnureadline \
-    py36-pykerberos \
-    py36-pygments \
-    py36-jupyter \
-    py36-h5py \
-    py36-dateutil \
-    py36-cython \
-    py36-cairo \
-    py36-pip \
-    py36-pylint \
-    py36-pyflakes \
-    py36-greenlet \
-    py36-neovim \
-    py36-gobject3 \
-    py36-pytest \
-    py36-taskw \
-    py36-psutil \
+    py37-ipython \
+    py37-numpy \
+    py37-matplotlib \
+    py37-scipy \
+    py37-healpy \
+    py37-astropy \
+    py37-gnureadline \
+    py37-pykerberos \
+    py37-pygments \
+    py37-jupyter \
+    py37-h5py \
+    py37-dateutil \
+    py37-cython \
+    py37-cairo \
+    py37-pip \
+    py37-pylint \
+    py37-pyflakes \
+    py37-greenlet \
+    py37-neovim \
+    py37-gobject3 \
+    py37-pytest \
+    py37-taskw \
+    py37-psutil \
+    py37-pytest-cov \
+    py37-jupyterlab \
 # end
 
 logdate
@@ -159,12 +164,12 @@ port -f install >$log 2>$errlog \
 
 logdate
 echo "Setting default python, ipython, and pip binaries." | tee -a $log
-port select --set python python36 >$log 2>$errlog
-port select --set ipython py36-ipython >$log 2>$errlog
-port select --set ipython3 py36-ipython >$log 2>$errlog
-port select --set pip pip36 >$log 2>$errlog
-port select --set pylint pylint36 >$log 2>$errlog
-port select --set pyflakes py36-pyflakes >$log 2>$errlog
+port select --set python python37 >$log 2>$errlog
+port select --set ipython py37-ipython >$log 2>$errlog
+port select --set ipython3 py37-ipython >$log 2>$errlog
+port select --set pip pip37 >$log 2>$errlog
+port select --set pylint pylint37 >$log 2>$errlog
+port select --set pyflakes py37-pyflakes >$log 2>$errlog
 
 logdate
 echo "Installing LIGO environment. Details here:" | tee -a $log
@@ -230,15 +235,12 @@ logdate
 echo "Installing pip packages for python 2 and 3." | tee -a $log
 for PIP in pip2 pip3; do
     $PIP install \
-        yolk \
         PyForms \
         itermplot \
         ffmpeg-python \
         untangle \
         twilio \
         visidata \
-        pytest-cov \
-        jupyterlab \
         svgutils \
         svglib \
         reportlab \
