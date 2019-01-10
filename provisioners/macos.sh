@@ -31,50 +31,53 @@ logdate
 echo "Installing tools." | tee -a $log
 port -f install >$log 2>$errlog \
     bash \
-    mc \
     coreutils \
-    cowsay \
+    vim \
     curl \
     the_silver_searcher \
+    ack \
     git \
     git-lfs \
     hdf5 \
-    julia \
-    libcaca \
+    ffmpeg \
+    +nonfree \
     msmtp \
     offlineimap \
-    vim \
     ncdu \
     neomutt \
     notmuch \
-    OpenBLAS \
     pstree \
     psutils \
     tree \
     readline \
-    dtrx \
-    fortune \
     bash-completion \
     poppler \
     djvulibre \
     unrar \
     tiff \
     jp2a \
-    shellcheck \
-    p5.24-term-readline-gnu \
     findutils \
     youtube-dl \
-    qrencode \
     ripgrep \
     optipng \
+    ImageMagick \
+    latexmk \
+    OpenBLAS \
+    packer \
+    cowsay \
+    mc \
+    julia \
+    libcaca \
+    fortune \
+    shellcheck \
+    p5.24-term-readline-gnu \
+    qrencode \
     npm6 \
     emacs-mac-app \
     emacs \
-    latexmk \
     MacVim \
     task \
     vit \
-    ImageMagick \
 # end
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
@@ -165,7 +168,7 @@ port select --set pyflakes py36-pyflakes >$log 2>$errlog
 
 logdate
 echo "Installing LIGO environment. Details here:" | tee -a $log
-echo "  https://wiki.ligo.org/DASWG/MacPorts" | tee -a $log
+echo "  https://wiki.ligo.org/Computing/DASWG/MacPorts" | tee -a $log
 port -f install >$log 2>$errlog \
     lscsoft-deps \
     ligo-gracedb \
@@ -218,6 +221,12 @@ jupyter labextension install \
     jupyterlab_vim
 logdate
 
+echo "Installing MEDM screens. Details here:" | tee -a $log
+echo "  https://wiki.ligo.org/RemoteAccess/RemoteEPICS" | tee -a $log
+sudo port install -f xorg-libXt +flat_namespace
+sudo port install -f ligo-remote-access
+logdate
+
 echo "Installing pip packages for python 2 and 3." | tee -a $log
 for PIP in pip2 pip3; do
     $PIP install \
@@ -241,6 +250,10 @@ tee -a <<"__EOF__"
 To set newest version of bash as default, run:
 
   chsh -s /opt/local/bin/bash
+
+To get LIGO Data Grid access, run the installer found at:
+
+  - https://www.lsc-group.phys.uwm.edu/lscdatagrid/doc/installclient-mac.html
 
 You probably also want to install:
 
