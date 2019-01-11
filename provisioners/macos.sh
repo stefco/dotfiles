@@ -72,6 +72,7 @@ port -f install >$log 2>$errlog \
     shellcheck \
     p5.24-term-readline-gnu \
     qrencode \
+    nodejs11 \
     npm6 \
     emacs-mac-app \
     emacs \
@@ -191,6 +192,8 @@ port -f install >$log 2>$errlog \
     py37-lscsoft-glue \
     lalapps \
     ldas-tools-framecpp \
+    ldas-tools-cmake \  # needed for ldas-tools-al-swig
+    ldas-tools-swig \  # needed for py*-ldas-tools-framecpp
     py27-ldas-tools-framecpp \
     py37-ldas-tools-framecpp \
     lalframe \
@@ -202,9 +205,11 @@ port -f install >$log 2>$errlog \
 # end
 
 logdate
-echo "Installing GWpy dependencies. Details here:" | tee -a $log
+echo "Installing GWpy. Based off of this (now obsolete) script:" | tee -a $log
 echo "  https://gist.github.com/stefco/5956a92cfb4394255c637471334a7984" \
     | tee -a $log
+echo "Documentation here:" | tee -a $log
+echo "  https://gwpy.github.io/docs/stable/install/index.html" | tee -a $log
 port -f install >$log 2>$errlog \
     py27-ipython \
     py27-numpy \
@@ -214,26 +219,23 @@ port -f install >$log 2>$errlog \
         +dvipng \
     texlive-latex-extra \
     py27-astropy \
-    glue \
+    py27-lscsoft-glue \
     kerberos5 \
+    ldas-tools-cmake \
     py27-pykerberos \
     nds2-client \
     py27-lalframe \
     py27-gwpy \
         +gwf \
-        +hdf5 \
         +nds2 \
-        +segments \
+        +dqsegdb \
+    # optional: install py37-gwpy and py27-lscsoft-glue, no extra port variants
+    # at time of writing for the py37 gwpy installation (vs. the py27 version)
 # end
 
 logdate
 echo "Installing LaTeX packages." | tee -a $log
 port -f install >$log 2>$errlog texlive-publishers
-
-logdate
-echo "Installing GWpy with all options. Details here:" | tee -a $log
-echo "  https://gwpy.github.io/docs/stable/install/index.html" | tee -a $log
-pip install gwpy[all] >$log 2>$errlog
 
 echo "Installing jupyter extensions." | tee -a $log
 jupyter labextension install \
