@@ -3675,7 +3675,7 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>330 299 620 392 0 0 1280 778 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>252 300 796 486 0 0 1280 800 </string>
+	<string>252 274 796 486 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
 	<string>0 0 526 800 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
@@ -9512,9 +9512,7 @@
 				<real>0.39215686274509803</real>
 			</dict>
 			<key>Bound Hosts</key>
-			<array>
-				<string>motoko.local</string>
-			</array>
+			<array/>
 			<key>Character Encoding</key>
 			<integer>4</integer>
 			<key>Close Sessions On End</key>
@@ -12011,7 +12009,9 @@
 				<string>1</string>
 			</dict>
 			<key>Bound Hosts</key>
-			<array/>
+			<array>
+				<string>motoko.local</string>
+			</array>
 			<key>Character Encoding</key>
 			<integer>4</integer>
 			<key>Close Sessions On End</key>
