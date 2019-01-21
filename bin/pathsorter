@@ -14,10 +14,17 @@ pathchoices = {
     "py35": "/opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin",
     "py27": "/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin",
     "py36": "/opt/local/Library/Frameworks/Python.framework/Versions/3.6/bin",
+    "py37": "/opt/local/Library/Frameworks/Python.framework/Versions/3.7/bin",
     "pyuser": os.path.expanduser("~/.local/bin"),
+    "py37usermac": os.path.expanduser("~/Library/Python/3.7/bin"),
+    "py36usermac": os.path.expanduser("~/Library/Python/3.6/bin"),
+    "py35usermac": os.path.expanduser("~/Library/Python/3.5/bin"),
+    "py34usermac": os.path.expanduser("~/Library/Python/3.4/bin"),
+    "py27usermac": os.path.expanduser("~/Library/Python/2.7/bin"),
     "conda2": os.path.expanduser("~/anaconda2/bin"),
     "conda3": os.path.expanduser("~/anaconda3/bin"),
     "intel": os.path.expanduser("~/anaconda2/bin"),
+    "mactex": "/Library/TeX/Distributions/Programs/texbin",
     "user": [
         os.path.expanduser("~/bin"),
         os.path.expanduser("~/dev/dotfiles/linkfiles/.iterm2"),
@@ -28,7 +35,7 @@ pathchoices = {
         "/bin",
         "/usr/sbin",
         "/sbin"
-    ]
+    ],
 }
 
 def errexit():
