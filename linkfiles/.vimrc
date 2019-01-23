@@ -290,24 +290,47 @@ endfunction
 " autocmd FileType tex                call TodoState_TeX_AddBindings()
 
 "=======================================================================
-" LATEX AUTOCOMPILE
+" LATEX TOOLS
 "=======================================================================
 
-" Automatically run `make` on a .tex file if Makefile exists after saving.
+"---------------------------------------
+" AUTOCOMPILE
+"---------------------------------------
 
-function! TeX_Compile()
+" Automatically recompile a .tex file if Makefile exists after saving.
+
+function! StefcoCompileTexCommand()
+    let proj = expand('%:r')
+    echom 'Project name: ' . proj
+    return 'latexmk "'.proj.'" && pdflatex "'.proj.'"'
+endfunction
+
+function! StefcoCompileTexSync()
     set cmdheight=4
-    if filereadable("Makefile")
-        echom 'Makefile found, executing `make`.'
-        execute "!make 1>/dev/null 2>&1 &"
-    else
-        echom 'Makefile NOT found, executing `pdflatex ' . @% . '`.'
-        execute "!pdflatex 1>/dev/null 2>&1 " . @% . " &"
-    endif
+    let compileCmd = '!' . StefcoCompileTexCommand()
+    echom 'Running command: ' . compileCmd
+    execute compileCmd
     set cmdheight=1
 endfunction
 
-" autocmd FileType tex autocmd BufWritePost <buffer> call TeX_Compile()
+function! StefcoCompileTexAsync()
+    set cmdheight=4
+    let compileCmd = 'AsyncRun ' . StefcoCompileTexCommand()
+    echom 'Running command: ' . compileCmd
+    execute compileCmd
+    set cmdheight=1
+endfunction
+
+autocmd FileType tex autocmd BufWritePost <buffer> call StefcoCompileTexAsync()
+
+"---------------------------------------
+" FORWARD SEARCH IN SKIM
+"---------------------------------------
+
+" Open the Skim PDF viewer at the line in the PDF corresponding to this line in
+" the source using PDF-TeX sync. Based off of Skim documentation at
+" https://sourceforge.net/p/skim-app/wiki/TeX_and_PDF_Synchronization/
+" nmap <Leader>gL :w<CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline <C-r>=line('.')<CR> %<.pdf<CR>:redraw!<CR>
 
 "=======================================================================
 " MARKDOWN/GIT COMMIT SETTINGS
@@ -731,8 +754,15 @@ map <Leader>c gc
 " SPACEMACS BINDINGS
 "=======================================================================
 
+"---------------------------------------
+" KEYBINDING FOR `MAKE` AND ANALOGUES
+"---------------------------------------
+
 " run 'make' command with no arguments; same as 'helm-make' in emacs
 nmap <Leader>cm :make<CR><Space>:bp<CR>:bd#<CR>
+
+" for LaTeX files, replace the make command with async latexmk compilation
+autocmd FileType tex nmap <Leader>cm :call StefcoCompileTexAsync()<CR>
 
 "---------------------------------------
 " FILE OPENING BINDINGS

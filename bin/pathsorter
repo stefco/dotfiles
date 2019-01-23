@@ -25,6 +25,7 @@ pathchoices = {
     "conda3": os.path.expanduser("~/anaconda3/bin"),
     "intel": os.path.expanduser("~/anaconda2/bin"),
     "mactex": "/Library/TeX/Distributions/Programs/texbin",
+    "macvim": "/Applications/MacPorts/MacVim.app/Contents/bin",
     "user": [
         os.path.expanduser("~/bin"),
         os.path.expanduser("~/dev/dotfiles/linkfiles/.iterm2"),
