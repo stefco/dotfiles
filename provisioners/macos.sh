@@ -74,6 +74,7 @@ port -f install >$log 2>$errlog \
     qrencode \
     nodejs11 \
     npm6 \
+    qt5-qtcreator \
     emacs-mac-app \
     emacs \
     MacVim \
