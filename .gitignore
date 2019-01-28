@@ -6,6 +6,8 @@ linkfiles/.vim
 linkfiles/.ipython
 linkfiles/.config/ipython
 linkfiles/.config
+linkfiles/.local/share
+linkfiles/.cache
 linkfiles/scratch
 linkfiles/.task/*.data
 .DS_Store

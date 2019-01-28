@@ -8,6 +8,8 @@ export HISTSIZE=10000
 
 # configuration file home
 export XDG_CONFIG_HOME=~/".config"
+export XDG_DATA_HOME=~/".local/share"
+export XDG_CACHE_HOME=~/".cache"
 
 # force ipython to look in ~/.config
 export IPYTHONDIR="~/.config/ipython"
