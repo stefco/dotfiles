@@ -21,8 +21,14 @@ pathchoices = {
     "py35usermac": os.path.expanduser("~/Library/Python/3.5/bin"),
     "py34usermac": os.path.expanduser("~/Library/Python/3.4/bin"),
     "py27usermac": os.path.expanduser("~/Library/Python/2.7/bin"),
-    "conda2": os.path.expanduser("~/anaconda2/bin"),
-    "conda3": os.path.expanduser("~/anaconda3/bin"),
+    "conda2": [
+        os.path.expanduser("~/anaconda2/bin"),
+        os.path.expanduser("~/miniconda2/bin"),
+    ],
+    "conda3": [
+        os.path.expanduser("~/anaconda3/bin"),
+        os.path.expanduser("~/miniconda3/bin"),
+    ],
     "intel": os.path.expanduser("~/anaconda2/bin"),
     "mactex": "/Library/TeX/Distributions/Programs/texbin",
     "macvim": "/Applications/MacPorts/MacVim.app/Contents/bin",
@@ -73,4 +79,4 @@ for pathchoice in sys.argv[-1:0:-1]:
     path = newpath
 
 # print the final path variable
-print ":".join(newpath)
+print(":".join(newpath))
