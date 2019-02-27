@@ -39,7 +39,7 @@ Plugin 'tpope/vim-commentary.git'
 " smart date incrementing
 Plugin 'tpope/vim-speeddating'
 " surround strings with characters, e.g. quotes.
-" PREFIXES:
+" PREFIXES
 "   - 'ys' adds adds wrapping characters, e.g. 'ysiw<em>' wraps a word with
 "     <em>
 "   - 'ds' removes wrapping characters, e.g. 'ds"' to remove wrapping double
@@ -52,7 +52,7 @@ Plugin 'tpope/tpope-vim-abolish'
 " add repeatability to supporting custom plugins
 Plugin 'tpope/vim-repeat'
 " add async via iterm and tmux to vim
-" NOTE: Disabled because it interferes with AsyncRun. See:
+" NOTE Disabled because it interferes with AsyncRun. See:
 " https://github.com/skywind3000/asyncrun.vim/wiki/Cooperate-with-famous-plugins#fugitive
 " Plugin 'tpope/vim-dispatch'
 " nice wrapper for existing persistence/session saving vim functionality!
@@ -73,6 +73,8 @@ Plugin 'Shougo/unite.vim'
 Plugin 'lervag/vimtex'
 " Handle snippets, i.e. templates, like a new class definition in Python:
 Plugin 'SirVer/ultisnips'
+" Add tab-completion of LaTeX unicode characters (for Julia and more)
+Plugin 'JuliaEditorSupport/julia-vim'
 noremap <F1> :Unite<Space>
 
 " All of your Plugins must be added before the following line
@@ -534,6 +536,14 @@ vnoremap <Leader>hw y:help <C-r>"<CR>
 if executable('ag')
   let g:ackprg = 'ag -s --vimgrep'
 endif
+
+"=======================================================================
+" JULIA SETTINGS
+"=======================================================================
+
+" toggle whether the LaTeX to Unicode tab completion is active
+noremap <expr> <F7> LaTeXtoUnicode#Toggle()
+inoremap <expr> <F7> LaTeXtoUnicode#Toggle()
 
 "=======================================================================
 " NERDTREE SETTINGS
