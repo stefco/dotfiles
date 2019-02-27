@@ -25,7 +25,7 @@ def get_creds():
 def auth_kinit(username, password):
     """Create kerberos token using kinit."""
     proc = Popen(["kinit", username + "@LIGO.ORG"], stdin=PIPE)
-    proc.stdin.write(password + "\n")
+    proc.stdin.write((password + "\n").encode('utf-8'))
     proc.communicate()
     if proc.returncode:
         raise RuntimeError("Error while using `kinit`.")
