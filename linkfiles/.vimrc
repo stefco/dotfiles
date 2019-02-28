@@ -592,6 +592,9 @@ map <Leader>gu :Gresolvelink<CR>:Gpush<CR>
 " show git status
 nnoremap <Leader>gs :Gresolvelink<CR>:Gstatus<CR>
 
+" show git blame
+nnoremap <Leader>gb :Gresolvelink<CR>:Gblame<CR>
+
 " git diff this file
 nnoremap <Leader>gd :Gresolvelink<CR>:Gdiff<CR>
 
