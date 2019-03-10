@@ -39,7 +39,7 @@ fi
 if [ "`scutil --get ComputerName`" = "Alexis Nelson’s MacBook Pro" ]; then
     cat ${DOTFILEDIR}/static/tachikoma-title.txt
 elif [ "`scutil --get ComputerName`" = "motoko" ]; then
-    cat ${DOTFILEDIR}/static/motoko-banner.txt
+    motoko
 else
     # a cryptic greeting from an old friend, if he is around...
     type -f 1>/dev/null 2>&1 fortune \
