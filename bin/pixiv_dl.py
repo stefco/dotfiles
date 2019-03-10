@@ -5,7 +5,10 @@ from netrc import netrc
 from random import random
 from time import sleep
 import pixivpy3
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(
+    # level=logging.DEBUG,
+    level=logging.INFO
+)
 LOG = logging.getLogger(__name__)
 SIZES = {'large', 'original'}
 DIRNAME = os.path.expanduser(os.path.join("~", "Downloads", "pixiv"))
