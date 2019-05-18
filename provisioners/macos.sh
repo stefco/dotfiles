@@ -92,7 +92,7 @@ port -f install >$log 2>$errlog \
     py27-matplotlib \
         +latex \
         +dvipng \
-    py27-scipy \
+    py27-scipy +gfortran +openblas \
     py27-healpy \
     py27-astropy \
     py27-gnureadline \

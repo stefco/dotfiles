@@ -3,8 +3,8 @@
 ########################################################################
 
 # keep track of history for longer, please
-export HISTFILESIZE=10000
-export HISTSIZE=10000
+export HISTFILESIZE=100000
+export HISTSIZE=100000
 
 # configuration file home
 export XDG_CONFIG_HOME=~/".config"

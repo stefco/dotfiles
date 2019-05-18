@@ -120,7 +120,8 @@ def save_bookmark(bookmark):
 
 def parse_args():
     """Parse CLI arguments."""
-    parser = argparse.ArgumentParser(__doc__)
+    parser = argparse.ArgumentParser("{}\nOutput dir: {}".format(__doc__,
+                                                                 DIRNAME))
     arg = parser.add_argument
     arg("-f", "--fetch", action="store_true", help="""
         Fetch the latest bookmark JSON data from the pixiv API and save it to
