@@ -85,35 +85,11 @@ port -f install >$log 2>$errlog \
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
 
 logdate
-echo "Installing python 2 stuff." | tee -a $log
-port -f install >$log 2>$errlog \
-    py27-ipython \
-    py27-numpy \
-    py27-matplotlib \
-        +latex \
-        +dvipng \
-    py27-scipy +gfortran +openblas \
-    py27-healpy \
-    py27-astropy \
-    py27-gnureadline \
-    py27-pykerberos \
-    py27-pygments \
-    py27-jupyter \
-    py27-h5py \
-    py27-dateutil \
-    py27-cython \
-    py27-cairo \
-    py27-pip \
-    py27-pylint \
-    py27-pyflakes \
-    py27-greenlet \
-    py27-neovim \
-    py27-gobject3 \
-    py27-pytest \
-    py27-psutil \
-    py27-pytest-cov \
-    py27-jupyterlab \
+echo "Installing npm stuff." | tee -a $log
+npm i -g \
+    git-stats \
 # end
+
 
 logdate
 echo "Installing python 3 stuff." | tee -a $log
@@ -182,56 +158,21 @@ echo "You can see more LAL packages than those installed by" | tee -a $log
 echo 'running something like `port search lal`.' | tee -a $log
 port -f install >$log 2>$errlog \
     lscsoft-deps \
-    py27-ligo-gracedb \
     py37-ligo-gracedb \
     nds2-client \
-    py27-nds2-client \
     py37-nds2-client \
     nds2-client-java \
     nds2-client-matlab \
-    py27-lscsoft-glue \
     py37-lscsoft-glue \
     lalapps \
     ldas-tools-framecpp \
     ldas-tools-cmake \  # needed for ldas-tools-al-swig
     ldas-tools-swig \  # needed for py*-ldas-tools-framecpp
-    py27-ldas-tools-framecpp \
     py37-ldas-tools-framecpp \
     lalframe \
-    py27-lalframe \
     py37-lalframe \
     lalinference \
-    py27-lalinference \
     py37-lalinference \
-# end
-
-logdate
-echo "Installing GWpy. Based off of this (now obsolete) script:" | tee -a $log
-echo "  https://gist.github.com/stefco/5956a92cfb4394255c637471334a7984" \
-    | tee -a $log
-echo "Documentation here:" | tee -a $log
-echo "  https://gwpy.github.io/docs/stable/install/index.html" | tee -a $log
-port -f install >$log 2>$errlog \
-    py27-ipython \
-    py27-numpy \
-    py27-scipy \
-    py27-matplotlib \
-        +latex \
-        +dvipng \
-    texlive-latex-extra \
-    py27-astropy \
-    py27-lscsoft-glue \
-    kerberos5 \
-    ldas-tools-cmake \
-    py27-pykerberos \
-    nds2-client \
-    py27-lalframe \
-    py27-gwpy \
-        +gwf \
-        +nds2 \
-        +dqsegdb \
-    # optional: install py37-gwpy and py27-lscsoft-glue, no extra port variants
-    # at time of writing for the py37 gwpy installation (vs. the py27 version)
 # end
 
 logdate
