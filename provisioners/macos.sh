@@ -88,6 +88,8 @@ logdate
 echo "Installing npm stuff." | tee -a $log
 npm i -g \
     git-stats \
+    git-stats-html \
+    git-stats-importer \
 # end
 
 
