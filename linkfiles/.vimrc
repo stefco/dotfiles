@@ -154,6 +154,7 @@ set backspace=indent,eol,start
 
 " set 2-space indent for HTML, CSS, and JSON
 autocmd FileType html,css,json set softtabstop=2|set tabstop=2|set shiftwidth=2
+autocmd FileType htmldjango set softtabstop=2|set tabstop=2|set shiftwidth=2
 
 " don't expandtab for Makefiles; use actual tabs
 autocmd FileType make set noexpandtab
