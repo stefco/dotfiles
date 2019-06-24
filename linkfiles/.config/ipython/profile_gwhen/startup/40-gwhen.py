@@ -6,38 +6,30 @@ import os
 import IPython.core.magic
 import scipy.io.matlab
 import subprocess
-# look in both places where GWHEN software tends to hide
-GWHEN_DIRS = ['~/multimessenger-pipeline', '~/dev/multimessenger-pipeline']
-for gwhendir in [os.path.expanduser(d) for d in GWHEN_DIRS]:
-    if os.path.exists(gwhendir):
-        print('GWHEN dir found: {}'.format(gwhendir))
-        sys.path.append(gwhendir)
-        sys.path.append(os.path.join(gwhendir, 'gwhen', 'bin'))
-        sys.path.append(os.path.join(gwhendir, 'gwhen', 'file_handlers'))
-import gwhen
+import llama
 try:
-    from gwhen.file_handlers.icecube_utils import realtime_tools
+    from llama.file_handlers.icecube_utils import realtime_tools
 except ImportError:
     print("Failed to load IceCube realtime_tools.")
 
 try:
-    from gwhen.utils import zen_az2ra_dec, ra_dec2zen_az
+    from llama.utils import zen_az2ra_dec, ra_dec2zen_az
 except ImportError:
-    print("Failed to load gwhen.utils coordinate conversions.")
+    print("Failed to load llama.utils coordinate conversions.")
 # coordinate conversions for IceCube zenith/azimuth <-> RA/Dec
-from gwhen.utils import zen_az2ra_dec
-from gwhen.utils import ra_dec2zen_az
+from llama.utils import zen_az2ra_dec
+from llama.utils import ra_dec2zen_az
 
 # initialize an event here with variable name "e" for quick work.
 print('Setting `e` to an event in the current working directory...')
 try:
-    e = gwhen.Event.fromdir()
+    e = llama.Event.fromdir()
 except AttributeError as e:
     print('Failed, looks like an old version of GWHEN sans fromdir.')
 
 @IPython.core.magic.register_line_magic
 def gopen(line):
-    """Open a gwhen file handler. If a valid filehandler object name is
+    """Open a llama file handler. If a valid filehandler object name is
     provided, then that file handler is opened."""
     fh = eval(line)
     subprocess.Popen(['open', fh.fullpath])
@@ -45,7 +37,7 @@ del gopen
 
 @IPython.core.magic.register_line_magic
 def gql(line):
-    """Open a gwhen file handler file in quicklook. If a valid filehandler
+    """Open a llama file handler file in quicklook. If a valid filehandler
     object name is provided, then that file handler is opened."""
     fh = eval(line)
     subprocess.Popen(['ql', fh.fullpath])
