@@ -11,19 +11,6 @@ for geco_repo in geco_data geco_channel geco_plots; do
     export PATH=~/dev/"$geco_repo:$PATH"
 done
 
-# LLAMA executables path, if availbable
-lbin="multimessenger-pipeline/bin"
-lpybin="multimessenger-pipeline/llama/bin"
-for gpre in ~ ~/dev; do
-    if [ -d ~/multimessenger-pipeline ]; then
-        export PATH=~/"$lbin:$PATH"
-        export PATH=~/"$lpybin:$PATH"
-    elif [ -d ~/dev/multimessenger-pipeline ]; then
-        export PATH=~/dev/"$lbin:$PATH"
-        export PATH=~/dev/"$lpybin:$PATH"
-    fi
-done
-
 # get a better PATH (only if `pathsorter` executable exists for this purpose)
 type -f 1>/dev/null 2>&1 pathsorter \
     && export PATH="$(pathsorter mactex user py27 py37 py35 py36 py34 port macvim sys conda3 conda2 pyuser py36usermac)"
