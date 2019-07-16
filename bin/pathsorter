@@ -10,6 +10,7 @@ pathchoices = {
         "/opt/local/sbin",
         "/opt/local/libexec/gnubin",
     ],
+    "pg11": "/Library/PostgreSQL/11/bin/",
     "py34": "/opt/local/Library/Frameworks/Python.framework/Versions/3.4/bin",
     "py35": "/opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin",
     "py27": "/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin",

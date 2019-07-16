@@ -13,4 +13,4 @@ done
 
 # get a better PATH (only if `pathsorter` executable exists for this purpose)
 type -f 1>/dev/null 2>&1 pathsorter \
-    && export PATH="$(pathsorter mactex user py27 py37 py35 py36 py34 port macvim sys conda3 conda2 pyuser py36usermac)"
+    && export PATH="$(pathsorter mactex user pg11 py27 py37 py35 py36 py34 port macvim sys conda3 conda2 pyuser py36usermac)"
