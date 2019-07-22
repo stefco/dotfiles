@@ -421,6 +421,8 @@ autocmd FileType crontab,sh,python  setlocal commentstring=#\ %s
 autocmd FileType mailcap,muttrc     setlocal commentstring=#\ %s
 autocmd FileType sshconfig          setlocal commentstring=#\ %s
 autocmd FileType tex,matlab         setlocal commentstring=%\ %s
+autocmd FileType yaml               setlocal commentstring=#\ %s
+autocmd FileType text               setlocal commentstring=#\ %s
 
 "=======================================================================
 " SOFT WORD WRAP
