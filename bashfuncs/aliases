@@ -14,8 +14,6 @@ alias igwpy='ipython --profile=gwpy'
 alias igwhen='ipython --profile=gwhen'
 alias iheavy='ipython --profile=heavy'
 
-alias ligo='conda activate ligo-py36 && export PYTHONPATH=~/dev/multimessenger-pipeline":$PYTHONPATH"'
-
 alias bfg="java -jar '${HOME}'/dev/dotfiles/static/bfg-1.13.0.jar"
 
 # edit my passwords file

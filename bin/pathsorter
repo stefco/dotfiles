@@ -22,14 +22,14 @@ pathchoices = {
     "py35usermac": os.path.expanduser("~/Library/Python/3.5/bin"),
     "py34usermac": os.path.expanduser("~/Library/Python/3.4/bin"),
     "py27usermac": os.path.expanduser("~/Library/Python/2.7/bin"),
-    "conda2": [
-        os.path.expanduser("~/anaconda2/bin"),
-        os.path.expanduser("~/miniconda2/bin"),
-    ],
-    "conda3": [
-        os.path.expanduser("~/anaconda3/bin"),
-        os.path.expanduser("~/miniconda3/bin"),
-    ],
+    # "conda2": [
+    #     os.path.expanduser("~/anaconda2/bin"),
+    #     os.path.expanduser("~/miniconda2/bin"),
+    # ],
+    # "conda3": [
+    #     os.path.expanduser("~/anaconda3/bin"),
+    #     os.path.expanduser("~/miniconda3/bin"),
+    # ],
     "intel": os.path.expanduser("~/anaconda2/bin"),
     "mactex": "/Library/TeX/Distributions/Programs/texbin",
     "macvim": "/Applications/MacPorts/MacVim.app/Contents/bin",
@@ -37,6 +37,7 @@ pathchoices = {
         os.path.expanduser("~/bin"),
         os.path.expanduser("~/dev/dotfiles/linkfiles/.iterm2"),
     ],
+    "cargo": os.path.expanduser("$HOME/.cargo/bin:$PATH"),
     "sys": [
         "/usr/bin",
         "/usr/local/bin",

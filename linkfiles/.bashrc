@@ -89,9 +89,11 @@ record_alias_source () {
 dotsource () {
     # function for sourcing bash code from dotfile directory
     for arg in "$@"; do
-        source "${DOTFILEBASHSRC}"/"$arg"
-        record_func_source "${DOTFILEBASHSRC}"/"$arg"
-        record_alias_source "${DOTFILEBASHSRC}"/"$arg"
+        local script="${DOTFILEBASHSRC}"/"${arg}"
+        # echo "Timing ${script}"
+        source "${script}"
+        record_func_source "${script}"
+        record_alias_source "${script}"
     done
 }
 

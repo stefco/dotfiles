@@ -17,6 +17,8 @@ call vundle#begin('~/dev/dotfiles/linkfiles/.vim/bundle')
 Plugin 'VundleVim/Vundle.vim'
 
 " Keep Plugin commands between vundle#begin/end.
+Plugin 'rust-lang/rust.vim'
+Plugin 'racer-rust/vim-racer'
 Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'jamessan/vim-gnupg'
 Plugin 'godlygeek/tabular'
@@ -87,7 +89,7 @@ call vundle#end()            " required
 "==============================================================================
 
 set guifont=Iosevka\ Nerd\ Font\ Mono:h11
-colorscheme industry
+" colorscheme industry
 
 "==============================================================================
 " BASIC VIM PREFS
@@ -421,7 +423,7 @@ autocmd FileType crontab,sh,python  setlocal commentstring=#\ %s
 autocmd FileType mailcap,muttrc     setlocal commentstring=#\ %s
 autocmd FileType sshconfig          setlocal commentstring=#\ %s
 autocmd FileType tex,matlab         setlocal commentstring=%\ %s
-autocmd FileType yaml               setlocal commentstring=#\ %s
+autocmd FileType yaml,tmux          setlocal commentstring=#\ %s
 autocmd FileType text               setlocal commentstring=#\ %s
 
 "=======================================================================
@@ -474,16 +476,16 @@ let g:airline_mode_map = {
 " use the base16 airline theme. some favs below.
 " let g:airline_theme = 'laederon'
 " let g:airline_theme = 'raven'
-let g:airline_theme = 'papercolor'
+" let g:airline_theme = 'papercolor'
 " let g:airline_theme = 'monochrome'
 " let g:airline_theme = 'jellybeans'
 " let g:airline_theme = 'distinguished'
-" let g:airline_theme = 'cool'
+let g:airline_theme = 'cool'
 " let g:airline_theme = 'behelit'
 " let g:airline_theme = 'aurora'
 
 " use airline powerline fonts
-let g:airline_powerline_fonts = 1
+" let g:airline_powerline_fonts = 1
 
 " change airline separators
 " let g:airline_left_sep = "\uE0B8"
