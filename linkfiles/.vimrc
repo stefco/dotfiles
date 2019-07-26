@@ -205,7 +205,8 @@ autocmd FileType fortran setlocal colorcolumn=6,73,74,75,76,77,78,79,80
 " note that this is not a supported feature of neovim, so don't run in that
 " case.
 if ! has('nvim')
-    set ttymouse=sgr
+    " set ttymouse=sgr
+    set ttymouse=xterm2
 endif
 
 if &term =~ '256color'
