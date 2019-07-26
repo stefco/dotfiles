@@ -13,12 +13,9 @@ except ImportError:
     print("Failed to load IceCube realtime_tools.")
 
 try:
-    from llama.utils import zen_az2ra_dec, ra_dec2zen_az
+    from llama.files.i3.utils import zen_az2ra_dec, ra_dec2zen_az
 except ImportError:
     print("Failed to load llama.utils coordinate conversions.")
-# coordinate conversions for IceCube zenith/azimuth <-> RA/Dec
-from llama.utils import zen_az2ra_dec
-from llama.utils import ra_dec2zen_az
 
 # initialize an event here with variable name "e" for quick work.
 print('Setting `e` to an event in the current working directory...')
