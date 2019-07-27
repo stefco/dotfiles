@@ -454,7 +454,7 @@ autocmd FileType tex,taskedit       call ActivateSoftWrap()
 " AIRLINE CONFIG
 "=======================================================================
 
-" display all buffs in tab bar when only one tab is open
+" display all buffers in tab bar when only one tab is open
 let g:airline#extensions#tabline#enabled = 1
 
 " show abbreviated word count string in airline
