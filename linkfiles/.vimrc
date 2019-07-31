@@ -115,15 +115,17 @@ set listchars=tab:▸·
 function! ActivateTextWidth()
     " autoenter after 79 characters
     set textwidth=79
-    " except in the following filetypes
+    " local exceptions for the following filetypes
     if &filetype == 'crontab'
-        set textwidth=0
+        setlocal textwidth=0
     elseif &filetype == 'sh'
-        set textwidth=0
+        setlocal textwidth=0
     elseif &filetype == 'tex'
-        set textwidth=0
+        setlocal textwidth=0
     elseif &filetype == 'taskedit'
-        set textwidth=0
+        setlocal textwidth=0
+    elseif &filetype == 'tmux'
+        setlocal textwidth=0
     endif
 endfunction
 
@@ -917,6 +919,13 @@ map <Leader>w <C-w>
 
 " delete window (from current emacs version, by analogy to SPC b d)
 map <Leader>wd <C-w>c
+
+"---------------------------------------
+" TAB-RELATED BINDINGS
+"---------------------------------------
+
+" nnoremap <C-n> :tabnew<CR>
+" nnoremap <C-w> :tabc<CR>
 
 "---------------------------------------
 " BUFFER-RELATED BINDINGS
