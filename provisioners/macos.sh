@@ -31,6 +31,7 @@ logdate
 echo "Installing tools." | tee -a $log
 port -f install >$log 2>$errlog \
     bash \
+    mpv \
     coreutils \
     vim \
     curl \
