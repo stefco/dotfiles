@@ -22,8 +22,11 @@ export LSCOLORS=Exfxcxdxbxegedabagacad
 # tell GPG which TTY to use
 export GPG_TTY=$(tty)
 
-## vi mode
+# vi mode
 set -o vi
+
+# fix italics for tmux
+export TERM=screen-256color
 
 ########################################################################
 # DOTFILE DIR CONFIG
@@ -139,7 +142,7 @@ dotsource aliases
 dotsource promptline
 
 # load q console settings for kdb+
-dotsource qconfig
+# dotsource qconfig
 
 # define simple functions (their names are the same as the source files)
 dotsource \
@@ -151,9 +154,8 @@ dotsource \
     imap \
     colorgrid \
     prepend_date \
-    instagram_tools \
-    tun \
-;
+    # instagram_tools \
+    # tun \
 
 # load UWM-specific initialization scripts if on UWM
 hostname="$(hostname -f)"
