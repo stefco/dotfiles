@@ -93,7 +93,8 @@ if [[ $SESSION_TYPE == remote/ssh ]]; then
     IFS="$old_IFS"
 elif [[ $OSTYPE == darwin* ]]; then
     qlmanage -p 1>/dev/null 2>&1 "$@"
-    open -a iTerm
+    # open -a iTerm
+    open -a alacritty
 else
     echo >&2 "Sorry, quicklook requires you to either use iTerm.app in an SSH"
     echo >&2 "session or to run locally on a Mac in any terminal emulator."
