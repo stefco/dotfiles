@@ -126,6 +126,8 @@ function! ActivateTextWidth()
         setlocal textwidth=0
     elseif &filetype == 'tmux'
         setlocal textwidth=0
+    elseif &filetype == 'Dockerfile'
+        setlocal textwidth=0
     endif
 endfunction
 
