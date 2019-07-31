@@ -54,11 +54,6 @@ alias queryunname='for f in *; do mv "$f" $(echo $f | querydecode); done'
 # workaround; vim saves files in a way that pisses off crontab
 alias crontab="VIM_CRONTAB=true crontab"
 
-# just always use gsissh instead of ssh for laziness's sake
-if type >/dev/null 2>&1 gsissh; then
-    alias ssh=gsissh
-fi
-
 # shortcut for non-gui matlab
 alias matcli='matlab -no{splash,desktop,jvm}'
 

@@ -22,8 +22,16 @@ alias showhidden="defaults write com.apple.finder AppleShowAllFiles TRUE; killal
 
 # Get globus running
 export GLOBUS_LOCATION=/opt/ldg
+globus_init() {
+    if [[ $GLOBUS_INIT -ne 1 ]]; then
+        source ${GLOBUS_LOCATION}/etc/globus-user-env.sh && GLOBUS_INIT=1
+    fi
+}
 if [ -f ${GLOBUS_LOCATION}/etc/globus-user-env.sh ] ; then
-    . ${GLOBUS_LOCATION}/etc/globus-user-env.sh
+    alias gsissh="globus_init && 'gsissh'"
+    alias gsiscp="globus_init && 'gsiscp'"
+else
+    unset globus_init
 fi
 
 # Make "Save As..." the default for GUI apps, as it should be, rather than
@@ -32,13 +40,14 @@ defaults write -globalDomain NSUserKeyEquivalents -dict-add 'Save As...' '@$S'
 
 # turn on bash-completion
 if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
-    . /opt/local/etc/profile.d/bash_completion.sh
+    source /opt/local/etc/profile.d/bash_completion.sh
 fi
 
 # welcome message
-if [ "`scutil --get ComputerName`" = "Alexis Nelson’s MacBook Pro" ]; then
+COMPUTERNAME="`scutil --get ComputerName`"
+if [ "$COMPUTERNAME" = "Alexis Nelson’s MacBook Pro" ]; then
     cat ${DOTFILEDIR}/static/tachikoma-title.txt
-elif [ "`scutil --get ComputerName`" = "motoko" ]; then
+elif [ "$COMPUTERNAME" = "motoko" ]; then
     dotsource motoko
 else
     # a cryptic greeting from an old friend, if he is around...

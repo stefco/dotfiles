@@ -7,6 +7,7 @@
 # print the welcome ASCII art
 # cat ${DOTFILEDIR}/static/motoko-banner.txt
 # echo "Welcome to motoko2."
+cat ${DOTFILEDIR}/static/kong.txt
 
 # test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
