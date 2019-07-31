@@ -556,10 +556,10 @@ key_bindings:
   #- { key: Return,   mods: Alt,           action: ToggleFullscreen }
 
   # (macOS only)
-  #- { key: Key0,   mods: Command,         action: ResetFontSize    }
-  #- { key: Equals, mods: Command,         action: IncreaseFontSize }
+  - { key: Key0,   mods: Command|Shift,   action: ResetFontSize    }
+  - { key: Equals, mods: Command,         action: IncreaseFontSize }
   #- { key: Add,    mods: Command,         action: IncreaseFontSize }
-  #- { key: Minus,  mods: Command,         action: DecreaseFontSize }
+  - { key: Minus,  mods: Command,         action: DecreaseFontSize }
   #- { key: K,      mods: Command,         action: ClearHistory     }
   #- { key: K,      mods: Command,         chars: "\x0c"            }
   #- { key: V,      mods: Command,         action: Paste            }
@@ -731,3 +731,16 @@ key_bindings:
 #-----------------------------------------------------------------------------
   - { key: Tab,       mods: Alt,            chars: "\x1b:tabn\x0a" }
   - { key: Tab,       mods: Alt|Shift,      chars: "\x1b:tabp\x0a" }
+
+#-----------------------------------------------------------------------------
+# shortcuts for common commands using contents of clipboard
+#-----------------------------------------------------------------------------
+  - { key: E,         mods: Command,        chars: "\x1b0Divim `pbpaste`\x0a" }
+  - { key: G,         mods: Command,        chars: "\x1b0Digit diff\x0a" }
+  - { key: G,         mods: Command|Shift,  chars: "\x1b0Digit diff `pbpaste`\x0a" }
+  - { key: S,         mods: Command,        chars: "\x1b0Digit status\x0a" }
+  - { key: L,         mods: Command|Shift,  chars: "\x1b0Digit lg2\x0a" }
+  - { key: P,         mods: Command|Shift,  chars: "\x1b0Dipygmentize `pbpaste`\x0a" }
+  - { key: P,         mods: Command,        chars: "\x1b0Dicat `pbpaste`\x0a" }
+  - { key: U,         mods: Command,        chars: "\x1b0Digit push && git push --tags\x0a" }
+  - { key: U,         mods: Command|Shift,  chars: "\x1b0Digit pull\x0a" }
