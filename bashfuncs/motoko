@@ -13,7 +13,7 @@ cat ${DOTFILEDIR}/static/kong.txt
 
 condas() {
     export CONDAS=1
-    dotsource motoko-conda
+    eval "$(/Users/s/anaconda3/bin/conda shell.bash hook)"
 }
 
 ligo() {
