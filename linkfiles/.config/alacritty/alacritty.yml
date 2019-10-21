@@ -686,8 +686,8 @@ key_bindings:
 # macos iterm2 shortcuts
 #-----------------------------------------------------------------------------
 # from https://arslan.io/2018/02/05/gpu-accelerated-terminal-alacritty/
-  - { key: D,         mods: Command,        chars: "\x02\x22" } 
-  - { key: D,         mods: Command|Shift,  chars: "\x02\x25" }
+  - { key: D,         mods: Command|Shift,  chars: "\x02\x22" } 
+  - { key: D,         mods: Command,        chars: "\x02\x25" }
   - { key: W,         mods: Command|Shift,  chars: "\x02\x26" }
   - { key: W,         mods: Command,        chars: "\x02x" }
   - { key: K,         mods: Command,        chars: "\x02\x1b\x5b\x41" }
