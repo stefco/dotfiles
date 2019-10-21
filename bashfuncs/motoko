@@ -24,3 +24,6 @@ llamas() {
     fi
     conda activate llama-py37
 }
+
+# added by travis gem
+[ -f /Users/s/.travis/travis.sh ] && source /Users/s/.travis/travis.sh
