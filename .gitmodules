@@ -25,3 +25,6 @@
 [submodule "linkfiles/taskhistory"]
 	path = linkfiles/.task
 	url = git@github.com:stefco/taskhistory.git
+[submodule "submodules/pxltrm"]
+	path = submodules/pxltrm
+	url = https://github.com/dylanaraps/pxltrm.git
