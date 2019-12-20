@@ -11,7 +11,7 @@ alias imath='ipython --profile=math'
 alias iastro='ipython --profile=astro'
 alias igrace='ipython --profile=grace'
 alias igwpy='ipython --profile=gwpy'
-alias igwhen='ipython --profile=gwhen'
+alias illama='ipython --profile=gwhen'
 alias iheavy='ipython --profile=heavy'
 
 alias bfg="java -jar '${HOME}'/dev/dotfiles/static/bfg-1.13.0.jar"

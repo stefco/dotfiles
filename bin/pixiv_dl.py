@@ -28,6 +28,7 @@ USERID = 38913802
 DB_PATH = os.path.join(DIRNAME, 'bookmarks.db')
 CONNECTION = sqlite3.connect(DB_PATH)
 CURSOR = CONNECTION.cursor()
+MAX_RETRIES = 5
 SIZE_PRIORITY = {
     'original': 1,
     'large': 2,
@@ -171,7 +172,17 @@ def bookmark_gen(userid):
         LOG.info("Fetching another bookmarks page; %s bookmarks done.",
                  count)
         next_qs = api().parse_qs(bookmarks_json.next_url)
-        bookmarks_json = api().user_bookmarks_illust(**next_qs)
+        for attempt in range(MAX_RETRIES):
+            try:
+                bookmarks_json = api().user_bookmarks_illust(**next_qs)
+                break
+            except pixivpy3.PixivError as err:
+                LOG.error("Error %s on attempt %s/%s", err, attempt,
+                          MAX_RETRIES)
+                if attempt+1 >= MAX_RETRIES:
+                    LOG.error("Reached max number of retries, giving up.")
+                    raise
+                LOG.error("Retrying...")
         for bookmark in bookmarks_json['illusts']:
             count += 1
             yield bookmark
