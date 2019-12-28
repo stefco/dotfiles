@@ -30,6 +30,7 @@ pathchoices = {
     #     os.path.expanduser("~/anaconda3/bin"),
     #     os.path.expanduser("~/miniconda3/bin"),
     # ],
+    "llama": "/opt/anaconda/bin",
     "intel": os.path.expanduser("~/anaconda2/bin"),
     "mactex": "/Library/TeX/Distributions/Programs/texbin",
     "macvim": "/Applications/MacPorts/MacVim.app/Contents/bin",
