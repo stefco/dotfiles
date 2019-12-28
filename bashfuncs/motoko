@@ -7,7 +7,8 @@
 # print the welcome ASCII art
 # cat ${DOTFILEDIR}/static/motoko-banner.txt
 # echo "Welcome to motoko2."
-cat ${DOTFILEDIR}/static/kong.txt
+# cat ${DOTFILEDIR}/static/kong.txt
+cat ${DOTFILEDIR}/static/misato/small-misato.txt
 
 # test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
@@ -16,10 +17,13 @@ condas() {
     eval "$(/Users/s/anaconda3/bin/conda shell.bash hook)"
 }
 
-ligo() {
+llamas() {
     if [[ "$CONDAS" -ne 1 ]]; then
         echo 'Setting up Conda with `condas`'
         condas
     fi
-    conda activate ligo-py36
+    conda activate llama-py37
 }
+
+# added by travis gem
+[ -f /Users/s/.travis/travis.sh ] && source /Users/s/.travis/travis.sh
