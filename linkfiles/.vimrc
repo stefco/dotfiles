@@ -76,7 +76,7 @@ Plugin 'Shougo/unite.vim'
 " Plugin 'LaTeX-Box-Team/LaTeX-Box'
 Plugin 'lervag/vimtex'
 " Handle snippets, i.e. templates, like a new class definition in Python:
-Plugin 'SirVer/ultisnips'
+" Plugin 'SirVer/ultisnips'
 " Add tab-completion of LaTeX unicode characters (for Julia and more)
 Plugin 'JuliaEditorSupport/julia-vim'
 noremap <F1> :Unite<Space>
