@@ -1,0 +1,26 @@
+#!/bin/bash
+
+ffmpeg \
+    -loop 1 \
+    -i "$1" \
+    -i ~/dev/dotfiles/static/hood-classic.mp3 \
+        -t 3.4 \
+        -af '
+            volume=
+                volume=30
+            ,aecho=
+                0.6:0.3:50:0.7
+            ,acrusher=
+                samples=40
+                :bits=16
+            ,bass=
+                gain=20
+        '\
+    -c:v libx264 \
+    -tune stillimage \
+    -c:a aac \
+    -b:a 192k \
+    -pix_fmt yuv420p \
+    -shortest \
+    -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" \
+    "${1%.*}".mp4
