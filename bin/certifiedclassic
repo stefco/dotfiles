@@ -5,11 +5,11 @@ ffmpeg \
     -i "$1" \
     -i "${2:-$HOME/dev/dotfiles/static/hood-classic.mp3}" \
     -f lavfi \
-    -i '
+    -i "
         sine=
             frequency=10500
             :duration=${3:-3.4}
-    ' \
+    " \
     -filter_complex '
         amix=
             inputs=2
