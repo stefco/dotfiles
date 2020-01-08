@@ -3,12 +3,12 @@
 ffmpeg \
     -loop 1 \
     -i "$1" \
-    -i ~/dev/dotfiles/static/hood-classic.mp3 \
+    -i "${2:-$HOME/dev/dotfiles/static/hood-classic.mp3}" \
     -f lavfi \
     -i '
         sine=
             frequency=10500
-            :duration=3.4
+            :duration=${3:-3.4}
     ' \
     -filter_complex '
         amix=
@@ -38,6 +38,6 @@ ffmpeg \
     -b:a 192k \
     -pix_fmt yuv420p \
     -shortest \
-    -t 3.4 \
+    -t ${3:-3.4} \
     -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" \
     "${1%.*}".mp4
