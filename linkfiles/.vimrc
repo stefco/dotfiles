@@ -17,6 +17,7 @@ call vundle#begin('~/dev/dotfiles/linkfiles/.vim/bundle')
 Plugin 'VundleVim/Vundle.vim'
 
 " Keep Plugin commands between vundle#begin/end.
+Plugin 'https://gitlab.com/n9n/vim-apl'
 Plugin 'rust-lang/rust.vim'
 Plugin 'racer-rust/vim-racer'
 Plugin 'ekalinin/Dockerfile.vim'
@@ -434,6 +435,8 @@ autocmd FileType sshconfig          setlocal commentstring=#\ %s
 autocmd FileType tex,matlab         setlocal commentstring=%\ %s
 autocmd FileType yaml,tmux          setlocal commentstring=#\ %s
 autocmd FileType text               setlocal commentstring=#\ %s
+autocmd FileType haskell            setlocal commentstring=--\ %s
+autocmd FileType apl                setlocal commentstring=⍝\ %s
 
 "=======================================================================
 " SOFT WORD WRAP
@@ -970,3 +973,10 @@ if has('nvim')
     noremap <Leader>tv :vsp<CR>:term<CR>
     noremap <Leader>ts :sp<CR>:term<CR>
 endif
+
+"=======================================================================
+" SPELLCHECK
+"=======================================================================
+" :set spell spelllang=en_us          " all bufs
+" :setlocal spell spelllang=en_us     " current buf
+" :set nospell                        " deactivate
