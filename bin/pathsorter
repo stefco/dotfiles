@@ -38,7 +38,7 @@ pathchoices = {
         os.path.expanduser("~/bin"),
         os.path.expanduser("~/dev/dotfiles/linkfiles/.iterm2"),
     ],
-    "cargo": os.path.expanduser("$HOME/.cargo/bin:$PATH"),
+    "cargo": os.path.expanduser("~/.cargo/bin"),
     "sys": [
         "/usr/bin",
         "/usr/local/bin",
