@@ -43,6 +43,7 @@ port -f install >$log 2>$errlog \
     ffmpeg \
         +nonfree \
     msmtp \
+    aewan \
     offlineimap \
     ncdu \
     neomutt \
