@@ -8,12 +8,12 @@ import os
 import logging
 import argparse
 import sqlite3
-from dateutil.parser import parse
 from collections import namedtuple
 from textwrap import dedent
 from random import random
 from netrc import netrc
 from time import sleep
+from dateutil.parser import parse
 import pixivpy3
 logging.basicConfig(
     # level=logging.DEBUG,
@@ -24,7 +24,6 @@ SIZES = {'large', 'original'}
 DIRNAME = os.path.expanduser(os.path.join("~", "Downloads", "pixiv"))
 if not os.path.isdir(DIRNAME):
     os.makedirs(DIRNAME)
-USERID = 38913802
 DB_PATH = os.path.join(DIRNAME, 'bookmarks.db')
 CONNECTION = sqlite3.connect(DB_PATH)
 CURSOR = CONNECTION.cursor()
@@ -119,7 +118,7 @@ def save_bookmark(bookmark):
     CONNECTION.commit()
 
 
-def parse_args():
+def get_parser():
     """Parse CLI arguments."""
     parser = argparse.ArgumentParser("{}\nOutput dir: {}".format(__doc__,
                                                                  DIRNAME))
@@ -135,7 +134,11 @@ def parse_args():
         Fetch latest bookmark JSON data from the pixiv API (like `-f`),
         but also delete any local database entries and image files
         corresponding to bookmarks that have been deleted on pixiv.""")
-    return parser.parse_args()
+    arg("-u", "--userid", default=os.environ.get("PIXIV_USERID"), help=f"""
+        Set the Pixiv userid of the user whose bookmarks you wish to download.
+        Defaults to the environmental variable ``PIXIV_USERID``, if
+        provided.""")
+    return parser
 
 
 def api_factory():
@@ -253,9 +256,14 @@ def download_bookmarks(userid, force_all=False):
 
 def main():
     """Download bookmarks."""
-    args = parse_args()
+    parser = get_parser()
+    args = parser.parse_args()
+    if args.userid is None:
+        parser.error("Must provide the PIXIV userid of the user whose "
+                     "bookmarks you wish to download with either the ``-u`` "
+                     "argument or ``PIXIV_USERID`` environmental variable.")
     if args.fetch or args.prune_local:
-        fetch_bookmarks(USERID, args.prune_local)
+        fetch_bookmarks(args.userid, args.prune_local)
     if args.download_missing:
         for _bid, user_id, _pno, url, _sprio in load_local_url_info():
             path, name = get_path_and_filename(user_id, url)
