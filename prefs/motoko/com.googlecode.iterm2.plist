@@ -11887,13 +11887,13 @@
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>1</real>
+				<real>0.76629638671875</real>
 				<key>Color Space</key>
 				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>1</real>
+				<real>0.76629638671875</real>
 				<key>Red Component</key>
-				<real>1</real>
+				<real>0.76629638671875</real>
 			</dict>
 			<key>Ansi 2 Color</key>
 			<dict>
@@ -11965,13 +11965,13 @@
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.99999994039535522</real>
+				<real>0.5873260498046875</real>
 				<key>Color Space</key>
 				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.99999994039535522</real>
+				<real>0.5873260498046875</real>
 				<key>Red Component</key>
-				<real>0.9999966025352478</real>
+				<real>0.58732408939237901</real>
 			</dict>
 			<key>Ansi 8 Color</key>
 			<dict>
@@ -12120,6 +12120,8 @@
 			<key>Disable Smcup Rmcup</key>
 			<false/>
 			<key>Disable Window Resizing</key>
+			<true/>
+			<key>Draw Powerline Glyphs</key>
 			<true/>
 			<key>Flashing Bell</key>
 			<true/>
@@ -12472,13 +12474,13 @@
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.99999994039535522</real>
+				<real>0.99984745682194731</real>
 				<key>Color Space</key>
 				<string>sRGB</string>
 				<key>Green Component</key>
 				<real>0.99999994039535522</real>
 				<key>Red Component</key>
-				<real>0.9999966025352478</real>
+				<real>0.99421685968536622</real>
 			</dict>
 			<key>Selection Color</key>
 			<dict>
