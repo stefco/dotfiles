@@ -2,47 +2,37 @@
 " LOAD VUNDLE
 "==============================================================================
 
-" these settings are required for Vundle
 set nocompatible
-filetype off
-
-" use unicode
 set encoding=utf8
 
-" set the runtime path
-set rtp+=~/dev/dotfiles/submodules/Vundle.vim
-call vundle#begin('~/dev/dotfiles/linkfiles/.vim/bundle')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" Keep Plugin commands between vundle#begin/end.
-Plugin 'https://gitlab.com/n9n/vim-apl'
-Plugin 'rust-lang/rust.vim'
-Plugin 'racer-rust/vim-racer'
-Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'jamessan/vim-gnupg'
-Plugin 'godlygeek/tabular'
-Plugin 'neomake/neomake'
-Plugin 'nvie/vim-flake8'
-Plugin 'lepture/vim-jinja'
-Plugin 'scrooloose/nerdtree'
-Plugin 'tpope/vim-fugitive'
-Plugin 'Vimjas/vim-python-pep8-indent'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'mileszs/ack.vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'skywind3000/asyncrun.vim'
-Plugin 'vim-scripts/GrepCommands'
+" vim-plug plugins
+call plug#begin('~/dev/dotfiles/linkfiles/.vim/bundle')
+Plug 'https://gitlab.com/n9n/vim-apl'
+Plug 'rust-lang/rust.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'jamessan/vim-gnupg'
+Plug 'godlygeek/tabular'
+Plug 'neomake/neomake'
+Plug 'nvie/vim-flake8'
+Plug 'lepture/vim-jinja'
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-fugitive'
+Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'ryanoasis/vim-devicons'
+Plug 'mileszs/ack.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'skywind3000/asyncrun.vim'
+Plug 'vim-scripts/GrepCommands'
 " let me not use this for now and instead see how vim-dispatch treats me
-" Plugin 'janko-m/vim-test'
-Plugin 'sjl/gundo.vim'
-Plugin 'tpope/vim-commentary.git'
+" Plug 'janko-m/vim-test'
+Plug 'sjl/gundo.vim'
+Plug 'tpope/vim-commentary'
 " smart date incrementing
-Plugin 'tpope/vim-speeddating'
+Plug 'tpope/vim-speeddating'
 " surround strings with characters, e.g. quotes.
 " PREFIXES
 "   - 'ys' adds adds wrapping characters, e.g. 'ysiw<em>' wraps a word with
@@ -51,39 +41,37 @@ Plugin 'tpope/vim-speeddating'
 "     quotes
 "   - 'cs' changes wrapping characters, e.g. 'cs"<q>' swaps double quotes for
 "     quotation tags <q>
-Plugin 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 " case changes/complex substitutions/programmable autocorrect
-Plugin 'tpope/tpope-vim-abolish'
+Plug 'tpope/tpope-vim-abolish'
 " add repeatability to supporting custom plugins
-Plugin 'tpope/vim-repeat'
+Plug 'tpope/vim-repeat'
 " add async via iterm and tmux to vim
 " NOTE Disabled because it interferes with AsyncRun. See:
 " https://github.com/skywind3000/asyncrun.vim/wiki/Cooperate-with-famous-plugins#fugitive
-" Plugin 'tpope/vim-dispatch'
+" Plug 'tpope/vim-dispatch'
 " nice wrapper for existing persistence/session saving vim functionality!
-" Plugin 'tpope/vim-obsession'
+" Plug 'tpope/vim-obsession'
 " add extra '[' and ']' mappings
-Plugin 'tpope/vim-unimpaired'
+Plug 'tpope/vim-unimpaired'
 " add some unix sugar
-Plugin 'tpope/vim-eunuch'
-"Plugin 'edkolev/promptline.vim'
+Plug 'tpope/vim-eunuch'
+"Plug 'edkolev/promptline.vim'
 " tmux bindings for vim with nice tab completion
-" Plugin 'tpope/vim-tbone'
+" Plug 'tpope/vim-tbone'
 " JSON tools
-" Plugin 'tpope/vim-jdaddy'
-Plugin 'Shougo/unite.vim'
+" Plug 'tpope/vim-jdaddy'
+Plug 'Shougo/unite.vim'
 " Some LaTeX tools. Taken from:
 " https://www.reddit.com/r/math/comments/43mynw
-" Plugin 'LaTeX-Box-Team/LaTeX-Box'
-Plugin 'lervag/vimtex'
+" Plug 'LaTeX-Box-Team/LaTeX-Box'
+Plug 'lervag/vimtex'
 " Handle snippets, i.e. templates, like a new class definition in Python:
-" Plugin 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 " Add tab-completion of LaTeX unicode characters (for Julia and more)
-Plugin 'JuliaEditorSupport/julia-vim'
+Plug 'JuliaEditorSupport/julia-vim'
+call plug#end()
 noremap <F1> :Unite<Space>
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
 
 "==============================================================================
 " MAC GUI VIM PREFS
