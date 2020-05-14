@@ -17,6 +17,9 @@ pathchoices = {
     "py36": "/opt/local/Library/Frameworks/Python.framework/Versions/3.6/bin",
     "py37": "/opt/local/Library/Frameworks/Python.framework/Versions/3.7/bin",
     "pyuser": os.path.expanduser("~/.local/bin"),
+    "dyalog": [
+        "/Applications/Dyalog-17.1.app/Contents/Resources/Dyalog",
+    ],
     "py37usermac": os.path.expanduser("~/Library/Python/3.7/bin"),
     "py36usermac": os.path.expanduser("~/Library/Python/3.6/bin"),
     "py35usermac": os.path.expanduser("~/Library/Python/3.5/bin"),
