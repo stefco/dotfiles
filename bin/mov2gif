@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+ffmpeg \
+    -i "$1" \
+    -filter_complex "[0:v] setpts=0.5*PTS,fps=12,scale=720:-1" \
+    "${1%.mov}.gif"
