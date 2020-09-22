@@ -25,5 +25,7 @@ llamas() {
     conda activate llama-py37
 }
 
+dotsource gh_autocomplete
+
 # added by travis gem
 [ -f /Users/s/.travis/travis.sh ] && source /Users/s/.travis/travis.sh
