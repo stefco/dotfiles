@@ -7,6 +7,7 @@ set encoding=utf8
 
 " vim-plug plugins
 call plug#begin('~/dev/dotfiles/linkfiles/.vim/bundle')
+Plug 'tikhomirov/vim-glsl'
 Plug 'https://gitlab.com/n9n/vim-apl'
 Plug 'rust-lang/rust.vim'
 Plug 'leafgarland/typescript-vim'
@@ -311,9 +312,9 @@ noremap <Leader><Space> :
 " start a shell command without hitting shift
 noremap <Leader>1 :!
 
-"=======================================================================
+"==============================================================================
 " ENCRYPTION SETTINGS
-"=======================================================================
+"==============================================================================
 
 " Use blowfish2 for vim-encrypted stuff
 if !has('nvim')
@@ -323,9 +324,9 @@ endif
 " Use symmetric encryption
 let GPGPreferSymmetric=1
 
-"=======================================================================
+"==============================================================================
 " NEOMAKE SETTINGS
-"=======================================================================
+"==============================================================================
 
 " RECALL that neomake adds warnings/messages to your location list, so you can
 " navigate them with :lnext and :lprev; shortcuts for these are in the
@@ -334,9 +335,9 @@ let GPGPreferSymmetric=1
 " run Neomake on write
 " autocmd! BufWritePost * Neomake
 
-"=======================================================================
+"==============================================================================
 " TO DO STATE SETTINGS
-"=======================================================================
+"==============================================================================
 
 " These settings are inspired by org mode with spacemacs bindings, though they
 " use <Leader>t instead of bare t to avoid clobbering the t operator.
@@ -366,77 +367,45 @@ endfunction
 " activate bindings by file type
 " autocmd FileType tex                call TodoState_TeX_AddBindings()
 
-"=======================================================================
-" LATEX TOOLS
-"=======================================================================
-
-"---------------------------------------
-" AUTOCOMPILE
-"---------------------------------------
-
-" Automatically recompile a .tex file if Makefile exists after saving.
-
-function! StefcoCompileTexCommand()
-    let proj = expand('%:r')
-    echom 'Project name: ' . proj
-    return 'latexmk "'.proj.'" && pdflatex "'.proj.'"'
-endfunction
-
-function! StefcoCompileTexSync()
-    set cmdheight=4
-    let compileCmd = '!' . StefcoCompileTexCommand()
-    echom 'Running command: ' . compileCmd
-    execute compileCmd
-    set cmdheight=1
-endfunction
-
-function! StefcoCompileTexAsync()
-    set cmdheight=4
-    let compileCmd = 'AsyncRun ' . StefcoCompileTexCommand()
-    echom 'Running command: ' . compileCmd
-    execute compileCmd
-    set cmdheight=1
-endfunction
-
-autocmd FileType tex autocmd BufWritePost <buffer> call StefcoCompileTexAsync()
-
-"---------------------------------------
-" FORWARD SEARCH IN SKIM
-"---------------------------------------
-
-" Open the Skim PDF viewer at the line in the PDF corresponding to this line in
-" the source using PDF-TeX sync. Based off of Skim documentation at
-" https://sourceforge.net/p/skim-app/wiki/TeX_and_PDF_Synchronization/
-" nmap <Leader>gL :w<CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline <C-r>=line('.')<CR> %<.pdf<CR>:redraw!<CR>
-
-"=======================================================================
+"==============================================================================
 " MARKDOWN/GIT COMMIT SETTINGS
-"=======================================================================
+"==============================================================================
 
 " set 6-space indent for git commit messages (to allow for MD checklists)
 autocmd FileType gitcommit setlocal softtabstop=6|setlocal tabstop=6|setlocal shiftwidth=6
 
 " in gitcommit and markdown files, shift-tab toggles a list
-autocmd FileType gitcommit,markdown map <S-Tab> :call ToggleMDList()<CR>
+autocmd FileType gitcommit,markdown
+    \ map <S-Tab> :call ToggleMDList()<CR> |
+    \ setlocal spell spelllang=en_us |
+    \ silent call tablemode#Enable() |
+    \ let g:table_mode_corner='|'
 
 " TODO command for toggling markdown list at start
 function ToggleMDList()
     echom 'TODO: ToggleMDList not yet implemented.'
 endfunction
 
-"=======================================================================
-" GIT GUTTER SETTINGS
-"=======================================================================
+"==============================================================================
+" RESTRUCTUREDTEXT SETTINGS
+"==============================================================================
 
-" update gitgutter 250ms after changes
-set updatetime=250
+" Turn on tablemode with reST for easy tables
+autocmd FileType rst
+    \ call tablemode#Enable() |
+    \ let g:table_mode_corner_corner='+' |
+    \ let g:table_mode_header_fillchar='='
+
+"==============================================================================
+" GIT GUTTER SETTINGS
+"==============================================================================
 
 " toggle highlighting of diffs
 noremap <Leader>hd :GitGutterLineHighlightsToggle<CR>
 
-"=======================================================================
+"==============================================================================
 " DISPLAY/FOLDING/INTERACTION SETTINGS
-"=======================================================================
+"==============================================================================
 
 " toggle search highlighting
 noremap - :set hlsearch!<CR>
@@ -473,9 +442,9 @@ endfunction
 " center the screen
 noremap <CR> zz
 
-"=======================================================================
+"==============================================================================
 " REFRESHING THE VIEW
-"=======================================================================
+"==============================================================================
 
 " sync syntax from start with <Leader>s (default leader is \)
 map <Leader>rs :syntax sync fromstart<CR>
@@ -483,9 +452,9 @@ map <Leader>rs :syntax sync fromstart<CR>
 " redraw the screen
 map <Leader>rr :redraw!<CR>
 
-"=======================================================================
+"==============================================================================
 " COMMENT SYNTAX
-"=======================================================================
+"==============================================================================
 
 " define comment strings for various langs
 autocmd FileType vim                setlocal commentstring=\"\ %s
@@ -498,9 +467,9 @@ autocmd FileType text               setlocal commentstring=#\ %s
 autocmd FileType haskell            setlocal commentstring=--\ %s
 autocmd FileType apl                setlocal commentstring=⍝\ %s
 
-"=======================================================================
+"==============================================================================
 " SOFT WORD WRAP
-"=======================================================================
+"==============================================================================
 
 " don't soft wrap by default
 set nowrap
@@ -521,9 +490,9 @@ endfunction
 " activate soft wrap for text files where this is desirable
 autocmd FileType tex,taskedit       call ActivateSoftWrap()
 
-"=======================================================================
+"==============================================================================
 " AIRLINE CONFIG
-"=======================================================================
+"==============================================================================
 
 " display all buffers in tab bar when only one tab is open
 let g:airline#extensions#tabline#enabled = 1
@@ -563,9 +532,9 @@ let g:airline_theme = 'cool'
 " let g:airline_left_sep = "\uE0B8"
 " let g:airline_right_sep = "\uE0BE"
 
-"=======================================================================
+"==============================================================================
 " NAVIGATION COMMANDS
-"=======================================================================
+"==============================================================================
 
 " next or previous window
 noremap <Up> <C-w>W
@@ -593,9 +562,9 @@ noremap <S-Down> :cn<CR>
 noremap <S-Right> :lnext<CR>
 noremap <S-Left> :lprev<CR>
 
-"=======================================================================
+"==============================================================================
 " HELP COMMANDS
-"=======================================================================
+"==============================================================================
 
 " run help for some string
 map <Leader>hh :help<Space>
@@ -607,26 +576,26 @@ map <Leader>hm :map<Space>
 nnoremap <Leader>hw yiw:help <C-r>"<CR>
 vnoremap <Leader>hw y:help <C-r>"<CR>
 
-"=======================================================================
+"==============================================================================
 " SEARCH TOOLS
-"=======================================================================
+"==============================================================================
 
 " use Ag if available even when using Ack package
 if executable('ag')
   let g:ackprg = 'ag -s --vimgrep'
 endif
 
-"=======================================================================
+"==============================================================================
 " JULIA SETTINGS
-"=======================================================================
+"==============================================================================
 
 " toggle whether the LaTeX to Unicode tab completion is active
 noremap <expr> <F7> LaTeXtoUnicode#Toggle()
 inoremap <expr> <F7> LaTeXtoUnicode#Toggle()
 
-"=======================================================================
+"==============================================================================
 " NERDTREE SETTINGS
-"=======================================================================
+"==============================================================================
 
 " ignore .pyc files in nerdtree as well as HDF5 data files
 let NERDTreeIgnore=['\.pyc$', '\~$', '\.hdf5$']
@@ -637,9 +606,9 @@ let NERDTreeAutoDeleteBuffer = 1
 "hide the '? for help' message in NERDTree
 let NERDTreeMinimalUI = 1
 
-"=======================================================================
+"==============================================================================
 " ASYNCRUN COMMANDS
-"=======================================================================
+"==============================================================================
 
 " start a shell command to run asynchronously
 noremap <Leader>2 :AsyncRun<Space>
@@ -653,14 +622,14 @@ let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status
 " make fugitive fetch and push async
 command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 
-"=======================================================================
+"==============================================================================
 " TABULARIZE
-"=======================================================================
+"==============================================================================
 noremap gt :Tabularize /
 
-"=======================================================================
+"==============================================================================
 " FUGITIVE (GIT) MAPPINGS
-"=======================================================================
+"==============================================================================
 
 " git pull
 map <Leader>gp :Gresolvelink<CR>:Gpull<CR>
@@ -754,9 +723,9 @@ command! Gresolvelink call MyGitResolveSymlink()
 "==============================================================================
 nnoremap <Leader>u :UndotreeToggle<CR>
 
-"=======================================================================
+"==============================================================================
 " PREVIEWING THINGS
-"=======================================================================
+"==============================================================================
 
 " run whatever command on the filename under the cursor; for nerdtree
 " windows, make sure to get the filename from the line rather than the
@@ -801,9 +770,9 @@ vnoremap <Leader>vp y:!ql <C-r>"<CR>
 nnoremap <Leader>vo :call RunCommandOnFileUnderCursor("open")<CR>
 vnoremap <Leader>vo y:!open <C-r>"<CR>
 
-"=======================================================================
+"==============================================================================
 " PYTHON
-"=======================================================================
+"==============================================================================
 
 " Automatically generate a UML diagram for this file on save
 function! StefcoPythonUmlPdf() abort
@@ -820,9 +789,9 @@ endfunction
 
 " autocmd FileType python autocmd BufWritePost * call StefcoPythonUmlPdf()
 
-"=======================================================================
+"==============================================================================
 " IPYTHON
-"=======================================================================
+"==============================================================================
 
 " place contents of ipyscratch at cursor
 autocmd FileType python nnoremap <Leader>iP   :.-1r ~/.ipyscratch<CR>
@@ -842,9 +811,9 @@ autocmd FileType python vnoremap <Leader>iy :w! ~/.ipyscratch<CR>gvd
 " toggle comments on various things using vim-commentary with leader
 map <Leader>c gc
 
-"=======================================================================
+"==============================================================================
 " SPACEMACS BINDINGS
-"=======================================================================
+"==============================================================================
 
 "---------------------------------------
 " KEYBINDING FOR `MAKE` AND ANALOGUES
@@ -854,7 +823,7 @@ map <Leader>c gc
 nmap <Leader>cm :make<CR><Space>:bp<CR>:bd#<CR>
 
 " for LaTeX files, replace the make command with async latexmk compilation
-autocmd FileType tex nmap <Leader>cm :call StefcoCompileTexAsync()<CR>
+" autocmd FileType tex nmap <Leader>cm :call StefcoCompileTexAsync()<CR>
 
 "---------------------------------------
 " FILE OPENING BINDINGS
@@ -920,13 +889,14 @@ nmap <Leader>fgc yiw<Leader>fgs<C-r>"
 nmap <Leader>frfc yiw<Leader>frfs<C-r>"
 nmap <Leader>frgc yiw<Leader>frgs<C-r>"
 
-" visual mode maps
-vmap <Leader>bfc y<Leader>bfs<C-r>"<Space>
-vmap <Leader>bgc y<Leader>bgs<C-r>"<Space>
-vmap <Leader>ffc y<Leader>ffs<C-r>"<Space>
-vmap <Leader>fgc y<Leader>fgs<C-r>"<Space>
-vmap <Leader>frfc y<Leader>frfs<C-r>"<Space>
-vmap <Leader>frgc y<Leader>frgs<C-r>"<Space>
+" visual mode maps; xmap is only visual mode, vmap is visual and select mode:
+" https://vi.stackexchange.com/questions/11852
+xmap <Leader>bfc y<Leader>bfs<C-r>"<Space>
+xmap <Leader>bgc y<Leader>bgs<C-r>"<Space>
+xmap <Leader>ffc y<Leader>ffs<C-r>"<Space>
+xmap <Leader>fgc y<Leader>fgs<C-r>"<Space>
+xmap <Leader>frfc y<Leader>frfs<C-r>"<Space>
+xmap <Leader>frgc y<Leader>frgs<C-r>"<Space>
 
 " Go (i'm feeling lucky): {b,f,fr}{g,f}g
 
@@ -1021,9 +991,9 @@ map <Leader>qQ :qa!<CR>
 " e(x)it after saving all files
 map <Leader>qs :wqa<CR>
 
-"=======================================================================
+"==============================================================================
 " NEOVIM SHORTCUTS
-"=======================================================================
+"==============================================================================
 
 if has('nvim')
     " <Esc> enters normal mode in term mode instead of sending <Esc> to term
@@ -1034,9 +1004,9 @@ if has('nvim')
     noremap <Leader>ts :sp<CR>:term<CR>
 endif
 
-"=======================================================================
+"==============================================================================
 " SPELLCHECK
-"=======================================================================
+"==============================================================================
 " :set spell spelllang=en_us          " all bufs
 " :setlocal spell spelllang=en_us     " current buf
 " :set nospell                        " deactivate
