@@ -31,7 +31,7 @@ logdate
 echo "Installing tools." | tee -a $log
 port -f install >$log 2>$errlog \
     bash \
-    mpv \
+    libgcc \
     coreutils \
     vim \
     curl \
@@ -59,7 +59,6 @@ port -f install >$log 2>$errlog \
     tiff \
     jp2a \
     findutils \
-    youtube-dl \
     ripgrep \
     optipng \
     ImageMagick \
@@ -79,12 +78,16 @@ port -f install >$log 2>$errlog \
     qt5-qtcreator \
     emacs-mac-app \
     emacs \
-    MacVim \
-    task \
-    vit \
+    gforth \
+    libgcc9 \
 # end
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
+# MacVim
+# mpv
+# task
+# vit
+# youtube-dl
 
 logdate
 echo "Installing npm stuff." | tee -a $log
