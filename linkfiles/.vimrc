@@ -74,6 +74,18 @@ call plug#end()
 noremap <F1> :Unite<Space>
 
 "==============================================================================
+" TRAILING WHITESPACE
+"==============================================================================
+
+" highlight trailing whitespace, but not on insert mode
+" https://stackoverflow.com/a/4617156/3601493
+highlight ExtraWhitespace ctermbg=blue guibg=blue
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+
+"==============================================================================
 " MAC GUI VIM PREFS
 "==============================================================================
 
