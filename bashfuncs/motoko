@@ -22,7 +22,7 @@ llamas() {
         echo 'Setting up Conda with `condas`'
         condas
     fi
-    conda activate llama-py37
+    conda activate llama-37-dev
 }
 
 dotsource gh_autocomplete
