@@ -109,6 +109,8 @@ def download(outdir=DEFAULT_OUTPUTDIR, youtubedl=DEFAULT_YOUTUBEDL,
         log.write("Starting at " + datetime.datetime.now().isoformat() + "\n")
         log.write("Script that produced this:\n")
         log.write("{}\n".format(os.path.realpath(__file__)))
+        log.write("youtube-dl binary used:")
+        log.write("{}\n".format(os.path.realpath(youtubedl)))
     proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
     out, err = proc.communicate()
     with open(logfile, 'a') as log:
