@@ -27,3 +27,7 @@ sub mpost {
   popd();
   return $return;
 }
+
+# use skim as the previewer (MacOS-only)
+# https://texlab.netlify.app/docs/installation/previewing#skim
+$pdf_previewer = 'open -a Skim';
