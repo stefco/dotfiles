@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+# noqa
+
+"""
+Tile an image into 9 videos that can be posted to Instagram in filename order,
+yielding a tiled wall image on your profile page. Each video loops a single
+syllable from the famous "this is a certified hood classic" audio sample.
+Guaranteed to lose you followers.
+"""
+
+import os
+from typing import List, Iterable
+from argparse import ArgumentParser
+from subprocess import check_call
+
+
+SAMPLES = tuple(os.path.expanduser("~/dev/dotfiles/static/hc/{}.mp3".format(i))
+                for i in range(9))
+FFMPEG = (
+    'ffmpeg',
+        '-loop', '1',
+        '-i', '{input_image}',
+        '-i', '{audio_sample}',  # subbed out in ffmpeg_cmd
+        '-f', 'lavfi',
+        '-i', '''
+            sine=
+                frequency=10500
+                :duration={duration}
+        ''',  # set duration in ffmpeg_cmd
+        '-filter_complex', '''
+            amix=
+                inputs=2
+                :duration=shortest
+            ,volume=
+                volume=30
+            ,aecho=
+                0.7:0.3:140:0.8
+            ,acrusher=
+                samples=10
+                :bits=8
+            ,bass=
+                gain=15
+            ,treble=
+                gain=10
+        ''',
+        '-c:v', 'libx264',
+        '-tune', 'stillimage',
+        '-c:a', 'aac',
+        '-b:a', '192k',
+        '-pix_fmt', 'yuv420p',
+        '-shortest',
+        '-t', '{duration}',  # set duration in ffmpeg_cmd
+        '-vf', 'pad=ceil(iw/2)*2:ceil(ih/2)*2', \
+        '{outfile}',
+)
+
+
+# pylint: disable=unused-argument
+def ffmpeg_cmd(
+        input_image: str,
+        audio_sample: str,
+        outfile: str,
+        duration: float = 3.1,
+) -> List[str]:
+    """
+    Get the FFMPEG command for tile number ``tile``. Note that the audio files
+    are expected to be provided in order from top to bottom (viewing order),
+    but the output videos are numbered in reverse order (posting order).
+    """
+    inputs = locals()
+    cmd = list(FFMPEG)
+    for i, cli_arg in enumerate(cmd):
+        cmd[i] = cli_arg.format(**inputs)
+    return cmd
+
+
+def get_parser() -> ArgumentParser:
+    "CLI parser"
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("infile", help="Name of the input image.")
+    parser.add_argument("--audio-samples", nargs=9, default=SAMPLES,
+                        metavar=tuple(f'TRACK_{i}' for i in range(9)), help="""
+        Audio clips to use for each tile, ordered top-left to bottom-right.""")
+    return parser
+
+
+def make_videos(infile: str, audio_samples: Iterable[str]):
+    """
+    Split image at ``infile`` into image tiles using ``instagram_wall_tile``
+    script and create corresponding output MP4 files with the provided
+    ``audio_samples`` (with the same name as the ``instagram_wall_tile``
+    images other than the MP4 file extension).
+    """
+    check_call(['instagram_wall_tile', infile])
+    infile_base = os.path.splitext(infile)[0]
+    for i in range(9):
+        tile_base = f'{infile_base}-{i}'
+        out = tile_base+'.mp4'
+        if os.path.isfile(out):
+            os.unlink(out)
+        # remember that posting and viewing indices are in opposite order
+        cmd = ffmpeg_cmd(
+            input_image=tile_base+'.jpg',
+            audio_sample=audio_samples[8-i],
+            outfile=out,
+        )
+        print("Running command: ", cmd)
+        check_call(cmd)
+
+
+def main():
+    "Make bad content."
+    parser = get_parser()
+    args = parser.parse_args()
+    make_videos(args.infile, args.audio_samples)
+
+
+if __name__ == '__main__':
+    main()

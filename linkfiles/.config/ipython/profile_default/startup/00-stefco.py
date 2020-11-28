@@ -2,7 +2,9 @@
 # get some basic config just the way i like it, no heavy stuff
 import sys
 import os
-import psutil
+# import psutil
+import datetime
+from glob import glob
 import IPython.core.magic
 import IPython.utils.path
 sys.path.append(os.path.expanduser('~/dev/geco_data'))

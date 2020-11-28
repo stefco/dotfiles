@@ -30,86 +30,197 @@ port selfupdate >$log 2>$errlog
 logdate
 echo "Installing tools." | tee -a $log
 port -f install >$log 2>$errlog \
-    bash mc ranger coreutils cowsay curl the_silver_searcher git git-lfs hdf5 \
-    julia libcaca msmtp offlineimap vim ncdu neomutt notmuch OpenBLAS pstree \
-    psutils tree readline dtrx fortune bash-completion poppler djvulibre \
-    unrar tiff jp2a shellcheck p5.24-term-readline-gnu \
-    findutils youtube-dl qrencode ripgrep optipng npm6 emacs-mac-app emacs
+    bash \
+    libgcc \
+    coreutils \
+    vim \
+    curl \
+    the_silver_searcher \
+    ack \
+    git \
+    git-lfs \
+    hdf5 \
+    ffmpeg \
+        +nonfree \
+    msmtp \
+    aewan \
+    offlineimap \
+    ncdu \
+    neomutt \
+    notmuch \
+    pstree \
+    psutils \
+    tree \
+    readline \
+    bash-completion \
+    poppler \
+    djvulibre \
+    unrar \
+    tiff \
+    jp2a \
+    findutils \
+    ripgrep \
+    optipng \
+    ImageMagick \
+    latexmk \
+    OpenBLAS \
+    packer \
+    cowsay \
+    mc \
+    julia \
+    libcaca \
+    fortune \
+    shellcheck \
+    p5.24-term-readline-gnu \
+    qrencode \
+    nodejs11 \
+    npm6 \
+    qt5-qtcreator \
+    emacs-mac-app \
+    emacs \
+    gforth \
+    libgcc9 \
+# end
 # add the MacPorts bash binary to the list of shells
 bash -c "echo /opt/local/bin/bash >>/etc/shells"
+# MacVim
+# mpv
+# task
+# vit
+# youtube-dl
 
 logdate
-echo "Installing python 2 stuff." | tee -a $log
-port -f install >$log 2>$errlog \
-    py27-ipython py27-numpy py27-matplotlib py27-scipy py27-healpy \
-    py27-astropy py27-gnureadline py27-pykerberos py27-pygments py27-jupyter \
-    py27-h5py py27-dateutil py27-cython py27-cairo py27-pip py27-pylint \
-    py27-pyflakes py27-greenlet py27-neovim py27-gobject3 py27-pytest
+echo "Installing npm stuff." | tee -a $log
+npm i -g \
+    git-stats \
+    git-stats-html \
+    git-stats-importer \
+# end
+
 
 logdate
 echo "Installing python 3 stuff." | tee -a $log
 port -f install >$log 2>$errlog \
-    py36-ipython py36-numpy py36-matplotlib py36-scipy py36-healpy \
-    py36-astropy py36-gnureadline py36-pykerberos py36-pygments py36-jupyter \
-    py36-h5py py36-dateutil py36-cython py36-cairo py36-pip py36-pylint \
-    py36-pyflakes py36-greenlet py36-neovim py36-gobject3 py36-pytest \
-    py36-taskw py36-psutil
+    py37-ipython \
+    py37-numpy \
+    py37-matplotlib \
+    py37-scipy \
+    py37-healpy \
+    py37-astropy \
+    py37-gnureadline \
+    py37-pykerberos \
+    py37-pygments \
+    py37-jupyter \
+    py37-h5py \
+    py37-dateutil \
+    py37-cython \
+    py37-cairo \
+    py37-pip \
+    py37-pylint \
+    py37-pyflakes \
+    py37-greenlet \
+    py37-neovim \
+    py37-gobject3 \
+    py37-pytest \
+    py37-taskw \
+    py37-psutil \
+    py37-pytest-cov \
+    py37-jupyterlab \
+# end
 
 logdate
 echo "Installing IceCube dependencies." | tee -a $log
 port -f install >$log 2>$errlog \
-    cmake boost +python27 gsl +doc_python27 hdf5 libarchive \
-    qt5 py27-pyqt5 +graceful +webkit doxygen +docs +wizard wget # pal
+    cmake \
+    boost \
+        +python27 \
+    gsl \
+        +doc_python27 \
+    hdf5 \
+    libarchive \
+    qt5 \
+    py27-pyqt5 \
+        +graceful \
+        +webkit \
+    doxygen \
+        +docs \
+        +wizard \
+    wget \
+    # pal \
+# end
 
 logdate
 echo "Setting default python, ipython, and pip binaries." | tee -a $log
-port select --set python python36 >$log 2>$errlog
-port select --set ipython py36-ipython >$log 2>$errlog
-port select --set ipython3 py36-ipython >$log 2>$errlog
-port select --set pip pip36 >$log 2>$errlog
-port select --set pylint pylint36 >$log 2>$errlog
-port select --set pyflakes py36-pyflakes >$log 2>$errlog
+port select --set python python37 >$log 2>$errlog
+port select --set ipython py37-ipython >$log 2>$errlog
+port select --set ipython3 py37-ipython >$log 2>$errlog
+port select --set pip pip37 >$log 2>$errlog
+port select --set pylint pylint37 >$log 2>$errlog
+port select --set pyflakes py37-pyflakes >$log 2>$errlog
 
 logdate
 echo "Installing LIGO environment. Details here:" | tee -a $log
-echo "  https://wiki.ligo.org/DASWG/MacPorts" | tee -a $log
+echo "  https://wiki.ligo.org/Computing/DASWG/MacPorts" | tee -a $log
+echo "You can see more LAL packages than those installed by" | tee -a $log
+echo 'running something like `port search lal`.' | tee -a $log
 port -f install >$log 2>$errlog \
-    lscsoft-deps ligo-gracedb nds2-client +swig_java +swig_python glue \
-    lalapps pylal ldas-tools-framecpp lalframe
-
-logdate
-echo "Installing GWpy dependencies. Details here:" | tee -a $log
-echo "  https://gist.github.com/stefco/5956a92cfb4394255c637471334a7984" \
-    | tee -a $log
-port -f install >$log 2>$errlog \
-    py27-ipython py27-numpy py27-scipy py27-matplotlib +latex +dvipng \
-    texlive-latex-extra py27-astropy glue kerberos5 py27-pykerberos \
-    nds2-client py27-lalframe py27-gwpy +gwf +hdf5 +nds2 +segments
+    lscsoft-deps \
+    py37-ligo-gracedb \
+    nds2-client \
+    py37-nds2-client \
+    nds2-client-java \
+    nds2-client-matlab \
+    py37-lscsoft-glue \
+    lalapps \
+    ldas-tools-framecpp \
+    ldas-tools-cmake \  # needed for ldas-tools-al-swig
+    ldas-tools-swig \  # needed for py*-ldas-tools-framecpp
+    py37-ldas-tools-framecpp \
+    lalframe \
+    py37-lalframe \
+    lalinference \
+    py37-lalinference \
+# end
 
 logdate
 echo "Installing LaTeX packages." | tee -a $log
 port -f install >$log 2>$errlog texlive-publishers
-
-logdate
-echo "Installing GWpy with all options. Details here:" | tee -a $log
-echo "  https://gwpy.github.io/docs/stable/install/index.html" | tee -a $log
-pip install gwpy[all] >$log 2>$errlog
 
 echo "Installing jupyter extensions." | tee -a $log
 jupyter labextension install \
     jupyterlab_vim
 logdate
 
-echo "Installing pip packages." | tee -a $log
-pip install \
-    yolk PyForms itermplot ffmpeg-python untangle twilio visidata pytest-cov \
-    jupyterlab task
+echo "Installing MEDM screens. Details here:" | tee -a $log
+echo "  https://wiki.ligo.org/RemoteAccess/RemoteEPICS" | tee -a $log
+sudo port install -f xorg-libXt +flat_namespace
+sudo port install -f ligo-remote-access
+logdate
+
+echo "Installing pip packages for python 2 and 3." | tee -a $log
+for PIP in pip2 pip3; do
+    $PIP install \
+        PyForms \
+        itermplot \
+        ffmpeg-python \
+        untangle \
+        twilio \
+        visidata \
+        svgutils \
+        svglib \
+        reportlab \
+# end
+done
 
 logdate
 tee -a <<"__EOF__"
 To set newest version of bash as default, run:
 
   chsh -s /opt/local/bin/bash
+
+To get LIGO Data Grid access, run the installer found at:
+
+  - https://www.lsc-group.phys.uwm.edu/lscdatagrid/doc/installclient-mac.html
 
 You probably also want to install:
 

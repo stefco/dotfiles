@@ -11,19 +11,10 @@ for geco_repo in geco_data geco_channel geco_plots; do
     export PATH=~/dev/"$geco_repo:$PATH"
 done
 
-# GWHEN executables path, if availbable
-gbin="multimessenger-pipeline/bin"
-gpybin="multimessenger-pipeline/gwhen/bin"
-for gpre in ~ ~/dev; do
-    if [ -d ~/multimessenger-pipeline ]; then
-        export PATH=~/"$gbin:$PATH"
-        export PATH=~/"$gpybin:$PATH"
-    elif [ -d ~/dev/multimessenger-pipeline ]; then
-        export PATH=~/dev/"$gbin:$PATH"
-        export PATH=~/dev/"$gpybin:$PATH"
-    fi
-done
-
 # get a better PATH (only if `pathsorter` executable exists for this purpose)
 type -f 1>/dev/null 2>&1 pathsorter \
-    && export PATH="$(pathsorter user py35 py36 py34 py27 port sys conda pyuser)"
+    && export PATH="$(pathsorter llama mactex user pg11 cargo py27 py37 py35 py36 py34 port macvim sys pyuser py36usermac dyalog drawterm)"
+
+# # put ~/lib in the C library path
+export C_INCLUDE_PATH=~/include:"$C_INCLUDE_PATH"
+export LIBRARY_PATH=~/lib:"$LIBRARY_PATH"

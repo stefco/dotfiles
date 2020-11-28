@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+
+"""
+Horizontally split an image so that it can be tiled on Instagram. Must have
+`identify` and `convert` installed as part of the ImageMagick suite.
+"""
+
+import re
+import os
+import argparse
+from math import ceil, floor
+from subprocess import check_call, check_output
+
+MIN_WIDTH_OVER_HEIGHT = 0.8
+
+
+def parse_args():
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    arg = parser.add_argument
+    arg("filename", help="The name of the image file to split.")
+    arg("num_tiles", type=int, nargs='?', default=0, help="""
+        The number of tiles to split an image into. If not provided, output
+        will be roughly square (but still short enough to fit into instagram's
+        proportions).""")
+    arg("-o", "--outfile-prefix", default=None, help="""
+        The prefix to put in front of output files. By default, just uses the
+        input filename (sans extension) and appends "-X" (where X is the
+        sequential tile number) to each output file.""")
+    return parser.parse_args()
+
+
+def get_resolution(infile):
+    """Get the resolution of an image. Returns (width, height) in pixels."""
+    srch = re.search(r' (\d*)x(\d*) ',
+                     check_output(['identify', infile]).decode('utf-8'))
+    return int(srch.group(1)), int(srch.group(2))
+
+
+def num_tiles(width, height):
+    """Get the number of tiles that this image should be split into such that
+    they will be as close to square as possible while not exceeding Instagram's
+    minimum HEIGHT/WIDTH ratio."""
+    ratio = width / height  # float because python3
+    tiles = ceil(ratio)
+    if ratio / tiles < MIN_WIDTH_OVER_HEIGHT:
+        tiles = floor(ratio)
+    return tiles
+
+
+def split(infile, tiles=0, outfile_prefix=None):
+    """Split the image into tiles and write to disk. If `tiles` is set to 0,
+    automatically determine the number of tiles. `outfile_prefix` will just be
+    `infile` (with its file extension removed) followed by a hyphen if not
+    provided."""
+    ext = infile.split('.')[-1]
+    dirname, filename = os.path.split(infile)
+    tot_width, tot_height = get_resolution(infile)
+    tiles = tiles if tiles else num_tiles(tot_width, tot_height)
+    outfile_prefix = (outfile_prefix if outfile_prefix is not None else
+                      '.'.join(filename.split('.')[:-1]) + '-')
+    width = floor(tot_width / tiles)  # floor returns int
+    for i in range(tiles):
+        geometry = "{}x{}+{}+0".format(width, tot_height, i*width)
+        check_call(['convert', infile, '-crop', geometry,
+                    outfile_prefix + str(i) + '.' + ext])
+
+
+def main():
+    args = parse_args()
+    split(args.filename, args.num_tiles, args.outfile_prefix)
+
+
+if __name__ == '__main__':
+    main()

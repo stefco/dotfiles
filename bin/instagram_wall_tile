@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+
+"""
+Split an image into a 3x3 grid for display on an instagram wall. Name the files
+``<filename>-{0..8}.jpg`` corresponding to the order in which they should be
+posted to recreate the original image (i.e. bottom-right to top-left,
+column-major). Tiling will be based on height or width, whichever is smaller,
+and will start from the top-left corner; the result will be a square, so make
+sure the input is close to the intended square result to avoid unintended
+cropping.
+"""
+
+import re
+import os
+from argparse import ArgumentParser
+from subprocess import check_call, check_output
+
+GEOMETRY = "{width}x{height}+{horizontal_offset}+{vertical_offset}"
+
+
+def get_parser():
+    "CLI parser"
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("infile", help="Name of the input image.")
+    return parser
+
+
+def get_resolution(infile):
+    """Get the resolution of an image. Returns (width, height) in pixels."""
+    srch = re.search(r' (\d*)x(\d*) ',
+                     check_output(['identify', infile]).decode('utf-8'))
+    return int(srch.group(1)), int(srch.group(2))
+
+
+def tile(infile):
+    """
+    Split ``infile`` into JPEG images named ``{infile}-{0..8}.jpg`` ordered by
+    post-order to instagram.
+    """
+    outfile_base = os.path.splitext(infile)[0]
+    tot_width, tot_height = get_resolution(infile)
+    dim = min(tot_width, tot_height) // 3
+    for row in range(2, -1, -1):
+        for column in range(2, -1, -1):
+            geometry = GEOMETRY.format(
+                height=dim,
+                width=dim,
+                horizontal_offset=column*dim,
+                vertical_offset=row*dim,
+            )
+            check_call(['convert', infile, '-crop', geometry,
+                        '{}-{}.jpg'.format(outfile_base, 8-(3*row+column))])
+
+
+def main():
+    """
+    Split the image.
+    """
+    parser = get_parser()
+    args = parser.parse_args()
+    tile(args.infile)
+
+
+if __name__ == '__main__':
+    main()

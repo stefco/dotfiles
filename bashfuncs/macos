@@ -2,6 +2,9 @@
 # (c) Stefan Countryman 2017
 # some MacOS-specific crap. most of this breaks if you load in non-Mac.
 
+# add MacPorts libraries to default path
+export LIBRARY_PATH="$LIBRARY_PATH:/opt/local/lib/"
+
 # if there is a system matlab, alias it to `matlab`
 MATLAB="$(
     find /Applications -maxdepth 1 -iname '*matlab*' | sort -r | head -n 1
@@ -22,8 +25,16 @@ alias showhidden="defaults write com.apple.finder AppleShowAllFiles TRUE; killal
 
 # Get globus running
 export GLOBUS_LOCATION=/opt/ldg
+globus_init() {
+    if [[ $GLOBUS_INIT -ne 1 ]]; then
+        source ${GLOBUS_LOCATION}/etc/globus-user-env.sh && GLOBUS_INIT=1
+    fi
+}
 if [ -f ${GLOBUS_LOCATION}/etc/globus-user-env.sh ] ; then
-    . ${GLOBUS_LOCATION}/etc/globus-user-env.sh
+    alias gsissh="globus_init && 'gsissh'"
+    alias gsiscp="globus_init && 'gsiscp'"
+else
+    unset globus_init
 fi
 
 # Make "Save As..." the default for GUI apps, as it should be, rather than
@@ -32,14 +43,15 @@ defaults write -globalDomain NSUserKeyEquivalents -dict-add 'Save As...' '@$S'
 
 # turn on bash-completion
 if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
-    . /opt/local/etc/profile.d/bash_completion.sh
+    source /opt/local/etc/profile.d/bash_completion.sh
 fi
 
 # welcome message
-if [ "`scutil --get ComputerName`" = "Alexis Nelson’s MacBook Pro" ]; then
+COMPUTERNAME="`scutil --get ComputerName`"
+if [ "$COMPUTERNAME" = "Alexis Nelson’s MacBook Pro" ]; then
     cat ${DOTFILEDIR}/static/tachikoma-title.txt
-elif [ "`scutil --get ComputerName`" = "motoko" ]; then
-    cat ${DOTFILEDIR}/static/motoko-banner.txt
+elif [ "$COMPUTERNAME" = "motoko" ]; then
+    dotsource motoko
 else
     # a cryptic greeting from an old friend, if he is around...
     type -f 1>/dev/null 2>&1 fortune \

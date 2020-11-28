@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# import a bunch of git repositories on motoko2.
+
+pushd /Users/s/dev
+for dir in \
+    clay \
+    dotfiles \
+    emfollow-userguide \
+    friendsofshelly.github.io \
+    geco_data \
+    geco_docs \
+    gpstime \
+    instagram_collection_saver \
+    lscsoft-macports \
+    macports-ports \
+    monsterboygenerator \
+    multimessenger-pipeline \
+    ndscope \
+    ndselect \
+    stefco.github.io \
+    templates \
+; do
+    if [[ -d "$dir" ]]; then
+        pushd "$dir"
+        /opt/local/bin/git-stats-importer -e stefan.countryman@gmail.com
+        popd
+    fi
+done

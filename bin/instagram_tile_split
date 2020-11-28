@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+
+"""
+Split an image into square tiles for instagram. Allows you to post these files
+to form a tiled image on your instagram wall.
+"""
+
+import re
+import argparse
+from pathlib import Path
+from typing import Tuple, List, NamedTuple
+from subprocess import check_call, check_output
+
+
+class Geometry(NamedTuple):
+    """
+    Geometry of a square tile within a tile grid. String representation can be
+    fed to ImageMagick CLI utility ``convert``.
+    """
+    dims: int
+    x: int
+    y: int
+    x0: float
+    y0: float
+
+    def __str__(self):
+        return (f"{self.dims}x{self.dims}+{self.x0+self.dims*self.x}+"
+                f"{self.y0+self.dims*self.y}")
+
+
+def get_parser():
+    """CLI Parser."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    arg = parser.add_argument
+    arg("filename", help="The name of the image file to split.")
+    arg("width", type=int, choices=(1, 2, 3), help="Width in split tiles.")
+    arg("height", type=int, help="Height in split tiles.")
+    arg("-o", "--offset", metavar="OFFSET %", type=float, default=50, help="""
+        If one dimension needs to be cropped to accomodate the given tile size,
+        set the offset percentage from the left/top. For example, to start at the
+        top or left corner and cut out the missing part of the bottom/right,
+        set to ``0``. To start from the bottom/right corner and cut out the
+        top/left that doesn't fit, set to ``100``. To cut equally from both
+        sides, set to ``50``.""")
+    arg("-p", "--outfile-prefix", help="""
+        Prefix to put in front of output files. By default, just uses the input
+        filename (sans extension) and appends "-X-Y" (where X is the horizontal
+        position and Y is the vertical position in the overall tile grid).""")
+    return parser
+
+
+def get_resolution(infile):
+    """Get the resolution of an image. Returns [width, height] in pixels."""
+    srch = re.search(r' (\d*)x(\d*) ',
+                     check_output(['identify', str(infile)]).decode('utf-8'))
+    return [int(srch.group(i)) for i in (1, 2)]
+
+
+def tile_geometries(
+        img_dims: Tuple[int, int],
+        tile_dims: Tuple[int, int],
+        offset: float,
+) -> List[List[Geometry]]:
+    """
+    Take the pixel ``width, height`` of the image to be split as
+    ``img_dims`` and the number of square tiles to split it into,
+    ``tile_dims`` (also a ``width, height`` tuple but in tiles rather than
+    pixels). If tiling doesn't match the image perfectly, the longer dimension
+    will be cropped. Set the ``offset``, i.e. where the image should start as a
+    percentage fraction of the area to be cropped. Return nested ``row,
+    column`` lists of tile ``Geometry`` instances.
+    """
+    if min(tile_dims) < 1:
+        raise ValueError("Must have at least one tile width and height.")
+    if tile_dims[0] > 3:
+        raise ValueError("Max width for IG wall tiles is 3 images.")
+    dims = min(i//t for i, t in zip(img_dims, tile_dims))
+    x0, y0 = [int(offset/100*(i-dims*t)) for i, t in zip(img_dims, tile_dims)]
+    return [[Geometry(dims, x, y, x0, y0) for x in range(tile_dims[0])]
+            for y in range(tile_dims[1])]
+
+
+# pylint: disable=invalid-name
+def split(infile, width, height, offset, outfile_prefix=None):
+    """
+    Split image ``infile`` into tiled square images and write them to disk,
+    optionally using a different ``outfile_prefix`` for the tiled images.
+    """
+    infile = Path(infile)
+    geom = tile_geometries(get_resolution(infile), (width, height), offset)
+    outfile_prefix = (outfile_prefix or infile.stem)
+    for y in range(height):
+        for x in range(width):
+            check_call(['convert', str(infile), '-crop', str(geom[y][x]),
+                        f"{outfile_prefix}-{x}-{y}{infile.suffix}"])
+
+
+def main():
+    """Split images."""
+    parser = get_parser()
+    args = parser.parse_args()
+    try:
+        split(args.filename, args.width, args.height, args.offset,
+              args.outfile_prefix)
+    except ValueError:
+        parser.error(ValueError)
+
+
+if __name__ == "__main__":
+    main()

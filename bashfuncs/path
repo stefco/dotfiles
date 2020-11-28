@@ -18,3 +18,4 @@ path () {
     sed $'s/:/\\\n  /g' <<<"$PATH"
 }
 
+alias pathedit='vim -o ~/dev/dotfiles/{bin/pathsorter,bashfuncs/path,bashfuncs/pathinit}'

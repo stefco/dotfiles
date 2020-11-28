@@ -3,11 +3,13 @@
 ########################################################################
 
 # keep track of history for longer, please
-export HISTFILESIZE=10000
-export HISTSIZE=10000
+export HISTFILESIZE=100000
+export HISTSIZE=100000
 
 # configuration file home
 export XDG_CONFIG_HOME=~/".config"
+export XDG_DATA_HOME=~/".local/share"
+export XDG_CACHE_HOME=~/".cache"
 
 # force ipython to look in ~/.config
 export IPYTHONDIR="~/.config/ipython"
@@ -20,8 +22,11 @@ export LSCOLORS=Exfxcxdxbxegedabagacad
 # tell GPG which TTY to use
 export GPG_TTY=$(tty)
 
-## vi mode
+# vi mode
 set -o vi
+
+# fix italics for tmux
+export TERM=screen-256color
 
 ########################################################################
 # DOTFILE DIR CONFIG
@@ -87,9 +92,11 @@ record_alias_source () {
 dotsource () {
     # function for sourcing bash code from dotfile directory
     for arg in "$@"; do
-        source "${DOTFILEBASHSRC}"/"$arg"
-        record_func_source "${DOTFILEBASHSRC}"/"$arg"
-        record_alias_source "${DOTFILEBASHSRC}"/"$arg"
+        local script="${DOTFILEBASHSRC}"/"${arg}"
+        # echo "Timing ${script}"
+        source "${script}"
+        record_func_source "${script}"
+        record_alias_source "${script}"
     done
 }
 
@@ -135,7 +142,7 @@ dotsource aliases
 dotsource promptline
 
 # load q console settings for kdb+
-dotsource qconfig
+# dotsource qconfig
 
 # define simple functions (their names are the same as the source files)
 dotsource \
@@ -147,9 +154,8 @@ dotsource \
     imap \
     colorgrid \
     prepend_date \
-    instagram_tools \
-    tun \
-;
+    # instagram_tools \
+    # tun \
 
 # load UWM-specific initialization scripts if on UWM
 hostname="$(hostname -f)"

@@ -16,9 +16,9 @@ function parse_git_branch() {
     if [ ! "${BRANCH}" == "" ]
     then
         # STAT=`parse_git_dirty`
-        # echo "  ${BRANCH}${STAT} "
+        # echo " ᚠ ${BRANCH}${STAT} "
         # echo "  ${BRANCH} "
-        echo "  ${BRANCH} "
+        echo " ᚠ ${BRANCH} "
     else
         # end it with the same color as the rest of the prompt line
         echo ''
@@ -30,7 +30,7 @@ function no_branch() {
     BRANCH_NOW="`parse_git_branch`"
     printf '%s' "${BRANCH_NOW}" >~/.prompt_branch.${PID}
     if [ "${BRANCH_NOW}" == "" ]; then
-        echo ''
+        echo ''
     else
         echo ''
     fi
@@ -45,7 +45,7 @@ function yes_branch() {
     if [ "${BRANCH_NOW}" == "" ]; then
         echo ''
     else
-        echo ''
+        echo ''
     fi
     rm ~/.prompt_branch.${PID}
 }
@@ -103,17 +103,17 @@ pwd_shortened () {
 # set the actual command prompt variable based on the host
 if [[ $OSTYPE == darwin* ]]; then
     if [ "`scutil --get ComputerName`" = "Alexis Nelson’s MacBook Pro" ]; then
-        export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[41m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[31;47m\]\[\e[m\]\[\e[m\]\[\e[30;47m\] \W `parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
+        export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[41m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[31;47m\]\[\e[m\]\[\e[m\]\[\e[30;47m\] \W `parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
     elif [ "`scutil --get ComputerName`" = "motoko" ]; then
-        export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[44m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[34;47m\]\[\e[m\]\[\e[m\]\[\e[30;47m\] \W `parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
+        export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[44m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[34;47m\]\[\e[m\]\[\e[m\]\[\e[30;47m\] \W `parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
     elif [ $(hostname) == 'Stefans-iMac.local' ]; then
-        export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[44m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[34;47m\]\[\e[m\]\[\e[m\]\[\e[30;47m\] \W \[\e[m\]\[\e[37m\]\[\e[m\] '
+        export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[44m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[34;47m\]\[\e[m\]\[\e[m\]\[\e[30;47m\] \W \[\e[m\]\[\e[37m\]\[\e[m\] '
     fi
 elif [ $(hostname)z == 'gwhen.com'z ]; then
-    export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \W \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
+    export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \W \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
 # UWM LIGO Datagrid computers
 elif [ $(hostname)z == 'pcdev3'z ]; then
-    export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \W \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
+    export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \W \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
 elif [ $(hostname)z == 'pcdev2'z ]; then
     export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \W \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
 elif [ $(hostname)z == 'pcdev1'z ]; then

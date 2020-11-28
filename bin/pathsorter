@@ -10,24 +10,47 @@ pathchoices = {
         "/opt/local/sbin",
         "/opt/local/libexec/gnubin",
     ],
+    "pg11": "/Library/PostgreSQL/11/bin/",
     "py34": "/opt/local/Library/Frameworks/Python.framework/Versions/3.4/bin",
     "py35": "/opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin",
     "py27": "/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin",
     "py36": "/opt/local/Library/Frameworks/Python.framework/Versions/3.6/bin",
+    "py37": "/opt/local/Library/Frameworks/Python.framework/Versions/3.7/bin",
     "pyuser": os.path.expanduser("~/.local/bin"),
-    "conda": os.path.expanduser("~/anaconda2/bin"),
+    "dyalog": [
+        "/Applications/Dyalog-18.0.app/Contents/Resources/Dyalog",
+        "/Applications/Dyalog-17.1.app/Contents/Resources/Dyalog",
+    ],
+    "py37usermac": os.path.expanduser("~/Library/Python/3.7/bin"),
+    "py36usermac": os.path.expanduser("~/Library/Python/3.6/bin"),
+    "py35usermac": os.path.expanduser("~/Library/Python/3.5/bin"),
+    "py34usermac": os.path.expanduser("~/Library/Python/3.4/bin"),
+    "py27usermac": os.path.expanduser("~/Library/Python/2.7/bin"),
+    # "conda2": [
+    #     os.path.expanduser("~/anaconda2/bin"),
+    #     os.path.expanduser("~/miniconda2/bin"),
+    # ],
+    # "conda3": [
+    #     os.path.expanduser("~/anaconda3/bin"),
+    #     os.path.expanduser("~/miniconda3/bin"),
+    # ],
+    "llama": "/opt/anaconda/bin",
     "intel": os.path.expanduser("~/anaconda2/bin"),
+    "mactex": "/Library/TeX/Distributions/Programs/texbin",
+    "macvim": "/Applications/MacPorts/MacVim.app/Contents/bin",
     "user": [
         os.path.expanduser("~/bin"),
         os.path.expanduser("~/dev/dotfiles/linkfiles/.iterm2"),
     ],
+    "cargo": os.path.expanduser("~/.cargo/bin"),
     "sys": [
         "/usr/bin",
         "/usr/local/bin",
         "/bin",
         "/usr/sbin",
         "/sbin"
-    ]
+    ],
+    "drawterm": "/Applications/drawterm.app",
 }
 
 def errexit():
@@ -64,4 +87,4 @@ for pathchoice in sys.argv[-1:0:-1]:
     path = newpath
 
 # print the final path variable
-print ":".join(newpath)
+print(":".join(newpath))
