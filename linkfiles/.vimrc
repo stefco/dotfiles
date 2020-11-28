@@ -173,7 +173,33 @@ autocmd FileType make set noexpandtab
 
 " force .md to be interpreted as Markdown, include code syntax
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+let g:markdown_fenced_languages = [
+    \'apl',
+    \'bash=sh',
+    \'c',
+    \'crontab',
+    \'css',
+    \'fortran',
+    \'gitcommit',
+    \'haskell',
+    \'html',
+    \'htmldjango',
+    \'json',
+    \'mailcap',
+    \'make',
+    \'markdown',
+    \'matlab',
+    \'muttrc',
+    \'python',
+    \'rst',
+    \'sshconfig',
+    \'taskedit',
+    \'tex',
+    \'tmux',
+    \'typescript',
+    \'vim',
+    \'yaml',
+    \]
 let g:markdown_syntax_conceal = 0
 let g:markdown_minlines = 100
 
