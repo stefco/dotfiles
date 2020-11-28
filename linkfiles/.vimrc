@@ -22,14 +22,13 @@ Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'ryanoasis/vim-devicons'
 Plug 'mileszs/ack.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'vim-scripts/GrepCommands'
 " let me not use this for now and instead see how vim-dispatch treats me
 " Plug 'janko-m/vim-test'
-Plug 'sjl/gundo.vim'
+Plug 'mbbill/undotree'
 Plug 'tpope/vim-commentary'
 " smart date incrementing
 Plug 'tpope/vim-speeddating'
@@ -715,10 +714,10 @@ command! Gresolvelink call MyGitResolveSymlink()
 " uncomment the line below to reolve symlinks at start
 "autocmd BufReadPost * call MyGitResolveSymlink(expand('<afile>'))
 
-"=======================================================================
+"==============================================================================
 " GUNDO
-"=======================================================================
-nnoremap <Leader>u :GundoToggle<CR>
+"==============================================================================
+nnoremap <Leader>u :UndotreeToggle<CR>
 
 "=======================================================================
 " PREVIEWING THINGS
