@@ -110,13 +110,13 @@ font:
     #   - (Linux) monospace
     #   - (Windows) Consolas
     # family: Iosevka Nerd Font Mono
-    #family: GohuFont
-    family: APL385 Unicode
+    family: GohuFont
+    # family: APL385 Unicode
 
     # The `style` can be specified to pick a specific face.
     # style: Extralight
     #style: Medium
-    style: Regular
+    # style: Regular
 
   # Bold font face
   bold:
@@ -182,7 +182,10 @@ draw_bold_text_with_bright_colors: true
 #---------------------------------------------------------------------------
 colors:
   primary:
+    # background: '0xffffff'
     background: '0x2f4344'
+    # background: '0x596d6e'
+    # foreground: '0x000000'
     foreground: '0xdbebdc'
 
     cursor:
