@@ -10,6 +10,8 @@
 # cat ${DOTFILEDIR}/static/kong.txt
 cat ${DOTFILEDIR}/static/misato/small-misato.txt
 
+dotsource fulab
+
 # test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
 condas() {

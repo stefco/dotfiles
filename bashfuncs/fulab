@@ -1,0 +1,17 @@
+#!/bin/bash
+# (c) Stefan Countryman, 2020
+# Open a tunnel to 
+
+fulab () {
+    local tgt="${1:-fu}"
+    echo "Connecting to ${tgt}..."
+    ssh -tL 8889:127.0.0.1:8889 "${tgt}" "
+        bash -lc '
+            conda activate llama-38-dev \
+                && jupyter lab --port 8889 --ip 0.0.0.0
+        '
+    " | tee >(
+        sed -n '/^ *or http:\/\/127\.0\.0\.1:8889\/\?token=.*$/{s/^ *or //p;q;}' \
+            | xargs open
+    )
+}
