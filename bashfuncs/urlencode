@@ -1,0 +1,12 @@
+#!/bin/bash
+# url encode and decode from stdin
+alias urlencode="python2 -c 'import urllib, sys; sys.stdout.write(urllib.quote(sys.stdin.read()))'"
+alias urldecode="python2 -c 'import urllib, sys; sys.stdout.write(urllib.unquote(sys.stdin.read()))'"
+alias htmlencode="python3 -c 'import sys; sys.stdout.write(sys.stdin.read().encode(\"ascii\", \"xmlcharrefreplace\").decode(\"ascii\"))'"
+alias queryencode="python2 -c 'import urllib, sys; sys.stdout.write(urllib.quote_plus(sys.stdin.read()))'"
+alias querydecode="python2 -c 'import urllib, sys; sys.stdout.write(urllib.unquote_plus(sys.stdin.read()))'"
+alias urlrename='for f in *; do mv "$f" $(echo $f | urlencode); done'
+alias urlunname='for f in *; do mv "$f" $(echo $f | urldecode); done'
+alias queryrename='for f in *; do mv "$f" $(echo $f | queryencode); done'
+alias queryunname='for f in *; do mv "$f" $(echo $f | querydecode); done'
+

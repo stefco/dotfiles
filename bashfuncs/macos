@@ -2,6 +2,12 @@
 # (c) Stefan Countryman 2017
 # some MacOS-specific crap. most of this breaks if you load in non-Mac.
 
+# two-sided print
+alias lpdub="lp -o sides=two-sided-long-edge"
+
+# get battry info
+alias batt='pmset -g batt'
+
 # add MacPorts libraries to default path
 export LIBRARY_PATH="$LIBRARY_PATH:/opt/local/lib/"
 

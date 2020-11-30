@@ -118,4 +118,6 @@ elif [ $(hostname)z == 'pcdev2'z ]; then
     export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \W \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
 elif [ $(hostname)z == 'pcdev1'z ]; then
     export PS1='\[\e[37;45m\]`print_bad_exit_status`\[\e[m\]\[\e[31;47m\] ${#NAVIGATION_BWD[@]}:${#NAVIGATION_FWD[@]} \[\e[m\]\[\e[37m\]\[\e[m\]\[\e[m\]\[\e[3;37m\] \W \[\e[34m\]`parse_git_branch`\[\e[m\]\[\e[37m\]\[\e[m\] '
+elif [ $(hostname)z == 'Fuchikoma'z ]; then
+    export PS1="[\A]\[\e[31m\]\u\[\e[m\]\[\e[31m\]@\[\e[m\]\[\e[31m\]\h\[\e[m\]:\[\e[35m\]\w\[\e[m\]\[\e[32m\]\`parse_git_branch\`\[\e[m\]\[\e[36m\]\$\[\e[m\] "
 fi

@@ -100,6 +100,11 @@ dotsource () {
     done
 }
 
+dotlist () {
+    # list bash code in bashfuncs dotfile directory
+    ls ~/dev/dotfiles/bashfuncs
+}
+
 record_func_source
 record_alias_source
 record_func_source "${DOTFILEBASHRC}" dotsource record_func_source
@@ -115,6 +120,9 @@ if [[ $OSTYPE == darwin* ]]; then
     dotsource emacsg opent
 elif [[ $OSTYPE = linux* ]]; then
     dotsource linux
+    if [[ -v WSL_DISTRO_NAME ]]; then
+        dotsource wsl
+    fi
 fi
 
 #check if this is an ssh session
@@ -146,14 +154,14 @@ dotsource promptline
 
 # define simple functions (their names are the same as the source files)
 dotsource \
-    nohupw \
     path \
     cpln \
     vimex \
-    cp-last-screen \
-    imap \
-    colorgrid \
-    prepend_date \
+    # nohupw \
+    # cp-last-screen \
+    # imap \
+    # colorgrid \
+    # prepend_date \
     # instagram_tools \
     # tun \
 
