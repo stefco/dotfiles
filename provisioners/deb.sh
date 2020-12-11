@@ -15,6 +15,8 @@ logdate
 apt-get -y update >>$log 2>>$errlog
 logdate
 apt-get -yf install >>$log 2>>$errlog\
+        cargo \
+        software-properties-common \
         texlive \
         psmisc \
         procps \
@@ -68,3 +70,10 @@ echo 'export PATH=~/miniconda3/bin:"$PATH"' >/etc/profile.d/conda.sh
 ~/miniconda3/bin/conda clean -y --all
 
 echo "Done."
+
+logdate
+echo "Installing GitHub CLI..."
+apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+apt-add-repository https://cli.github.com/packages
+apt update
+apt install gh

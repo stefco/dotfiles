@@ -1,1 +1,1 @@
-cmd /c mklink/mnt/c/Users/Stefan/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState C:\Users\Stefan\dev\dotfiles\linkfiles\.winterm
+cmd /c 'mklink C:\Users\Stefan\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json \\wsl$\debian\home\s\dev\dotfiles\linkfiles\.winterm.json'
