@@ -428,7 +428,7 @@ working_directory: None
 #
 # Alacritty will fall back to the WinPTY automatically if the ConPTY
 # backend cannot be initialized.
-enable_experimental_conpty_backend: false
+enable_experimental_conpty_backend: true
 
 # Send ESC (\x1b) before characters when alt is pressed.
 alt_send_esc: true
@@ -741,12 +741,12 @@ key_bindings:
 #-----------------------------------------------------------------------------
 # shortcuts for common commands using contents of clipboard
 #-----------------------------------------------------------------------------
-  - { key: E,         mods: Command,        chars: "\x1b0Divim `pbpaste`\x0a" }
-  - { key: G,         mods: Command,        chars: "\x1b0Digit diff\x0a" }
-  - { key: G,         mods: Command|Shift,  chars: "\x1b0Digit diff `pbpaste`\x0a" }
-  - { key: S,         mods: Command,        chars: "\x1b0Digit status\x0a" }
-  - { key: L,         mods: Command|Shift,  chars: "\x1b0Digit lg2\x0a" }
-  - { key: P,         mods: Command|Shift,  chars: "\x1b0Dipygmentize `pbpaste`\x0a" }
-  - { key: P,         mods: Command,        chars: "\x1b0Dicat `pbpaste`\x0a" }
-  - { key: U,         mods: Command,        chars: "\x1b0Digit push && git push --tags\x0a" }
-  - { key: U,         mods: Command|Shift,  chars: "\x1b0Digit pull\x0a" }
+  # - { key: E,         mods: Command,        chars: "\x1b0Divim `pbpaste`\x0a" }
+  # - { key: G,         mods: Command,        chars: "\x1b0Digit diff\x0a" }
+  # - { key: G,         mods: Command|Shift,  chars: "\x1b0Digit diff `pbpaste`\x0a" }
+  # - { key: S,         mods: Command,        chars: "\x1b0Digit status\x0a" }
+  # - { key: L,         mods: Command|Shift,  chars: "\x1b0Digit lg2\x0a" }
+  # - { key: P,         mods: Command|Shift,  chars: "\x1b0Dipygmentize `pbpaste`\x0a" }
+  # - { key: P,         mods: Command,        chars: "\x1b0Dicat `pbpaste`\x0a" }
+  # - { key: U,         mods: Command,        chars: "\x1b0Digit push && git push --tags\x0a" }
+  # - { key: U,         mods: Command|Shift,  chars: "\x1b0Digit pull\x0a" }

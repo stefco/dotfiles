@@ -28,3 +28,6 @@
 [submodule "submodules/pxltrm"]
 	path = submodules/pxltrm
 	url = https://github.com/dylanaraps/pxltrm.git
+[submodule "submodules/win32yank"]
+	path = submodules/win32yank
+	url = https://github.com/equalsraf/win32yank.git
