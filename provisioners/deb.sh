@@ -15,6 +15,7 @@ logdate
 apt-get -y update >>$log 2>>$errlog
 logdate
 apt-get -yf install >>$log 2>>$errlog\
+        flatpak \
         cargo \
         software-properties-common \
         texlive \

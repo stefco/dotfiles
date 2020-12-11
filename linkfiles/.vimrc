@@ -7,6 +7,7 @@ set encoding=utf8
 
 " vim-plug plugins
 call plug#begin('~/dev/dotfiles/linkfiles/.vim/bundle')
+Plug 'pprovost/vim-ps1'
 Plug 'tikhomirov/vim-glsl'
 Plug 'https://gitlab.com/n9n/vim-apl'
 Plug 'rust-lang/rust.vim'
