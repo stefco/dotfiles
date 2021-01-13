@@ -6,6 +6,7 @@
 if [ "`hostname`" = "Fuchikoma" ]; then
     alias pwsh="/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
     alias docker="/mnt/c/ProgramData/DockerDesktop/version-bin/docker.exe"
+    alias win32yank="/mnt/c/Users/Stefan/.cargo/bin/win32yank.exe"
     ###############################################################################
     # CONDA
     ###############################################################################
