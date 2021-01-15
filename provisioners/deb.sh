@@ -15,6 +15,15 @@ logdate
 apt-get -y update >>$log 2>>$errlog
 logdate
 apt-get -yf install >>$log 2>>$errlog\
+        libtool \
+        libtool-bin \
+        gettext \
+        automake \
+        unzip \
+        cmake \
+        pkg-config \
+        nodejs \
+        npm \
         flatpak \
         cargo \
         software-properties-common \
