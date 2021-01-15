@@ -33,6 +33,8 @@
             "fontFace": "APL385 Unicode",
             "cursorShape": "filledBox",
             "padding" : "0, 0, 0, 0",
+            // "useAcrylic": true,
+            // "acrylicOpacity": 0.8,
             // "experimental.retroTerminalEffect": true
         },
         "list":
@@ -61,7 +63,8 @@
                 "guid": "{58ad8b0c-3ef8-5f4d-bc6f-13e4c00f2530}",
                 "hidden": false,
                 "name": "Debian",
-                "source": "Windows.Terminal.Wsl"
+                "source": "Windows.Terminal.Wsl",
+                "startingDirectory": "//wsl$/debian/home/s"
             },
             {
                 "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
