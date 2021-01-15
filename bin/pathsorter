@@ -44,8 +44,8 @@ pathchoices = {
     ],
     "cargo": os.path.expanduser("~/.cargo/bin"),
     "sys": [
-        "/usr/bin",
         "/usr/local/bin",
+        "/usr/bin",
         "/bin",
         "/usr/sbin",
         "/sbin"
