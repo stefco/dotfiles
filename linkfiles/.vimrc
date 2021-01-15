@@ -115,20 +115,28 @@ function! ActivateTextWidth()
     " local exceptions for the following filetypes
     if &filetype == 'crontab'
         setlocal textwidth=0
+        set nowrap
     elseif &filetype == 'sh'
         setlocal textwidth=0
+        set nowrap
     elseif &filetype == 'tex'
         setlocal textwidth=0
+        set nowrap
     elseif &filetype == 'taskedit'
         setlocal textwidth=0
+        set nowrap
     elseif &filetype == 'tmux'
         setlocal textwidth=0
+        set nowrap
     elseif &filetype == 'yaml.docker-compose'
         setlocal textwidth=0
+        set nowrap
     elseif &filetype == 'yaml'
         setlocal textwidth=0
+        set nowrap
     elseif &filetype == 'Dockerfile'
         setlocal textwidth=0
+        set nowrap
     endif
 endfunction
 
