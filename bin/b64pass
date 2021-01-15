@@ -8,12 +8,27 @@ letters) using cryptographically secure random bits.
 
 from sys import argv, stderr
 from os import urandom
+from random import randrange
 from base64 import b64encode as b64
 
-if len(argv) != 2:
-    stderr.write("Error: must provide exactly one arg (number of character "
-                 "in string)\n")
+if len(argv) not in (2, 3):
+    stderr.write(
+"""Error: must at least one arg (number of characters in string). Optionally
+provide a second argument with characters to mix into the random string (to
+satisfy moronic password character set requirements).
+""")
     exit(1)
 
-plen = int(argv[1])
-print(b64(urandom(plen*6//8+1))[:plen].decode())
+mixin = argv[2] if len(argv) == 3 else ""
+rlen = int(argv[1])
+plen = rlen-len(mixin)
+if rlen < 0:
+    stderr.write("Error: cannot have negative password length.\n")
+    exit(2)
+if plen < 0:
+    stderr.write("Error: more mixins (%s) than can fit in output.\n"%mixin)
+    exit(3)
+pw = list(b64(urandom(plen*6//8+1))[:plen].decode())
+for i, c in enumerate(mixin):
+    pw.insert(randrange(0, plen+i), c)
+print(''.join(pw))
