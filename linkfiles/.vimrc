@@ -195,17 +195,14 @@ let g:markdown_fenced_languages = [
     \'json',
     \'mailcap',
     \'make',
-    \'markdown',
     \'matlab',
     \'muttrc',
     \'python',
-    \'rst',
     \'sshconfig',
     \'taskedit',
     \'tex',
     \'tmux',
     \'typescript',
-    \'vim',
     \'yaml',
     \]
 let g:markdown_syntax_conceal = 0
