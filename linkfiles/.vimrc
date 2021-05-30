@@ -107,6 +107,12 @@ syntax on
 set list
 set listchars=tab:▸·
 
+" diff this file with the currently saved version; useful if both vim buffer
+" and disk version have changed since last load
+" https://vi.stackexchange.com/a/7533/14398
+command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+    \ | wincmd p | diffthis
+
 " define a function for setting textwidth. this is necessary to enable the
 " ToggleInteractive function. Used for setting hard word wraps..
 function! ActivateTextWidth()
@@ -135,6 +141,9 @@ function! ActivateTextWidth()
         setlocal textwidth=0
         set nowrap
     elseif &filetype == 'Dockerfile'
+        setlocal textwidth=0
+        set nowrap
+    elseif &filetype == 'bib'
         setlocal textwidth=0
         set nowrap
     endif
@@ -922,7 +931,7 @@ map <Leader>frgg <Leader>frgc<Bs><CR>
 map <Leader>feR :source ~/.vimrc<CR>
 
 " edit .vimrc
-map <Leader>fed :e ~/.vimrc<CR>
+map <Leader>fed :e ~/dev/dotfiles/linkfiles/.vimrc<CR>
 
 "---------------------------------------
 " FILE-RELATED BINDINGS
