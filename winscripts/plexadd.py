@@ -58,14 +58,3 @@ def add_tv():
 
 if __name__ == "__main__":
     add_tv()
-#root = Path('F:/')
-#[src] = (root/'torrents'/'Anime').glob("Gunsmith Cats*")
-#[*src.iterdir()]
-#dst = root/'media-library'/'tv'/"Gunsmith Cats"
-#dst.mkdir(exist_ok=True)
-#reg = re.compile(r".* - 0*(\d+).*\.([^.]*)")
-#[reg.match(s.name) for s in src.iterdir()]
-#links = [(s, dst/reg.sub(lambda m: f"Gunsmith Cats S01E{int(m[1]):02d}.{m[2]}", s.name)) for s in src.iterdir() if reg.match(s.name)]
-#links
-#for s, d in links: s.link_to(d)
-#
