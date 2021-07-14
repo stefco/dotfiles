@@ -22,7 +22,9 @@ def main(infile):
         .askstring("Movie Name", f"Selected: {src}.\n\nName of movie (and year in parens):",
                    initialvalue=src.name, parent=tkr) or sys.exit()
     ext = simpledialog\
-        .askstring("Extension", "File extension:",
+        .askstring("Extension",
+                   "File extension (If you want to specify a variant, do so here by prepending "
+                   "it to the extension, e.g. ` - [OldVersion].mp4`):",
                    initialvalue=src.suffix, parent=tkr)
     out = dst/(dst.name+ext)
     if not messagebox.askokcancel("Proceed?", f"Ready to link {src.name} -> {out}. Proceed?", parent=tkr):
