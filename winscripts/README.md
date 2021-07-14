@@ -5,7 +5,8 @@ Scripts for windows, duh.
 ## `plexadd.py`
 
 Link files into plex directories for scanning.
-[Edit](https://www.youtube.com/watch?v=oNBS162khf8) the
+[Edit](https://www.youtube.com/watch?v=oNBS162khf8)
+[the](https://thegeekpage.com/add-any-program-to-right-click-context-menu/)
 [registry](https://www.youtube.com/watch?v=jS2LuG1p8Vw)
 (using `regedit` as administrator), adding a new key
 under `HKEY_CLASSES_ROOT\Directory\Background\shell` by right-clicking it
