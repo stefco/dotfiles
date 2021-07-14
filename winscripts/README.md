@@ -19,7 +19,10 @@ icon you want to appear in the context menu.
 Create a new key under this one called `command`, which will specify the
 actual command associated with the action as the `Default` value.
 It will be something like
-`C:\Python39\python.exe "C:\Users\Stefan\dev\dotfiles\winscripts\plexadd.py"`.
+`C:\Python39\pythonw.exe "C:\Users\Stefan\dev\dotfiles\winscripts\plexadd.py"`
+(note that we use `pythonw` to
+[hide the console](https://stackoverflow.com/questions/764631/how-to-hide-console-window-in-python)
+on Windows).
 
 ## `plexmovie.py`
 
