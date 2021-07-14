@@ -19,7 +19,7 @@ def add_tv():
             "\n\nAccept?"))
         if ok is None:
             return
-    root = Path(src.parts[0])
+    root = Path(src.anchor)
     dst = root/'media-library'/'tv'/simpledialog.askstring("Show Name", "Name of show (for plex)?", parent=tkr)
     in_pat = r".* - 0*(\d+).*\.([^.]*)"
     out_func = r'lambda m: f"'+dst.name+' S01E{int(m[1]):02d}.{m[2]}"'
@@ -53,6 +53,7 @@ def add_tv():
     dst.mkdir(exist_ok=True)
     for s, d in links:
         s.link_to(d)
+    messagebox.showinfo("Success", "Success.")
     #messagebox.showwarning("NOOP", "Still testing, no action taken.")
 
 

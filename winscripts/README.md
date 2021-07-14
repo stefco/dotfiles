@@ -19,3 +19,7 @@ Create a new key under this one called `command`, which will specify the
 actual command associated with the action as the `Default` value.
 It will be something like
 `C:\Python39\python.exe "C:\Users\Stefan\dev\dotfiles\winscripts\plexadd.py"`.
+
+## `plexmovie.py`
+
+Same thing as `plexadd.py`, but under `HKEY_CLASSES_ROOT\*\shell` and pointing to `plexmovie.py` instead (duh) and with `"%1"` at the end to pass the path in.
