@@ -15,9 +15,10 @@ def get_parser():
 
 def main(infile):
     tkr = Tk()
+    tkr.withdraw()
     src = Path(infile)
     root = Path(src.anchor)
-    dst = root/'media-library'/'tv'/simpledialog\
+    dst = root/'media-library'/'movies'/simpledialog\
         .askstring("Movie Name", f"Selected: {src}.\n\nName of movie (and year in parens):",
                    initialvalue=src.name, parent=tkr) or sys.exit()
     ext = simpledialog\

@@ -8,6 +8,7 @@ from tkinter import messagebox, filedialog, simpledialog, Tk
 # https://runestone.academy/runestone/books/published/thinkcspy/GUIandEventDrivenProgramming/02_standard_dialog_boxes.html
 def add_tv():
     tkr = Tk()
+    tkr.withdraw()
     ok = False
     while not ok:
         src_raw = filedialog.askdirectory(initialdir=".", parent=tkr)
