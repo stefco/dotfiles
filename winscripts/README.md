@@ -1,6 +1,7 @@
 # Winscripts
 
 Scripts for windows, duh.
+See also `gamemods` repo for scripts and utils relating to modding games.
 
 ## `plexadd.py`
 

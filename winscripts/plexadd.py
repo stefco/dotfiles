@@ -22,6 +22,7 @@ def add_tv():
             return
     root = Path(src.anchor)
     success = False
+    filt_raw = r"lambda m: True"
     in_pat = r".* - 0*(\d+).*\.([^.]*)"
     out_func = None
     name = ''
@@ -43,6 +44,23 @@ def add_tv():
                     "Contents of "+str(src)+":\n\n"+"\n".join(p.name for p in src.iterdir()))
         ok = False
         while not ok:
+            filt_raw = simpledialog.askstring("Filter", "Filter function for files?", parent=tkr,
+                                          initialvalue=filt_raw)
+            try:
+                filt = eval(filt_raw)
+            except SyntaxError:
+                if messagebox.askretrycancel("Syntax Error", "Syntax Error. Retry?"):
+                    continue
+                else:
+                    return
+            ok = messagebox.askyesnocancel("Filtered files", "Filtered files:\n\n" +
+                                           "\n".join(s.name for s in src.iterdir()
+                                                     if (lambda m: m and filt(m))(reg.match(s.name))) +
+                                           "\n\nContinue?")
+            if ok is None:
+                return
+        ok = False
+        while not ok:
             out_func = simpledialog.askstring("Output name lambda", "Function literal for output filename?",
                                               parent=tkr, initialvalue=out_func)
             try:
@@ -52,7 +70,7 @@ def add_tv():
                     continue
                 else:
                     return
-            links = [(s, dst/reg.sub(func, s.name)) for s in src.iterdir() if reg.match(s.name)]
+            links = [(s, dst/reg.sub(func, s.name)) for s in src.iterdir() if (lambda m: m and filt(m))(reg.match(s.name))]
             ok = messagebox.askyesnocancel("Accept Links?", "\n".join(f"{s.name} -> {d}" for s, d in links) +
                                            "\n\nACCEPT AND PROCEED?")
             if ok is None:
