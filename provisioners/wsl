@@ -19,3 +19,14 @@ git clone git@github.com:stefco/dotfiles.git
 # build & install win32yank from source
 cd ~/dev/dotfiles/submodules/win32yank
 cargo install
+
+# TODO install chocolatey
+
+# install neovim (pre-release version)
+choco install neovim --pre
+mkdir ~\AppData\Local\nvim
+cmd /c 'mklink init.vim ..\..\..\dev\dotfiles\linkfiles\.vimrc'
+
+# install vim plug (https://github.com/junegunn/vim-plug#windows-powershell)
+iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
+    ni $HOME/AppData/Local/nvim/autoload/plug.vim -Force

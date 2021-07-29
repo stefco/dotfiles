@@ -276,7 +276,8 @@
         { "command": { "action": "sendInput", "input": "\u0002\u006e" },             "keys": "alt+]+shift" },
         { "command": { "action": "sendInput", "input": "\u001b0Diback\u000a" },      "keys": "alt+[" },
         { "command": { "action": "sendInput", "input": "\u001b0Difwd\u000a" },       "keys": "alt+]" },
-        { "command": { "action": "sendInput", "input": "\u0002[" },                  "keys": "shift+escape" }
+        { "command": { "action": "sendInput", "input": "\u0002[" },                  "keys": "shift+escape" },
+        { "command": { "action": "sendInput", "input": "\u0002," },                  "keys": "alt+i" }
         // { "command": { "action": "sendInput", "input": "\u0002\u0048" }, "keys": "alt+Left" },
         // { "command": { "action": "sendInput", "input": "\u0002\u004a" }, "keys": "alt+Down" },
         // { "command": { "action": "sendInput", "input": "\u0002\u004b" }, "keys": "alt+Up" },
