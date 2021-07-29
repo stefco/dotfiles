@@ -5,9 +5,9 @@ path () {
     # actually set the new path; requires pathsorter executable
     newpath="$(pathsorter "$@")" && export PATH="$newpath"
     # kill existing virtualenv
-    if [[ "$CONDA_DEFAULT_ENV" != "" ]]; then
-        source deactivate
-    fi
+    #if [[ "$CONDA_DEFAULT_ENV" != "" ]]; then
+    #    source deactivate
+    #fi
     # if the path choice requires a virtualenv, activate that
     for pick in "$@"; do
         case "$pick" in
