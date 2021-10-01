@@ -1,0 +1,110 @@
+#!/usr/bin/env python
+import re, os, sys
+from subprocess import check_output, check_call, CalledProcessError
+import platform
+from argparse import ArgumentParser
+from getpass import getpass
+
+RANGES = re.compile("^([0-9]*)-([0-9]*)$")
+PAGE = re.compile("^([0-9]*)$")
+# TODO check this name
+PRINTER_NAME = "HP_Laserjet_P2035N"
+
+
+def get_pages(page_str):
+    res = []
+    for r in map(str.strip, page_str.split(",")):
+        m = RANGES.match(r)
+        if m:
+            for p in range(int(m[1]), int(m[2])+1):
+                res.append(p)
+            continue
+        m = PAGE.match(r)
+        if m:
+            res.append(int(m[1]))
+            continue
+        raise ValueError("Unrecognized subsequence: "+r)
+    uniq = sorted(set(res))
+    if uniq != res:
+        raise ValueError("Specify pages once each, in print order.")
+    return res
+
+
+def page_count(path):
+    if platform.system() == "Darwin":
+        return int(check_output(["mdls", "-name",
+                                 "kMDItemNumberOfPages", "-raw", path]))
+    raise NotImplementedError("Not implemented for current OS.")
+
+
+def interleave_pages(pages):
+    return pages[::2], pages[1::2]
+
+
+def set_tray_manual(manual):
+    # TODO check these options
+    # TODO rm echo
+    args = ["lpoptions", "-d", PRINTER_NAME, "-o",
+            "media="+("Manual Tray1" if manual else "Tray2")]
+    print(args)
+    #check_call(*args)
+
+
+def print_pages(path, pages, opts=()):
+    # TODO rm echo
+    args = ["lp", "-P", ",".join(map(str, pages)), "-d",
+            PRINTER_NAME]+list(opts)
+    print(args)
+    #check_call(*args)
+
+
+def get_parser():
+    parser = ArgumentParser(description="Print two-sided to HP p2035n.")
+    parser.add_argument("file", help="Path to the PDF to be printed.")
+    parser.add_argument("-p", "--pages", help="""Pages to print. Specify this
+        as comma-separated non-overlapping ranges in order, e.g. `3`, `3-10`,
+        `4,6-11`. If not provided, print all pages.""")
+    return parser
+
+
+def main():
+    parser = get_parser()
+    args = parser.parse_args()
+    if not os.path.isfile(args.file):
+        parser.error("Must provide a valid filename. Got: %s"%args.file)
+    count = page_count(args.file)
+    if args.pages is None:
+        pages = list(range(1, count+1))
+    else:
+        pages = get_pages(args.pages)
+    assert min(pages) >= 1
+    if max(pages) > count:
+        raise ValueError("Only %d pages in %s, but user specified pages up to "
+                         "%d" % (count, args.file, max(pages)))
+    fronts, backs = interleave_pages(pages)
+    print("Printing fronts of pages from default tray...")
+    try:
+        set_tray_manual(False)
+    except CalledProcessError:
+        sys.stdout.write("Could not set to default tray for printer "
+                         "%s\n" % PRINTER_NAME)
+    print_pages(args.file, fronts)
+    print("Done printing fronts of pages. Place the printed pages in the")
+    print("Manual feed tray without rotating or flipping them.")
+    if len(fronts) != len(backs):
+        print("You have an odd number of pages to print, so REMOVE THE PAGE")
+        print("ON THE TOP OF THE STACK (the last page) and set it aside")
+        print("for now to maintain page ordering.")
+    getpass("Hit enter once you are ready to print the backsides.")
+    try:
+        set_tray_manual(True)
+    except CalledProcessError:
+        sys.stdout.write("Could not set to manual tray for printer "
+                         "%s\n" % PRINTER_NAME)
+    print_pages(args.file, backs, ["-o", "outputorder=reverse",
+                                   "-o", "orientation-requested=6"])
+    print("Done!")
+
+
+if __name__ == "__main__":
+    main()
