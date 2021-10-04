@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -o pipefail
+set -o errexit
+
+# First try to get the pages from MacOS metadata. This seems to work for
+# non-temporary files but fails for files created by printer workflows.
+pgs="$(mdls -name kMDItemNumberOfPages -raw "$1")"
+if [ "$pgs" = '(null)' ]
+then
+    # Get the number of pages in the PDF. Not portable, but seems to work
+    # for PDF files made by Mac's print services, whereas mdls will strip
+    # page count information for such files (even if originally present).
+    # Adapted from https://stackoverflow.com/a/14736593/3601493
+    pgs="$(strings "$1" \
+        | LC_ALL=C sed -n 's|.*/Count -\{0,1\}\([0-9]\{1,\}\).*|\1|p' \
+        | sort -rn \
+        | head -n 1 \
+        | tr -d '\n'
+    )"
+fi
+printf "%s" "$pgs"

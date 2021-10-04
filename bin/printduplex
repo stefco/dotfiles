@@ -8,7 +8,7 @@ from getpass import getpass
 RANGES = re.compile("^([0-9]*)-([0-9]*)$")
 PAGE = re.compile("^([0-9]*)$")
 # TODO check this name
-PRINTER_NAME = "HP_Laserjet_P2035N"
+PRINTER_NAME = "HP_LaserJet_P2035n"
 
 
 def get_pages(page_str):
@@ -64,6 +64,12 @@ def get_parser():
     parser.add_argument("-p", "--pages", help="""Pages to print. Specify this
         as comma-separated non-overlapping ranges in order, e.g. `3`, `3-10`,
         `4,6-11`. If not provided, print all pages.""")
+    parser.add_argument("-f", "--skip-fronts", action="store_true", help="""
+        Skip front pages and print back pages with no prompt. Assumes you have
+        properly loaded Manual Tray 1 before running.""")
+    parser.add_argument("-b", "--skip-backs", action="store_true", help="""
+        Skip back pages and only print front pages with no prompt. Assumes you
+        want to print front pages from Tray 2 (default).""")
     return parser
 
 
@@ -82,20 +88,26 @@ def main():
         raise ValueError("Only %d pages in %s, but user specified pages up to "
                          "%d" % (count, args.file, max(pages)))
     fronts, backs = interleave_pages(pages)
-    print("Printing fronts of pages from default tray...")
-    try:
-        set_tray_manual(False)
-    except CalledProcessError:
-        sys.stdout.write("Could not set to default tray for printer "
-                         "%s\n" % PRINTER_NAME)
-    print_pages(args.file, fronts)
-    print("Done printing fronts of pages. Place the printed pages in the")
-    print("Manual feed tray without rotating or flipping them.")
-    if len(fronts) != len(backs):
-        print("You have an odd number of pages to print, so REMOVE THE PAGE")
-        print("ON THE TOP OF THE STACK (the last page) and set it aside")
-        print("for now to maintain page ordering.")
-    getpass("Hit enter once you are ready to print the backsides.")
+    if not args.skip_fronts:
+        print("Printing fronts of pages from default tray...")
+        try:
+            set_tray_manual(False)
+        except CalledProcessError:
+            sys.stdout.write("Could not set to default tray for printer "
+                            "%s\n" % PRINTER_NAME)
+        print_pages(args.file, fronts)
+    if args.skip_backs:
+        print("Done!")
+        return
+    if not args.skip_fronts:
+        print("Done printing fronts of pages. Place the printed pages in the")
+        print("Manual feed tray without rotating or flipping them.")
+        if len(fronts) != len(backs):
+            print("You have an odd number of pages to print, so REMOVE THE")
+            print("PAGE ON THE TOP OF THE STACK (the last page) and set it")
+            print("aside for now to maintain page ordering.")
+        getpass("Hit enter once you are ready to print the backsides.")
+    print("Printing backs of pages from manual tray...")
     try:
         set_tray_manual(True)
     except CalledProcessError:
