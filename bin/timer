@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+
+from time import sleep
+from sys import stdout
+
+t = 0
+while True:
+    try:
+        # clear to beginning of line, move to beginning of line, print time
+        stdout.write("\x1b[1K%s\x1b[0G"%(t/10.))
+        stdout.flush()
+        sleep(0.1)
+        t += 1
+    except KeyboardInterrupt:
+        print("")
+        break
