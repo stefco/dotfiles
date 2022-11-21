@@ -31,3 +31,6 @@ dotsource gh_autocomplete
 
 # added by travis gem
 [ -f /Users/s/.travis/travis.sh ] && source /Users/s/.travis/travis.sh
+
+# Init nvm (Node Version Manager)
+source /opt/local/share/nvm/init-nvm.sh
