@@ -8,6 +8,7 @@ set encoding=utf8
 " vim-plug plugins
 call plug#begin('~/dev/dotfiles/linkfiles/.vim/bundle')
 Plug 'pprovost/vim-ps1'
+Plug 'osohq/polar.vim'
 Plug 'tikhomirov/vim-glsl'
 Plug 'https://gitlab.com/n9n/vim-apl'
 Plug 'rust-lang/rust.vim'
@@ -75,7 +76,7 @@ noremap <F1> :Unite<Space>
 
 " highlight trailing whitespace, but not on insert mode
 " https://stackoverflow.com/a/4617156/3601493
-highlight ExtraWhitespace ctermbg=blue guibg=blue
+highlight ExtraWhitespace ctermbg=white guibg=blue
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
@@ -86,7 +87,7 @@ autocmd BufWinLeave * call clearmatches()
 "==============================================================================
 
 set guifont=Iosevka\ Nerd\ Font\ Mono:h11
-" colorscheme industry
+colorscheme industry
 
 "==============================================================================
 " BASIC VIM PREFS
