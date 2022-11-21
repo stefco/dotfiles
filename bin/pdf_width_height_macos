@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# First try to get width, height from MacOS metadata. Seems to work for
+# non-temporary files but fails for files created by printer workflows,
+# presumably because they have not been indexed with Spotlight.
+h="$(mdls -name kMDItemPageHeight -raw "$1")"
+w="$(mdls -name kMDItemPageWidth -raw "$1")"
+if [ "$h" = '(null)' ] || [ "$w" = '(null)' ]
+then
+	# Print width, height on separate lines
+	# Adapted from https://unix.stackexchange.com/a/158617/87515
+	strings "$1" \
+		| LC_ALL=C sed -n 's|^.*/MediaBox *\[[0-9]* *[0-9]* *\([0-9][0-9]*\)  *\([0-9][0-9]*\).*$|\1 \2|p' \
+		| head -n 1 \
+		| tr ' ' '\n'
+else
+	printf "%s\n%s\n" "$w" "$h"
+fi
