@@ -13,7 +13,7 @@ alias igwpy='ipython --profile=gwpy'
 alias illama='ipython --profile=gwhen'
 alias iheavy='ipython --profile=heavy'
 
-alias bfg="java -jar '${HOME}'/dev/dotfiles/static/bfg-1.13.0.jar"
+alias bfg="java -jar '${HOME}'/dev/dotfiles/static/bfg-1.14.0.jar"
 
 # edit my passwords file
 alias secrets='cp ~/Dropbox/crypt/.netrc{,.backup} && cp ~/{Dropbox/crypt/,}.netrc.backup && vim ~/Dropbox/crypt/.netrc'
