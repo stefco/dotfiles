@@ -1,0 +1,19 @@
+#!/bin/bash
+# List biggest files in this git repo. from:
+# https://stackoverflow.com/questions/9456550/how-to-find-the-n-largest-files-in-a-git-repository
+
+biggest () {
+    if [ $# -ne 1 ]; then
+        echo >&2 "USAGE: biggest <count>"
+        echo >&2
+        echo >&2 "display <count> largest files in this git repo."
+        return 1
+    fi
+    git rev-list --objects --all \
+        | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
+        | sed -n 's/^blob //p' \
+        | sort --numeric-sort --key=2 \
+        | tail -n "$1" \
+        | cut -c 1-12,41- \
+        | $(command -v gnumfmt || echo numfmt) --field=2 --to=iec-i --suffix=B --padding=7 --round=nearest
+}
