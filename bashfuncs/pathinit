@@ -13,7 +13,7 @@ done
 
 # get a better PATH (only if `pathsorter` executable exists for this purpose)
 type -f 1>/dev/null 2>&1 pathsorter \
-    && export PATH="$(pathsorter llama mactex user pg11 cargo py27 py37 py35 py36 py34 port macvim sys pyuser py36usermac dyalog drawterm)"
+    && export PATH="$(pathsorter llama mactex user pg11 cargo py27 py37 py35 py36 py34 port macvim sys pyuser py36usermac dyalog drawterm doom)"
 
 # # put ~/lib in the C library path
 export C_INCLUDE_PATH=~/include:"$C_INCLUDE_PATH"

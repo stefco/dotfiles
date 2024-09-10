@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # (c) Stefan Countryman 2017
 # read in the current environment PATH and spit out a reordered one to STDOUT
 import os
@@ -51,6 +51,7 @@ pathchoices = {
         "/sbin"
     ],
     "drawterm": "/Applications/drawterm.app",
+    "doom": os.path.expanduser("~/.config/emacs/bin"),
 }
 
 def errexit():
