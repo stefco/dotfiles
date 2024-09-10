@@ -1,0 +1,9 @@
+#!/bin/bash
+# Like MacOS `open`, but using Explorer from within WSL
+
+open () {
+    while [[ $# -gt 0 ]]; do
+        explorer.exe "$(wslpath -wa "$1")" &
+        shift 1
+    done
+}
