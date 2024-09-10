@@ -149,4 +149,28 @@ if [ "`hostname`" = "Fuchikoma" ]; then
     fi
     cat "${DOTFILEDIR}/static/fuchikoma-color.txt"
     echo "Distro: ${WSL_DISTRO_NAME}"
+elif [ "`hostname`" = "nerv" ]; then
+    # Node Version Manager
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+    # Cargo (Rust)
+    . "$HOME/.cargo/env"
+
+    # NVim Configs
+    alias lazyvim="NVIM_APPNAME=lazyvim nvim"
+    alias nvchad="NVIM_APPNAME=nvchad nvim"
+
+    # Add Android SDK Platform Tools to PATH
+    export PATH="$PATH:/mnt/c/Program Files/Meta Quest Developer Hub/resources/bin"
+
+    # Add scrcpy.exe to PATH
+    export PATH="$PATH:/mnt/c/Users/stef/bin/scrcpy-win64-v2.3.1/scrcpy-win64-v2.3.1"
+
+    # Greeting
+    cat ${DOTFILEDIR}/static/nerv.txt
+
+    # Homebrew (i.e. Linuxbrew, if you'll believe it)
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
