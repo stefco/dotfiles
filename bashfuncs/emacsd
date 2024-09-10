@@ -1,0 +1,55 @@
+#!/bin/bash
+# (c) Stefan Countryman 2024
+
+emacsd () {
+    local HELP='Start up the emacs daemon; `l` to list existing, `k` to kill existing'
+    local MIN_NODE_VERSION=20
+    local l=0
+    local k=0
+
+    # Parse args
+    while [[ $# -gt 0 ]]; do
+        case "${1}" in
+            l|li|lis|list)
+                l=1
+                shift
+                ;;
+            k|ki|kil|kill)
+                k=1
+                shift
+                ;;
+            *)
+                echo '${HELP}'
+                return 1
+                ;;
+        esac
+    done
+
+    # Handle listing or killing
+    [[ ${l} -eq 1 ]] && ps -ax | grep 'emacs.*--daemon' | sed '/grep/d'
+    [[ ${k} -eq 1 ]] && ps -ax \
+        | grep 'emacs.*--daemon' \
+        | sed '/grep/d' \
+        | cut -d ' ' -f 1 \
+        | xargs kill
+    [[ ${l} -eq 1 || ${k} -eq 1 ]] && return 0;
+
+    # Start the daemon
+    (
+        # Make sure to use proper node if available (for LSP)
+        if (type node | grep -q 'is hashed'); then
+            local node_version="$(node --version | cut -d . -f 1 | tr -dc '[0-9]')"
+            if [[ ${node_version} -lt ${MIN_NODE_VERSION} ]]; then
+                if (type nvm >/dev/null 2>&1); then
+                    nvm use "${MIN_NODE_VERSION}"
+                else
+                    echo >&2 "WARNING: node version ${node_version} is too old for LSP and no \`nvm\` detected"
+                fi
+            fi
+        else
+            echo >&2 'WARNING: `node` command not found, LSP will not work'
+        fi
+        echo >&2 'Starting emacs daemon...'
+        emacs --daemon
+    )
+}

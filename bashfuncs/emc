@@ -1,0 +1,4 @@
+#!/bin/bash
+# (c) Stefan Countryman 2024
+
+alias emc='emacsclient -n'
