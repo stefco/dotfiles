@@ -2,14 +2,15 @@
 # (c) Stefan Countryman (2020)
 # WSL-specific stuff
 
+alias pwsh="Powershell.exe"
+alias pbcopy="win32yank.exe -i"
+alias pbpaste="win32yank.exe -o"
+
 # welcome message
 if [ "`hostname`" = "Fuchikoma" ]; then
     export LIBTOOL="$(which libtoolize)"  # old libtoolize name
-    alias pwsh="/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
-    alias docker="/mnt/c/ProgramData/DockerDesktop/version-bin/docker.exe"
     alias p4="/mnt/e/Program\\ Files/Perforce/p4.exe"
-    export WIN32YANK="/mnt/c/Users/Stefan/.cargo/bin/win32yank.exe"  # tmux
-    alias win32yank="$WIN32YANK"
+
     ###############################################################################
     # CONDA
     ###############################################################################

@@ -1,8 +1,9 @@
 # vim: set syntax=ps1:
 # run all this after deb.sh and installing git for windows
 
+# DEPRECATED
 # link winterm settings
-cmd /c 'mklink C:\Users\Stefan\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json \\wsl$\debian\home\s\dev\dotfiles\linkfiles\.winterm.json'
+# cmd /c 'mklink C:\Users\Stefan\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json \\wsl$\debian\home\s\dev\dotfiles\linkfiles\.winterm.json'
 
 # clone dotfiles to windows home dir
 cd ~
@@ -10,17 +11,9 @@ New-Item -ItemType "directory" dev -Force
 cd dev
 git clone git@github.com:stefco/dotfiles.git
 
-# install rust; requires user interaction
-# https://superuser.com/questions/362152/native-alternative-to-wget-in-windows-powershell
-# https://rustup.rs/
-(new-object System.Net.WebClient).DownloadFile( 'https://win.rustup.rs/x86_64', rust.exe)
-./rust.exe
-
-# build & install win32yank from source
-cd ~/dev/dotfiles/submodules/win32yank
-cargo install
-
 # TODO install chocolatey
+choco install win32yank
+choco install fzf
 
 # install neovim (pre-release version)
 choco install neovim --pre
@@ -30,3 +23,6 @@ cmd /c 'mklink init.vim ..\..\..\dev\dotfiles\linkfiles\.vimrc'
 # install vim plug (https://github.com/junegunn/vim-plug#windows-powershell)
 iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
     ni $HOME/AppData/Local/nvim/autoload/plug.vim -Force
+
+# Turn on Vi Mode in Powershell
+Add-Content -Path $profile -Value "Set-PSReadLineOption -EditMode Vi"

@@ -122,6 +122,7 @@ elif [[ $OSTYPE = linux* ]]; then
     dotsource linux
     if [[ -v WSL_DISTRO_NAME ]]; then
         dotsource wsl
+        dotsource open
     fi
 fi
 
