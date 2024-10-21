@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Convert an image to a Windows PC icon using ImageMagick covert
+
+convert \
+    "$1" \
+    -define icon:auto-resize=16,32,48,64,256 \
+    -compress zip \
+    "${1%.*}.ico"

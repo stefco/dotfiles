@@ -123,6 +123,8 @@ elif [[ $OSTYPE = linux* ]]; then
     if [[ -v WSL_DISTRO_NAME ]]; then
         dotsource wsl
         dotsource open
+        dotsource emacsd
+        dotsource emc
     fi
 fi
 
