@@ -28,3 +28,26 @@ on Windows).
 ## `plexmovie.py`
 
 Same thing as `plexadd.py`, but under `HKEY_CLASSES_ROOT\*\shell` and pointing to `plexmovie.py` instead (duh) and with `"%1"` at the end to pass the path in.
+
+## `Emacs WSL Launcher`
+
+This might require a bit of config:
+- Right click in Explorer and select `New > Shortcut`
+    - Paste the contents of `emacs-wsl.bat` with a complete pathname to the `wsl`
+    executable. Currently:
+    ```bat
+    C:\Windows\System32\wsl.exe bash -ilc "cd ~; (emacsd l || emacsd) && emc -c"
+    ```
+    - Title should be `Emacs WSL Launcher`.
+- To add an icon, right-click on the new shortcut and go to `Properties >
+  Shortcut > Change Icon...` and set it to `emacs-icon-512.ico` in the same
+  folder.
+  - If you need to regenerate the icon, you can do so with
+    `img2ico my-icon.png`
+    - Doesn't need to be a PNG, any input image should work, but PNG is
+      probably best; SVG is funky
+- To prevent a console window from popping up during launch, you can set it to
+  start minimized with `Properties > Shortcut > Run: Minimized`.
+- Right click the new shortcut and click `Pin to Taskbar`.
+  - You might need to first click `Show more options` on Windows 11 to reveal
+    this choice.
