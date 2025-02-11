@@ -147,3 +147,24 @@
 ;(resize-mini-frames t)
 ;(setq eldoc-echo-area-use-multiline-p t)
 ;(setq max-mini-window-height 10)
+
+;; WGSL (WebGPU Shader Language) LSP SUPPORT
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-language-id-configuration '(wgsl-mode . "wgsl"))
+  (lsp-register-client (make-lsp-client :new-connection (lsp-stdio-connection "wgsl_analyzer")
+                                        :activation-fn (lsp-activate-on "wgsl")
+                                        :server-id 'wgsl_analyzer)))
+
+;; COMPILATION MODE
+;; TESTING
+;; Add NodeJS error format
+;; From https://web.archive.org/web/20230405065942/https://benhollis.net/blog/2015/12/20/nodejs-stack-traces-in-emacs-compilation-mode/
+;; and https://emacs.stackexchange.com/questions/59628/adding-a-pattern-to-compilation-error-regexp-alist
+(after! compile
+  (add-to-list 'compilation-error-regexp-alist-alist
+    '(node "^[  ]+at \\(?:[^\(\n]+ \(\\)?\\([a-zA-Z\.0-9_/-]+\\):\\([0-9]+\\):\\([0-9]+\\)\)?$"
+      1 ;; file
+      2 ;; line
+      3 ;; column
+      ))
+  (add-to-list 'compilation-error-regexp-alist 'node))
