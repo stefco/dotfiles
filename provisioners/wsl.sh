@@ -102,6 +102,17 @@ popd
 # make emacs window have minimize/maximize/close buttons
 gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,maximize,close'
 
+# add icons for emacs
+pushd ~/dev/emacs
+for size in 16 24 32 48 128; do
+    sudo install -Dm644 \
+        etc/images/icons/hicolor/${size}x${size}/apps/emacs.png \
+        /usr/local/share/icons/hicolor/${size}x${size}/apps/emacs.png
+done
+sudo install -Dm644 etc/emacs.desktop /usr/local/share/applications/emacs.desktop
+#sudo update-desktop-database /usr/local/share/applications
+#sudo gtk-update-icon-cache /usr/local/share/icons/hicolor
+
 # install emacs with snap
 # sudo snap install emacs --classic
 
