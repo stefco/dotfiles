@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Activate conda command line (2025 instructions)
+
+condas(){
+    source ~/anaconda3/bin/activate
+}

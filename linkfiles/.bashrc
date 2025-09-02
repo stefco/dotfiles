@@ -152,6 +152,9 @@ dotsource aliases
 # load the command prompt
 dotsource promptline
 
+# shortcut for activating conda
+dotsource condas
+
 # load q console settings for kdb+
 # dotsource qconfig
 
