@@ -162,9 +162,130 @@
 ;; and https://emacs.stackexchange.com/questions/59628/adding-a-pattern-to-compilation-error-regexp-alist
 (after! compile
   (add-to-list 'compilation-error-regexp-alist-alist
-    '(node "^[  ]+at \\(?:[^\(\n]+ \(\\)?\\([a-zA-Z\.0-9_/-]+\\):\\([0-9]+\\):\\([0-9]+\\)\)?$"
-      1 ;; file
-      2 ;; line
-      3 ;; column
-      ))
+               '(node "^[  ]+at \\(?:[^\(\n]+ \(\\)?\\([a-zA-Z\.0-9_/-]+\\):\\([0-9]+\\):\\([0-9]+\\)\)?$"
+                 1 ;; file
+                 2 ;; line
+                 3 ;; column
+                 ))
   (add-to-list 'compilation-error-regexp-alist 'node))
+
+;; Add pattern match for a bare file path
+(after! compile
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(bare-path
+                 "^\\(/[^:]+\\):\\([0-9]+\\)\\(?::\\([0-9]+\\)\\)?$"
+                 1 2 3))
+  (add-to-list 'compilation-error-regexp-alist 'bare-path))
+
+;; MINOR MODE
+;; Javascript/Typescript
+;; RUN TESTS
+;; Helper: Read node version from package.json (adjust the filename if needed)
+(defun my/get-node-version-from-package ()
+  "Return the node version string from the project’s package.json.
+Expects package.json to have an \"engines\" object with a \"node\" field."
+  (let* ((proj-root (projectile-project-root))
+         (lock-file (expand-file-name "package.json" proj-root)))
+    (unless (file-exists-p lock-file)
+      (user-error "No package.json found in project root"))
+    (with-temp-buffer
+      (insert-file-contents lock-file)
+      (let* ((json-object-type 'hash-table)
+             (json-array-type 'list)
+             (json-key-type 'string)
+             (data (json-read-from-string (buffer-string)))
+             (engines (gethash "engines" data)))
+        (unless engines
+          (user-error "No 'engines' field found in package.json"))
+        (or (gethash "node" engines)
+            (user-error "No 'node' field in engines in package.json"))))))
+
+;; Helper: Compute the npm path using the node version from package.json.
+(defun my/npm-path-from-node-version ()
+  "Return the full path to the npm executable for the node version in
+package.json. This assumes that NVM installs node versions under
+~/.nvm/versions/node/v<VERSION>/bin/npm."
+  (let ((node-ver (my/get-node-version-from-package)))
+    (expand-file-name (format "~/.nvm/versions/node/v%s/bin/npm" node-ver))))
+
+;; Command 1: Run tests for the current file.
+(defun my/npm-run-test-current-file ()
+  "Run npm test for the current file.
+Uses the npm executable determined from package.json.
+The command is:
+  <npm-path> run test -- <relative-file-path>"
+  (interactive)
+  (let* ((proj-root (projectile-project-root))
+         (rel-file (file-relative-name (buffer-file-name) proj-root))
+         (default-directory proj-root)
+         (npm (my/npm-path-from-node-version))
+         (cmd (format "pwd -P && %s run test -- %s" npm rel-file)))
+    (let ((compilation-scroll-output t))
+      (compile cmd))))
+
+;; Command 2: Run tests for the current file, filtering for the symbol at point.
+(defun my/npm-run-test-current-function ()
+  "Run npm test for the current file, filtering by the symbol at point.
+The command is:
+  <npm-path> run test -- <relative-file-path> --grep <symbol>"
+  (interactive)
+  (let* ((proj-root (projectile-project-root))
+         (rel-file (file-relative-name (buffer-file-name) proj-root))
+         (sym (thing-at-point 'symbol t)))
+    (unless sym
+      (user-error "No symbol found at point"))
+    (let* ((default-directory proj-root)
+           (npm (my/npm-path-from-node-version))
+           (cmd (format "pwd -P && %s run test -- %s --grep %s" npm rel-file sym)))
+      (let ((compilation-scroll-output t))
+        (compile cmd)))))
+
+;; Command 3: Run the entire test suite for the project.
+(defun my/npm-run-test-project ()
+  "Run the full npm test suite for the project.
+Uses the npm executable determined from package.json."
+  (interactive)
+  (let* ((proj-root (projectile-project-root))
+         (default-directory proj-root)
+         (npm (my/npm-path-from-node-version))
+         (cmd (format "pwd -P && %s run test" npm)))
+    (compile cmd)))
+
+;; Keybindings using Doom’s local leader (SPC m)
+;; Maps:
+;;   SPC m t f  → test current file
+;;   SPC m t h  → test with grep for symbol at point (e.g. the current test)
+;;   SPC m t t  → run the full test suite
+;(map! :leader
+;      "m t f" #'my/npm-run-test-current-file
+;      "m t h" #'my/npm-run-test-current-function
+;      "m t t" #'my/npm-run-test-project)
+(after! js2-mode
+  (map! :map js2-mode-map
+        :localleader
+        (:prefix ("t" . "npm test")
+          :desc "Run test for current file" "f" #'my/npm-run-test-current-file
+          :desc "Run test for symbol at point" "h" #'my/npm-run-test-current-function
+          :desc "Run project tests" "t" #'my/npm-run-test-project)))
+
+(after! typescript-mode
+  (map! :map typescript-mode-map
+        :localleader
+        (:prefix ("t" . "npm test")
+          :desc "Run test for current file" "f" #'my/npm-run-test-current-file
+          :desc "Run test for symbol at point" "h" #'my/npm-run-test-current-function
+          :desc "Run project tests" "t" #'my/npm-run-test-project)))
+
+;; USE UNIX LINE ENDINGS EVERYWHERE
+(setq-default buffer-file-coding-system 'unix)
+
+;; CC LSP
+(after! lsp-clangd
+  (setq lsp-clients-clangd-args
+        '("-j=3"
+          "--background-index"
+          "--clang-tidy"
+          "--completion-style=detailed"
+          "--header-insertion=never"
+          "--header-insertion-decorators=0"))
+  (set-lsp-priority! 'clangd 2))
