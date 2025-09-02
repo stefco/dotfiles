@@ -126,16 +126,141 @@
 ;(global-set-key (kbd "S-<mouse-2>") '+lookup/implementations)           ; shift-middle click
 ;(global-set-key (kbd "S-<mouse-3>") '+lookup/type-definition)           ; shift-right click
 
+;; ADDITIONAL KEYBINDINGS
+
+;; Map <SPC> p I to projectile-install-project
+(map! :leader
+      :prefix "p"
+      :desc "Install project" "I" #'projectile-install-project)
+
+;; OS INTEGRATION
+
+;; Use Windows' explorer.exe to open links from WSL Doom Emacs
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "explorer.exe")
+
 ;; COPILOT
 (use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("S-<tab>" . 'copilot-clear-overlay)
-              ("S-TAB" . 'copilot-clear-overlay)
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+              :hook (prog-mode . copilot-mode)
+              :bind (:map copilot-completion-map
+                          ("S-<tab>" . 'copilot-clear-overlay)
+                          ("S-TAB" . 'copilot-clear-overlay)
+                          ("<tab>" . 'copilot-accept-completion)
+                          ("TAB" . 'copilot-accept-completion)
+                          ("C-TAB" . 'copilot-accept-completion-by-word)
+                          ("C-<tab>" . 'copilot-accept-completion-by-word)))
+
+;; COPILOT CHAT
+
+;; (use-package!
+;;         copilot-chat
+;;         :init (setq copilot-chat-frontend 'org)
+;;         :after (request org markdown-mode))
+;; ;;;; Define the keymap for our custom minor mode.
+;; ;;(defvar my-copilot-chat-yank-motion-mode-map
+;; ;;        (let ((map (make-sparse-keymap)))
+;; ;;                ;; Bind "k" to call copilot-chat-yank-pop (forward yank)
+;; ;;                (define-key map (kbd "k") #'copilot-chat-yank-pop)
+;; ;;                ;; Bind "j" to call copilot-chat-yank-pop with -1 (backward yank)
+;; ;;                (define-key map (kbd "j") (lambda () (interactive) (copilot-chat-yank-pop -1)))
+;; ;;                ;; Bind "q" and <RETURN> to exit the mode.
+;; ;;                (define-key map (kbd "q") #'my-copilot-chat-yank-motion-quit)
+;; ;;                (define-key map (kbd "<return>") #'my-copilot-chat-yank-motion-quit)
+;; ;;                map)
+;; ;;        "Keymap for `my-copilot-chat-yank-motion-mode'.")
+;; ;;;; Ensure this keymap overrides Evil’s normal mode bindings.
+;; ;;(evil-make-overriding-map my-copilot-chat-yank-motion-mode-map 'normal)
+;; ;;;; Define the custom minor mode.
+;; ;;(define-minor-mode my-copilot-chat-yank-motion-mode
+;; ;;        "A minor mode for scrolling through the copilot chat yank buffer using motion keys.
+;; ;;When enabled, use `k` to move forward and `j` to move backward in the yank history.
+;; ;;Press `q` or `<RETURN>` to exit the mode."
+;; ;;        :init-value nil
+;; ;;        :keymap my-copilot-chat-yank-motion-mode-map
+;; ;;        :global nil
+;; ;;        :lighter " yank-motion"
+;; ;;        (if my-copilot-chat-yank-motion-mode
+;; ;;                (message "Yank motion mode enabled. Press 'j/k' to navigate results, 'q/<return>' to exit.")
+;; ;;                (message "Yank motion mode disabled.")))
+;; ;;(defun my-copilot-chat-yank-motion-quit ()
+;; ;;        "Quit `my-copilot-chat-yank-motion-mode'."
+;; ;;        (interactive)
+;; ;;        (my-copilot-chat-yank-motion-mode -1))
+;; ;;;; Main function: call copilot-chat-yank and then enable yank motion mode.
+;; ;;(defun my-copilot-chat-yank-with-motion ()
+;; ;;        "Call `copilot-chat-yank' then enable yank motion mode for easier navigation of the kill ring.
+;; ;;This makes `copilot-chat-yank` the last called function and activates custom keybindings
+;; ;;(`k` for forward and `j` for backward yank-pop) for navigating the yank history."
+;; ;;        (interactive)
+;; ;;        (copilot-chat-yank)
+;; ;;        (my-copilot-chat-yank-motion-mode 1))
+;; (map!
+;;         :leader (:prefix ("k" . "copilot-chat")
+;;         ;; Transient
+;;         :desc "Show transient menu of funcs" "M" #'copilot-chat-transient
+;;         ;; Prompt
+;;         :desc "Goto prompt"             "G" #'copilot-chat-goto-input
+;;         :desc "History prev"            "k" #'copilot-chat-prompt-history-previous
+;;         :desc "History next"            "j" #'copilot-chat-prompt-history-next
+;;         :desc "Yank block"              "y" #'my-copilot-chat-yank-with-motion
+;;         :desc "Yank pop"                "P" #'copilot-chat-yank-pop
+;;
+;;         ;; Basic functions
+;;         (:prefix ("b" . "basic")
+;;             :desc "Reset chat"          "r" #'copilot-chat-reset
+;;             :desc "Display buffers"     "d" #'copilot-chat-display
+;;             :desc "Switch buffer"       "s" #'copilot-chat-switch-to-buffer
+;;             :desc "Set model"           "m" #'copilot-chat-set-model)
+;;
+;;         ;; Prompt
+;;         (:prefix ("p" . "prompt")
+;;             :desc "Goto prompt"         "g" #'copilot-chat-goto-input
+;;             :desc "Custom prompt"       "c" #'copilot-chat-custom-mini-buffer
+;;             :desc "Prompt+selection"    "s" #'copilot-chat-custom-prompt-selection
+;;             :desc "History prev"        "k" #'copilot-chat-prompt-history-previous
+;;             :desc "History next"        "j" #'copilot-chat-prompt-history-next
+;;             :desc "Ask+insert answer"   "p" #'copilot-chat-ask-and-insert)
+;;
+;;         ;; Answer manipulation
+;;         (:prefix ("a" . "answer")
+;;             :desc "Yank block"          "y" #'copilot-chat-yank
+;;             :desc "Yank pop"            "p" #'copilot-chat-yank-pop
+;;             :desc "Send block to buf"   "s" #'copilot-chat-send-to-buffer)
+;;
+;;         ;; Buffers
+;;         (:prefix ("B" . "buffers")
+;;             :desc "Add current buf"     "a" #'copilot-chat-add-current-buffer
+;;             :desc "Del current buf"     "d" #'copilot-chat-del-current-buffer
+;;             :desc "List buffers"        "l" #'copilot-chat-list
+;;             :desc "Add all win buffers" "w" #'copilot-chat-add-buffers-in-current-window
+;;             :desc "Add files under dir" "f" #'copilot-chat-add-files-under-dir)
+;;
+;;         ;; Code helper functions
+;;         (:prefix ("c" . "code")
+;;             :desc "Explain symbol"      "e" #'copilot-chat-explain-symbol-at-line
+;;             :desc "Explain code"        "E" #'copilot-chat-explain
+;;             :desc "Review code"         "r" #'copilot-chat-review
+;;             :desc "Document code"       "d" #'copilot-chat-doc
+;;             :desc "Fix code"            "f" #'copilot-chat-fix
+;;             :desc "Optimize code"       "o" #'copilot-chat-optimize
+;;             :desc "Write tests"         "t" #'copilot-chat-test
+;;             :desc "Explain defun"       "D" #'copilot-chat-explain-defun
+;;             :desc "Custom prompt fn"    "p" #'copilot-chat-custom-prompt-function
+;;             :desc "Review whole buf"    "R" #'copilot-chat-review-whole-buffer)
+;;
+;;         ;; Magit functions
+;;         (:prefix ("g" . "magit")
+;;             :desc "Insert commit msg"   "p" #'copilot-chat-insert-commit-message)
+;;
+;;         ;; More transient menus
+;;         (:prefix ("T" . "transients")
+;;             :desc "Buffers transient"   "b" #'copilot-chat-transient-buffers
+;;             :desc "Code transient"      "c" #'copilot-chat-transient-code
+;;             :desc "Magit transient"     "m" #'copilot-chat-transient-magit)
+;;
+;;         ;; Troubleshooting
+;;         (:prefix ("t" . "troubleshoot")
+;;             :desc "Clear auth cache"    "c" #'copilot-chat-clear-auth-cache)))
 
 ;; ELDOC DOCUMENTATION TRUNCATION
 (setq lsp-eldoc-render-all t)
