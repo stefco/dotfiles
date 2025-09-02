@@ -168,8 +168,17 @@ elif [ "`hostname`" = "nerv" ]; then
     # Add scrcpy.exe to PATH
     export PATH="$PATH:/mnt/c/Users/stef/bin/scrcpy-win64-v2.3.1/scrcpy-win64-v2.3.1"
 
+    # Add custom bash funcs
+    dotsource papertrail-all
+
     # Greeting
-    cat ${DOTFILEDIR}/static/nerv.txt
+    case "$-" in
+        *i*) cat ${DOTFILEDIR}/static/nerv.txt;;    # interactive: fall through
+        *)  return ;;  # non-interactive: exit immediately
+    esac
+
+    # Source .env file
+    [ -f ~/.env ] && source ~/.env
 
     # Homebrew (i.e. Linuxbrew, if you'll believe it)
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
