@@ -155,6 +155,9 @@
                                         :activation-fn (lsp-activate-on "wgsl")
                                         :server-id 'wgsl_analyzer)))
 
+;; OPEN .shader AS HLSL
+;;(add-to-list 'auto-mode-alist '("\\.shader\\'" . hlsl-mode))
+
 ;; COMPILATION MODE
 ;; TESTING
 ;; Add NodeJS error format
