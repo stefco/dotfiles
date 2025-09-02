@@ -57,6 +57,9 @@ emacsd () {
 
     # Start the daemon
     (
+        # Use Anaconda for CMake LSP support
+        source "$HOME/anaconda3/bin/activate"
+        conda activate emacs
         # Make sure to use proper node if available (for LSP)
         if (type node >/dev/null 2>&1); then
             local node_version="$(node --version | cut -d . -f 1 | tr -dc '[0-9]')"
