@@ -35,8 +35,77 @@ sudo apt install -y mono-devel
 sudo apt install -y clang clangd clang-format
 sudo apt install -y glslang-dev glslang-tools
 
-# install new emacs + doom
-sudo snap install emacs --classic
+# install deps for emacs build
+sudo apt install -y \
+    build-essential \
+    autoconf \
+    automake \
+    libtool \
+    texinfo \
+    pkg-config \
+    make \
+    ;
+
+# install deps for emacs build features
+sudo apt install -y \
+    libgtk-3-dev \
+    libcairo2-dev \
+    libharfbuzz-dev \
+    librsvg2-dev \
+    libgnutls28-dev \
+    libxml2-dev \
+    libsqlite3-dev \
+    libgif-dev \
+    libtiff-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libtree-sitter-dev \
+    ;
+
+# find supported GCC native compilation version for emacs
+LIBGCCJIT_VERSION="$(apt-cache search libgccjit- | sed -n 's/libgccjit-\([0-9]*\)-dev.*$/\1/p' | sort -nr | head -1)"
+if [ -z $LIBGCCJIT_VERSION ]; then
+    echo >&2 "COULD NOT FIND LIBGCCJIT, EXITING"
+    exit 1
+fi
+sudo apt install -y libgccjit-"${LIBGCCJIT_VERSION}"-dev gcc-"${LIBGCCJIT_VERSION}"
+export CC=gcc-"${LIBGCCJIT_VERSION}"  # use same gcc for emacs build as libgccjit version
+# Workaround for v12 on debian 22.04; normally should just figure it out with the .pc config file
+export LIBGCCJIT_CFLAGS="-I/usr/lib/gcc/x86_64-linux-gnu/{$LIBGCCJIT_VERSION}/include"
+export LIBGCCJIT_LIBS="-L/usr/lib/gcc/x86_64-linux-gnu/${LIBGCCJIT_VERSION} -lgccjit"
+
+# get emacs 30.1 source
+mkdir -p ~/dev
+pushd ~/dev
+git clone https://git.savannah.gnu.org/git/emacs.git --depth 1 --branch emacs-30.1
+pushd emacs
+./autogen.sh
+mkdir -p build && pushd build
+../configure \
+    --prefix=/usr/local \
+    --with-pgtk \
+    --with-native-compilation \
+    --with-tree-sitter \
+    --with-modules \
+    --with-cairo \
+    --disable-gc-mark-trace \
+    --without-x \
+    ;
+# build
+make -j"$(nproc)"
+sudo make install
+hash -r  # refresh shell's command cache
+popd
+popd
+popd
+
+# make emacs window have minimize/maximize/close buttons
+gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,maximize,close'
+
+# install emacs with snap
+# sudo snap install emacs --classic
+
+# install new doom for emacs
 git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
 ~/.emacs.d/bin/doom install
 ~/.emacs.d/bin/doom sync
