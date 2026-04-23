@@ -11,7 +11,7 @@ __emacsd_procs_found () {
 
 emacsd () {
     local HELP='Start up the emacs daemon; `l` to list existing, `k` to kill existing'
-    local MIN_NODE_VERSION=20
+    local MIN_NODE_VERSION=22
     local l=0
     local k=0
     local l_or_k
