@@ -10,7 +10,7 @@ call plug#begin('~/dev/dotfiles/linkfiles/.vim/bundle')
 Plug 'pprovost/vim-ps1'
 Plug 'osohq/polar.vim'
 Plug 'tikhomirov/vim-glsl'
-Plug 'https://gitlab.com/n9n/vim-apl'
+" Plug 'https://gitlab.com/n9n/vim-apl'
 Plug 'rust-lang/rust.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'neoclide/coc.nvim', has('nvim') ? {'branch': 'release'} : { 'on': [] }
@@ -192,7 +192,6 @@ autocmd FileType make set noexpandtab
 " force .md to be interpreted as Markdown, include code syntax
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = [
-    \'apl',
     \'bash=sh',
     \'c',
     \'crontab',
@@ -255,8 +254,8 @@ autocmd FileType fortran setlocal colorcolumn=6,73,74,75,76,77,78,79,80
 " note that this is not a supported feature of neovim, so don't run in that
 " case.
 if ! has('nvim')
-    " set ttymouse=sgr
-    set ttymouse=xterm2
+    set ttymouse=sgr
+    " set ttymouse=xterm2
 else
     hi CocFloating guibg=none guifg=none ctermbg=24
     " hi CocFloating guibg=none guifg=none
@@ -481,7 +480,7 @@ autocmd FileType tex,matlab         setlocal commentstring=%\ %s
 autocmd FileType yaml,tmux          setlocal commentstring=#\ %s
 autocmd FileType text               setlocal commentstring=#\ %s
 autocmd FileType haskell            setlocal commentstring=--\ %s
-autocmd FileType apl                setlocal commentstring=⍝\ %s
+" autocmd FileType apl                setlocal commentstring=⍝\ %s
 
 "==============================================================================
 " SOFT WORD WRAP
