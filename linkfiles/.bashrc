@@ -118,15 +118,18 @@ if [[ $OSTYPE == darwin* ]]; then
     dotsource macos
     # load MacOS-specific functions
     dotsource emacsg opent
+# WSL-specific crap
 elif [[ $OSTYPE = linux* ]]; then
     dotsource linux
     if [[ -v WSL_DISTRO_NAME ]]; then
         dotsource wsl
         dotsource open
-        dotsource emacsd
-        dotsource emc
     fi
 fi
+
+# emacs tools
+dotsource emacsd
+dotsource emc
 
 #check if this is an ssh session
 dotsource sessiontype
