@@ -14,11 +14,6 @@ dotsource fulab
 
 # test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
-condas() {
-    export CONDAS=1
-    eval "$(/Users/s/anaconda3/bin/conda shell.bash hook)"
-}
-
 llamas() {
     if [[ "$CONDAS" -ne 1 ]]; then
         echo 'Setting up Conda with `condas`'
