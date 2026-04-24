@@ -35,10 +35,13 @@ emacsd () {
         esac
     done
 
-    # Handle listing or killing
+    # Handle listing or killing. `-i` so the `Emacs` binary name used when
+    # launched via Emacs.app/EmacsMac.app also matches. `-daemon` (single
+    # hyphen) catches both `--daemon` (the short-lived parent) and
+    # `--bg-daemon=<fds>` (the actual detached daemon in Emacs 27+).
     l_or_k=$((l + k))
     if [[ ${l_or_k} -gt 0 ]]; then
-        procs="$(ps -ax | grep 'emacs.*--daemon' | sed '/grep/d')"
+        procs="$(ps -ax | grep -iE 'emacs.*-daemon' | sed '/grep/d')"
     fi
     if [[ ${l} -eq 1 ]]; then
         __emacsd_procs_found && (__emacsd_procs; echo)
@@ -57,8 +60,24 @@ emacsd () {
 
     # Start the daemon
     (
-        # Use Anaconda for CMake LSP support
-        source "$HOME/anaconda3/bin/activate"
+        # Use Anaconda/Miniconda for CMake LSP support.
+        # Candidate install roots, in priority order (new macOS, new Linux,
+        # old macOS/Linux user install, old user miniconda).
+        local conda_base
+        for conda_base in \
+            /opt/miniconda3 \
+            /opt/anaconda3 \
+            "$HOME/anaconda3" \
+            "$HOME/miniconda3" \
+        ; do
+            if [ -f "${conda_base}/bin/activate" ]; then
+                source "${conda_base}/bin/activate"
+                break
+            fi
+        done
+        if ! type conda >/dev/null 2>&1; then
+            echo >&2 "WARNING: no conda install found; LSP may not work"
+        fi
         conda activate emacs
         # Make sure to use proper node if available (for LSP)
         if (type node >/dev/null 2>&1); then
@@ -77,7 +96,35 @@ emacsd () {
         else
             echo >&2 'WARNING: `node` command not found, LSP will not work'
         fi
-        echo >&2 'Starting emacs daemon...'
-        emacs --daemon
+        if [[ "$OSTYPE" == darwin* ]]; then
+            # On macOS, launch Emacs.app as a regular GUI process rather
+            # than in --daemon mode. `open -a Emacs --args --daemon`
+            # hangs on emacs-mac because its Cocoa .app init path
+            # doesn't cooperate with daemon mode. Instead, Emacs.app
+            # runs as an ordinary app and config.el calls `server-start`
+            # so `emc` can connect via the Unix socket; `emc -c`
+            # surfaces the hidden app window via `open -a Emacs`.
+            if pgrep -f '\.app/Contents/MacOS/Emacs' >/dev/null 2>&1; then
+                echo >&2 'Emacs.app is already running; nothing to do.'
+            else
+                # Refresh Doom's env snapshot (`$DOOMDIR/env`) from this
+                # activated subshell so Emacs.app picks up conda/nvm
+                # PATH — `open -a` launches via launchd and does NOT
+                # inherit this shell's environment.
+                if type doom >/dev/null 2>&1; then
+                    echo >&2 'Refreshing Doom env snapshot...'
+                    doom env >/dev/null
+                else
+                    echo >&2 'WARNING: `doom` not on PATH; skipping env snapshot refresh'
+                fi
+                # `-g` = don't bring to foreground; `-j` = launch hidden
+                # (like Cmd-H on first paint).
+                echo >&2 'Launching Emacs.app hidden...'
+                open -gja Emacs 2>/dev/null || open -gja EmacsMac
+            fi
+        else
+            echo >&2 'Starting emacs daemon...'
+            emacs --daemon
+        fi
     )
 }

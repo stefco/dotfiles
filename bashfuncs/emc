@@ -1,4 +1,21 @@
 #!/bin/bash
 # (c) Stefan Countryman 2024
 
-alias emc='emacsclient -n'
+emc () {
+    emacsclient -n "$@" || return $?
+    # On macOS, a new GUI frame from the daemon needs a nudge to come to
+    # the front — emacsclient only talks to the server socket, it can't
+    # activate the .app. Only bother when `-c`/`--create-frame` was asked
+    # for; tty frames (`-nw`/`-t`) own the terminal themselves.
+    if [[ "$OSTYPE" == darwin* ]]; then
+        local arg
+        for arg in "$@"; do
+            case "${arg}" in
+                -c|--create-frame)
+                    open -a Emacs 2>/dev/null || open -a EmacsMac
+                    return
+                    ;;
+            esac
+        done
+    fi
+}
