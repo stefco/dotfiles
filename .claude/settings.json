@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -cn --arg host \"$(scutil --get ComputerName 2>/dev/null || hostname -s)\" --arg os \"$OSTYPE\" --arg uname \"$(uname -srm)\" --arg wsl \"${WSL_DISTRO_NAME:-no}\" '{hookSpecificOutput:{hookEventName:\"SessionStart\",additionalContext:\"Host context: hostname=\\($host) | OSTYPE=\\($os) | uname=\\($uname) | WSL=\\($wsl)\"}}'"
+          }
+        ]
+      }
+    ]
+  }
+}
