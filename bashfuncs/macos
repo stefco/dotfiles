@@ -25,6 +25,11 @@ alias donkey="cat \"${DOTFILEDIR}\"/static/ogre.txt; say donkey get back in the 
 # add TeX path
 export PATH="$PATH:/Library/TeX/Distributions/Programs/texbin"
 
+# GUI apps on macOS inherit SHELL=/bin/zsh from launchd regardless of chsh, so
+# tmux/etc. spawn zsh even when we're actually in bash. Fix by pointing SHELL
+# at the bash actually running us.
+export SHELL="$BASH"
+
 # control whether hidden files show on MacOS
 alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE; killall Finder"
 alias showhidden="defaults write com.apple.finder AppleShowAllFiles TRUE; killall Finder"
@@ -48,9 +53,12 @@ fi
 defaults write -globalDomain NSUserKeyEquivalents -dict-add 'Save As...' '@$S'
 
 # turn on bash-completion
+# with macports
 if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
     source /opt/local/etc/profile.d/bash_completion.sh
 fi
+# with homebrew
+[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
 # welcome message
 COMPUTERNAME="`scutil --get ComputerName`"
@@ -58,6 +66,8 @@ if [ "$COMPUTERNAME" = "Alexis Nelson’s MacBook Pro" ]; then
     cat ${DOTFILEDIR}/static/tachikoma-title.txt
 elif [ "$COMPUTERNAME" = "motoko" ]; then
     dotsource motoko
+elif [ "$COMPUTERNAME" = "melchior" ]; then
+    dotsource melchior
 else
     # a cryptic greeting from an old friend, if he is around...
     type -f 1>/dev/null 2>&1 fortune \
