@@ -1,7 +1,23 @@
 #!/bin/bash
 
-# Activate conda command line (2025 instructions)
+# Activate conda on demand, probing candidate install roots in priority order.
+# Sets CONDAS=1 so that host-specific helpers (e.g. motoko's `llamas`) can
+# check whether conda has been initialized in the current shell.
 
-condas(){
-    source ~/anaconda3/bin/activate
+condas() {
+    local conda_base
+    for conda_base in \
+        /opt/miniconda3 \
+        /opt/anaconda3 \
+        "$HOME/anaconda3" \
+        "$HOME/miniconda3" \
+    ; do
+        if [ -x "${conda_base}/bin/conda" ]; then
+            eval "$("${conda_base}/bin/conda" shell.bash hook)"
+            export CONDAS=1
+            return 0
+        fi
+    done
+    echo >&2 "condas: no conda install found in /opt/{mini,ana}conda3 or ~/{ana,mini}conda3"
+    return 1
 }
