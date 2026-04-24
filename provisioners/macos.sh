@@ -228,3 +228,4 @@ You probably also want to install:
   - Google Chrome <https://www.google.com/chrome/browser/desktop/index.html>
   - LibreOffice <https://www.libreoffice.org/download/download/>
   - k2pdfopt <http://willus.com/k2pdfopt/help/mac.shtml>
+__EOF__
