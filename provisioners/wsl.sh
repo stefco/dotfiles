@@ -14,8 +14,8 @@ sudo apt install \
     ripgrep
 mkdir -p ~/.local/bin
 ln -s "$(which fdfind)" ~/.local/bin/fd
-git clone https://github.com/NvChad/NvChad ~/.config/nvchad --depth 1
-git clone https://github.com/LazyVim/starter ~/.config/lazyvim --depth 1
+#git clone https://github.com/NvChad/NvChad ~/.config/nvchad --depth 1
+#git clone https://github.com/LazyVim/starter ~/.config/lazyvim --depth 1
 mkdir ~/.tmux
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
