@@ -6,6 +6,9 @@ alias pwsh="Powershell.exe"
 alias pbcopy="win32yank.exe -i"
 alias pbpaste="win32yank.exe -o"
 
+# Open from NextJS error directly in emacs
+export REACT_EDITOR="emacsclient -n"
+
 # welcome message
 if [ "`hostname`" = "Fuchikoma" ]; then
     export LIBTOOL="$(which libtoolize)"  # old libtoolize name
@@ -170,6 +173,9 @@ elif [ "`hostname`" = "nerv" ]; then
 
     # Add custom bash funcs
     dotsource papertrail-all
+
+    # Add web-nginx orchestration script autocompletion
+    source /home/stef/dev/web-nginx/scripts/run-completion.bash
 
     # Greeting
     case "$-" in

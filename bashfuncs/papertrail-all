@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+#
+# papertrail-all
+# Iteratively fetch all Papertrail events matching a query,
+# paging backwards by max-time and deduplicating overlaps.
+#
+# Prerequisites:
+#   - Bash 4+ (for associative arrays)
+#   - papertrail CLI gem (https://github.com/papertrail/papertrail-cli)
+#   - jq (JSON processor)
+
+papertrail-all() {
+    if [[ -z "$1" ]]; then
+        echo "Usage: $0 \"YOUR QUERY HERE\"" >&2
+        return 1
+    fi
+
+    local id
+    local cmd
+    local resp
+    local MAX_TIME=""            # empty to start with no upper time bound
+    declare -A seen_ids    # associative array to track seen event IDs
+
+    while true; do
+        # Build the base command
+        cmd=( papertrail -j )
+        [[ -n "$MAX_TIME" ]] && cmd+=( --max-time "$MAX_TIME" )
+        #printf '%s\n' "CMD: ${cmd[@]}" "$@"
+
+        # Fetch a batch of events in JSON
+        resp="$("${cmd[@]}" "$@")"
+
+        # Extract events; if none, we’re done
+        mapfile -t events < <(echo "$resp" | jq -c '.events[]')
+        [[ ${#events[@]} -eq 0 ]] && return 0
+
+        # Determine the oldest timestamp for the next iteration
+        MAX_TIME=$(echo "$resp" | jq -r '.events | last | .display_received_at')
+
+        # Iterate and print only new events
+        for event in "${events[@]}"; do
+            id=$(echo "$event" | jq -r '.id')
+            if [[ -z "${seen_ids[$id]}" ]]; then
+                seen_ids[$id]=1
+                # Format: TIMESTAMP [PROGRAM] message
+                #echo "$event" | jq -r '"\(.display_received_at) [\(.program)] \(.message)"'
+                echo "$event"
+            fi
+        done
+    done
+}

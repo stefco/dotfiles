@@ -52,6 +52,7 @@ pathchoices = {
     ],
     "drawterm": "/Applications/drawterm.app",
     "doom": os.path.expanduser("~/.config/emacs/bin"),
+    "resolve": os.path.expanduser("~/dev/web-nginx"),
 }
 
 def errexit():

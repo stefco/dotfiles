@@ -178,3 +178,6 @@ for i in {1..3}; do
         dotsource uwm
     fi
 done
+
+# Resolve PR prefix
+export RESOLVE_GIT_BRANCH_PREFIX='stef/'
