@@ -21,7 +21,7 @@ for rcfile in $(find linkfiles -iname '.*' -exec basename {} \; ); do
 done
 
 # for now, these files should be copied, since they will be populated with
-# sensitive information (TODO: fix this with auto-redact git hooks)
+# sensitive information that should not be version controlled
 for rcfile in $(find ~/dev/dotfiles/copyfiles -iname '.*' -exec basename {} \; ); do
     if [ -L ~/"${rcfile}" ] || [ -e ~/"${rcfile}" ] && ! [ "$1"z = -fz ]; then
         echo "${rcfile} exists, skipping (delete to copy it or use -f flag)"
