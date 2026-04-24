@@ -23,9 +23,17 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "DejaVu Sans Mono" :size 13 :weight 'normal))
+(setq doom-font
+      (if (featurep :system 'macos)
+          (font-spec :family "GohuFont uni11 Nerd Font Mono" :size 11 :weight 'normal)
+        (font-spec :family "DejaVu Sans Mono" :size 13 :weight 'normal)))
 ;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
+
+;; macOS ships Apple Color Emoji, but EmacsMac doesn't always pick it up for
+;; Unicode symbols — point `doom-symbol-font` at it explicitly.
+(when (featurep :system 'macos)
+  (setq doom-symbol-font (font-spec :family "Apple Color Emoji")))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -419,3 +427,13 @@ Uses the npm executable determined from package.json."
           "--header-insertion=never"
           "--header-insertion-decorators=0"))
   (set-lsp-priority! 'clangd 2))
+
+;; Start the emacsclient server on macOS. On Linux/WSL the `emacsd`
+;; bashfunc runs `emacs --daemon`, which starts the server implicitly;
+;; on macOS we launch Emacs.app as a regular GUI process (see
+;; `bashfuncs/emacsd`) because `--daemon` via the .app bundle hangs
+;; on emacs-mac. Without this call, `emacsclient` / `emc` would fail
+;; with "can't find socket."
+(when (featurep :system 'macos)
+  (require 'server)
+  (unless (server-running-p) (server-start)))
