@@ -5,6 +5,15 @@ import os
 import sys
 
 pathchoices = {
+    "brew": [
+        "/opt/homebrew/bin",
+        "/opt/homebrew/opt/coreutils/libexec/gnubin",
+        "/opt/homebrew/opt/llvm/bin",
+        "/opt/homebrew/opt/libtool/libexec/gnubin",
+        "/opt/homebrew/opt/findutils/libexec/gnubin",
+        "/opt/homebrew/opt/imagemagick-full/bin",
+        "/opt/homebrew/opt/grep/libexec/gnubin",
+    ],
     "port": [
         "/opt/local/bin",
         "/opt/local/sbin",
