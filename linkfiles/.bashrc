@@ -174,6 +174,9 @@ dotsource \
     # instagram_tools \
     # tun \
 
+# Source .env file
+[ -f ~/.env ] && source ~/.env
+
 # load UWM-specific initialization scripts if on UWM
 hostname="$(hostname -f)"
 for i in {1..3}; do

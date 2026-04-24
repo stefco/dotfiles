@@ -183,9 +183,6 @@ elif [ "`hostname`" = "nerv" ]; then
         *)  return ;;  # non-interactive: exit immediately
     esac
 
-    # Source .env file
-    [ -f ~/.env ] && source ~/.env
-
     # Homebrew (i.e. Linuxbrew, if you'll believe it)
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
