@@ -68,6 +68,7 @@ brew -f install >$log 2>$errlog \
     qrencode \
     wget \
     tmux \
+    tpm \
 # end
 # install dotnet for C# LSP
 brew install dotnet-sdk@8 mono
@@ -141,5 +142,9 @@ To set newest version of bash as default, run:
 Initialize git lfs with:
 
   git lfs install
+
+Set up emacs magit forge for PR reviews with github.com using instructions at:
+
+  https://docs.magit.vc/forge/Setup-for-Githubcom.html
 
 __EOF__
