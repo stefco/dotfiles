@@ -69,6 +69,7 @@ brew -f install >$log 2>$errlog \
     wget \
     tmux \
     tpm \
+    heroku/brew/heroku \
 # end
 # install dotnet for C# LSP
 brew install dotnet-sdk@8 mono
