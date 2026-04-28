@@ -30,3 +30,6 @@ export NVM_DIR="$HOME/.nvm"
 
 # configure mono (for unity/doom emacs)
 export MONO_GAC_PREFIX="/opt/homebrew"
+
+# Add web-nginx orchestration script autocompletion
+source /home/stef/dev/web-nginx/scripts/run-completion.bash
