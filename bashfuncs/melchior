@@ -32,4 +32,4 @@ export NVM_DIR="$HOME/.nvm"
 export MONO_GAC_PREFIX="/opt/homebrew"
 
 # Add web-nginx orchestration script autocompletion
-source /home/stef/dev/web-nginx/scripts/run-completion.bash
+source ~/dev/web-nginx/scripts/run-completion.bash
